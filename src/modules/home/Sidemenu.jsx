@@ -40,40 +40,103 @@ const Sidebar = (props) => {
                     </Link>
                 </span>
             </li>
-
-            <li className={`app-sidemenu-bar-item ${activePath.includes('moi') ? 'active' : ''}`}>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('services') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="0">
                         <Accordion.Header onClick={() => handleAccordionToggle('0')}
                             className={sizeToggler ? 'expaned' : 'collapsed'}
                         >
-                            <Link to="/moi" className="link">
+                            <Link to="/services" className="link">
                                 <img src="/assets/svg/hires.svg" alt="" />
-                                {sizeToggler && t('MOI')}
+                                {sizeToggler && t('services')}
                             </Link>
                         </Accordion.Header>
                         <Accordion.Body>
                             <ul>
-                                <li /*className={`${activePath === '/moc/customer-profile' ? 'clicked' : ''}`}*/>
-                                    <Link to="/moi/customer-profile">Customer Profile</Link>
-                                </li>
-                                <li /*className={`${activePath === '/moc/imei-details' ? 'clicked' : ''}`}*/>
-                                    <Link to="/moi/imei-details">IMEI Details</Link>
-                                </li>
-                                <li /*className={`${activePath === '/moc/call-trace' ? 'clicked' : ''}`}*/>
-                                    <Link to="/moi/call-trace">Call Trace</Link>
+                                <li>
+                                    <Link to="/services/add-category">{t('add_service_category')}</Link>
                                 </li>
                                 <li>
-                                    <Link to="/moi/cell-trace">Cell Trace</Link>
+                                    <Link to="/services/categories">{t('manage_service_categories')}</Link>
                                 </li>
                                 <li>
-                                    <Link to="/moi/ip-query">IP Query</Link>
+                                    <Link to="/services/add">{t('add_service')}</Link>
+                                </li>
+                                <li >
+                                    <Link to="/services">{t('manage_services')}</Link>
                                 </li>
                             </ul>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
             </li>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('products') ? 'active' : ''}`}>
+                <Accordion activeKey={accordionActiveKey} className=''>
+                    <Accordion.Item eventKey="1">
+                        <Accordion.Header onClick={() => handleAccordionToggle('1')}
+                            className={sizeToggler ? 'expaned' : 'collapsed'}
+                        >
+                            <Link to="/products" className="link">
+                                <img src="/assets/svg/hires.svg" alt="" />
+                                {sizeToggler && t('products')}
+                            </Link>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ul>
+                                <li>
+                                    <Link to="/products">{t("manage_products")}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/add">{t('add_product')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/categories">{t('manage_categories')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/units">{t('product_units')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/brands">{t('product_brands')}</Link>
+                                </li>
+                            </ul>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            </li>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('settings') ? 'active' : ''}`}>
+                <Accordion activeKey={accordionActiveKey} className=''>
+                    <Accordion.Item eventKey="2">
+                        <Accordion.Header onClick={() => handleAccordionToggle('2')}
+                            className={sizeToggler ? 'expaned' : 'collapsed'}
+                        >
+                            <Link to="/settings" className="link">
+                                <img src="/assets/svg/hires.svg" alt="" />
+                                {sizeToggler && t('settings')}
+                            </Link>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ul>
+                                <li>
+                                    <Link to="/settings/branches">{t("branches")}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/add">{t('add_product')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/categories">{t('manage_categories')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/units">{t('product_units')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/products/brands">{t('product_brands')}</Link>
+                                </li>
+                            </ul>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            </li>
+
             {/* <li className={`app-sidemenu-bar-item ${activePath === '/vcd' ? 'active' : ''}`}>
                 <span>
                     <Link to="/vcd">

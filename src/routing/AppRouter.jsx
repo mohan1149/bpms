@@ -17,6 +17,15 @@ import { setShowDeleteDialog, setErrorToast } from '../redux/reducer';
 import MOI from '../modules/moi/MOI';
 import MOIPages from './../modules/moi/MOIPages';
 
+
+
+
+
+
+import AddProduct from '../modules/products/AddProduct';
+import Branches from '../modules/settings/branches/Branches';
+import ProductCategories from '../modules/products/categories/ProductCategories';
+
 const AppRouter = () => {
     const store = useStore();
     const [isUserLogged, setIsUserLogged] = useState(false);
@@ -50,7 +59,7 @@ const AppRouter = () => {
         }
         setLoading(false);
     });
-   
+
     if (loading) {
         return (
             <BrowserRouter>
@@ -118,8 +127,12 @@ const AppRouter = () => {
                                 </Dialog>
                                 <Routes>
                                     <Route index path='/' element={<Home />} />
+
+                                    <Route path='/products/add' element={<AddProduct />} />
+                                    <Route path='/products/categories' element={<ProductCategories />} />
+                                    <Route path='/settings/branches' element={<Branches />} />
                                     <Route path='/moi' element={<MOI />} />
-                                    <Route path='/moi/:page' element={<MOIPages/>}/>
+                                    <Route path='/moi/:page' element={<MOIPages />} />
                                     <Route path='/logout' element={<Logout />} />
                                     <Route path='*' element={<Page404 />} />
                                 </Routes>

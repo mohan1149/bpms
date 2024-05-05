@@ -16,13 +16,89 @@ export const validateToken = async (token) => {
 
 }
 export const startLogin = async (user) => {
-    let response = await axios({
-        method: 'POST',
-        data: user,
-        url: urls.login,
-    });
-    return response;
+    try {
+        let response = await axios({
+            method: 'POST',
+            data: user,
+            url: urls.login,
+        });
+        return response;
+    } catch (error) {
+        return false;
+    }
 }
+
+
+export const getBranches = async (user) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            data: user,
+            url: urls.get_branches,
+        });
+        return response;
+    } catch (error) {
+        return false;
+    }
+}
+export const storeBranch = async (user) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            data: user,
+            url: urls.store_branch,
+        });
+        return response;
+    } catch (error) {
+        return false;
+    }
+}
+export const storeProductCategory = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            data: data,
+            url: urls.store_product_cartegory,
+        });
+        return response;
+    } catch (error) {
+        return false;
+    }
+}
+export const getProductCategories = async () => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_product_categories,
+        });
+        return response;
+    } catch (error) {
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const logoutUser = async (username) => {
     let response = await axios({

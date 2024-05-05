@@ -14,15 +14,19 @@ const Splash = () => {
         if (token === null) {
             store.dispatch(setUserLoggedStatus(false));
         } else {
-            const res = await validateToken(token);
-            if (res.data.user.valid) {
-                store.dispatch(setUser(res.data.user.user));
-                store.dispatch(setUserLoggedStatus(true));
-            } else {
-                store.dispatch({});
+            try {
+                const res = await validateToken(token);
+                if (res.data.user !== null) {
+                    store.dispatch(setUser(res.data.user.user));
+                    store.dispatch(setUserLoggedStatus(true));
+                } else {
+                    store.dispatch(setUser({}));
+                    store.dispatch(setUserLoggedStatus(false));
+                }
+            } catch (error) {
+                store.dispatch(setUser({}));
                 store.dispatch(setUserLoggedStatus(false));
             }
-
         }
     }
     return (

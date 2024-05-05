@@ -30,10 +30,6 @@ axiosInstance.interceptors.response.use(
             flag: true,
             content: error.message,
         }));
-        // if (error.response.status === 403) {
-        //     localStorage.removeItem('access_token');
-        //     window.location.assign('/');
-        // }
         return Promise.reject(error);
     },
 );
