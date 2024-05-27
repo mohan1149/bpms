@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { validateToken } from './../../apis/services';
+import { getLoggedUser } from './../../apis/services';
 import { useStore } from 'react-redux';
 import { setUserLoggedStatus, setUser } from './../../redux/reducer';
 
@@ -15,9 +15,9 @@ const Splash = () => {
             store.dispatch(setUserLoggedStatus(false));
         } else {
             try {
-                const res = await validateToken(token);
-                if (res.data.user !== null) {
-                    store.dispatch(setUser(res.data.user.user));
+                const res = await getLoggedUser(token);
+                if (res.data !== null) {
+                    store.dispatch(setUser(res.data));
                     store.dispatch(setUserLoggedStatus(true));
                 } else {
                     store.dispatch(setUser({}));

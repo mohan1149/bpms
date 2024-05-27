@@ -230,11 +230,14 @@ text {
   color: #CCC;
 }
 
-.app-sidemenu-bar-item img {
+.app-sidemenu-bar-item svg{
+  margin-right: 0.5rem;
+}
+/* .app-sidemenu-bar-item img {
   margin-right: 1rem;
   height: 25px;
   width: 25px;
-}
+} */
 
 .app-sidemenu-bar-item.active {
   background-color: #B50007;

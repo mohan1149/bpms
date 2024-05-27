@@ -5,7 +5,11 @@ import { Accordion } from 'react-bootstrap';
 import IconButton from '@mui/material/IconButton';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
-
+import SecurityIcon from '@mui/icons-material/Security';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import LogoutIcon from '@mui/icons-material/Logout';
 const Sidebar = (props) => {
     const [sizeToggler, setSizeToggler] = useState(true);
     const { t } = useTranslation();
@@ -35,11 +39,22 @@ const Sidebar = (props) => {
             <li className={`app-sidemenu-bar-item ${activePath === '/' ? 'active' : ''}`}>
                 <span>
                     <Link to="/">
-                        <img src="/assets/svg/home.svg" alt="" />
+                        <DashboardIcon />
                         {sizeToggler && t('home')}
                     </Link>
                 </span>
             </li>
+            {
+                //super admin menu
+                <li className={`app-sidemenu-bar-item ${activePath === '/permissions' ? 'active' : ''}`}>
+                    <span>
+                        <Link to="/permissions">
+                            <SecurityIcon />
+                            {sizeToggler && t('permissions')}
+                        </Link>
+                    </span>
+                </li>
+            }
             <li className={`app-sidemenu-bar-item ${activePath.includes('services') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="0">
@@ -47,7 +62,7 @@ const Sidebar = (props) => {
                             className={sizeToggler ? 'expaned' : 'collapsed'}
                         >
                             <Link to="/services" className="link">
-                                <img src="/assets/svg/hires.svg" alt="" />
+                                <FavoriteIcon/>
                                 {sizeToggler && t('services')}
                             </Link>
                         </Accordion.Header>
@@ -70,7 +85,7 @@ const Sidebar = (props) => {
                     </Accordion.Item>
                 </Accordion>
             </li>
-            <li className={`app-sidemenu-bar-item ${activePath.includes('products') ? 'active' : ''}`}>
+            {/* <li className={`app-sidemenu-bar-item ${activePath.includes('products') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="1">
                         <Accordion.Header onClick={() => handleAccordionToggle('1')}
@@ -102,7 +117,7 @@ const Sidebar = (props) => {
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
-            </li>
+            </li> */}
             <li className={`app-sidemenu-bar-item ${activePath.includes('settings') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="2">
@@ -110,7 +125,7 @@ const Sidebar = (props) => {
                             className={sizeToggler ? 'expaned' : 'collapsed'}
                         >
                             <Link to="/settings" className="link">
-                                <img src="/assets/svg/hires.svg" alt="" />
+                                <SettingsSuggestIcon/>
                                 {sizeToggler && t('settings')}
                             </Link>
                         </Accordion.Header>
@@ -154,7 +169,7 @@ const Sidebar = (props) => {
                             window.location.assign('/');
                         }}
                     >
-                        <img src="/assets/svg/users.svg" alt="" />
+                        <LogoutIcon/>
                         {sizeToggler && t('Logout')}
                     </a>
                 </span>

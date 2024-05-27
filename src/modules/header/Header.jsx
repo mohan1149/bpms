@@ -66,7 +66,7 @@ const Header = () => {
                     </Offcanvas.Body>
                 </Offcanvas>
                 <Toolbar>
-                    <div className="dFlex-jcsb">
+                    <div className="">
                         <div>
                             <div className="d-flex align-items-center">
                                 {window.location.pathname !== "/" &&

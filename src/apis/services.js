@@ -1,19 +1,16 @@
 import urls from "./urls";
 import axios from "./axios";
-export const validateToken = async (token) => {
+
+export const getLoggedUser = async (token) => {
     try {
         const response = await axios({
-            method: 'POST',
-            url: urls.validate_token,
-            data: {
-                token: token,
-            }
+            method: 'GET',
+            url: urls.get_user,
         });
         return response;
     } catch (error) {
         return false;
     }
-
 }
 export const startLogin = async (user) => {
     try {

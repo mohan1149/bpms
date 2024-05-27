@@ -25,7 +25,7 @@ const Login = () => {
         try {
             setLoading(true);
             let data = {
-                username: username,
+                email: username,
                 password: password
             }
             const res = await startLogin(data);
