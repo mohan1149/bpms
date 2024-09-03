@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 const Home = () => {
     return (
         <div className="">
-            <h3>Ooredoo CDR Dashboard</h3>
+            <h3>Ooredoo Nojoom Partner Portal</h3>
             <hr></hr>
             <div className='row'>
 
-                <div className="col-md-3">
+                {/* <div className="col-md-3">
                     <div className="glass-card-min mb-3 bg-red">
                         <div className='p-4'>
                             <Link to="/moi" className='text-white'>
@@ -27,7 +27,7 @@ const Home = () => {
                             </Link>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
             </div>

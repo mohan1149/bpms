@@ -41,7 +41,6 @@ const CellTrace = (props) => {
         var formattedDateTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
         return formattedDateTime;
     }
-
     const handleSearchcellTrace = async () => {
         try {
             const fDate = new Date(fromDate);
@@ -54,7 +53,6 @@ const CellTrace = (props) => {
                 };
                 const res = await getCellTrace(data);
                 setCellTrace(res.data.businessResponse);
-
             }
             else if (searchType.value === 'csvFile') {
                 let formData = new FormData();
@@ -64,12 +62,10 @@ const CellTrace = (props) => {
                 const res = await getCellTracrByFile(formData);
                 setCellTrace(res.data.businessResponse)
             }
-
         } catch (error) {
             console.log("Error:", error);
         }
     };
-
     const exportData = () => {
         let formattedResults = cellTrace.map((item) => {
             return {
@@ -142,14 +138,12 @@ const CellTrace = (props) => {
                             </div>
                         ) : null)}
                     </div>
-
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="from_date" className='mb-2 required'>From Date</label>
                             <Calendar value={fromDate} onChange={(e) => setFromDate(e.value)} dateFormat="dd/mm/yy" className='pr-input' maxDate={new Date()} />
                         </div>
                     </div>
-
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="to_date" className='mb-2 required'>To Date</label>
@@ -157,7 +151,6 @@ const CellTrace = (props) => {
                         </div>
                     </div>
                 </div>
-
                 <div className="row">
                     <div className="col-md-6">
                         <div className="form-group d-flex mt-3">
@@ -166,9 +159,7 @@ const CellTrace = (props) => {
                         </div>
                     </div>
                 </div>
-
             </form>
-
             <h2 className="mt-4 mb-2" ><strong>Cell Trace</strong></h2>
             <div className="row">
                 <div className="col-12">
@@ -265,6 +256,5 @@ const CellTrace = (props) => {
             </div>
         </div>
     );
-
 }
 export default CellTrace;

@@ -1,101 +1,28 @@
 import urls from "./urls";
 import axios from "./axios";
-
-export const getLoggedUser = async (token) => {
+export const checkLogin = async (token) => {
     try {
         const response = await axios({
-            method: 'GET',
-            url: urls.get_user,
+            method: 'POST',
+            url: urls.api_server + urls.check_token,
+            params: {
+                token: token,
+            }
         });
         return response;
     } catch (error) {
         return false;
     }
+
 }
 export const startLogin = async (user) => {
-    try {
-        let response = await axios({
-            method: 'POST',
-            data: user,
-            url: urls.login,
-        });
-        return response;
-    } catch (error) {
-        return false;
-    }
+    let response = await axios({
+        method: 'POST',
+        data: user,
+        url: urls.cdr_login,
+    });
+    return response;
 }
-
-
-export const getBranches = async (user) => {
-    try {
-        let response = await axios({
-            method: 'GET',
-            data: user,
-            url: urls.get_branches,
-        });
-        return response;
-    } catch (error) {
-        return false;
-    }
-}
-export const storeBranch = async (user) => {
-    try {
-        let response = await axios({
-            method: 'POST',
-            data: user,
-            url: urls.store_branch,
-        });
-        return response;
-    } catch (error) {
-        return false;
-    }
-}
-export const storeProductCategory = async (data) => {
-    try {
-        let response = await axios({
-            method: 'POST',
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-            data: data,
-            url: urls.store_product_cartegory,
-        });
-        return response;
-    } catch (error) {
-        return false;
-    }
-}
-export const getProductCategories = async () => {
-    try {
-        let response = await axios({
-            method: 'GET',
-            url: urls.get_product_categories,
-        });
-        return response;
-    } catch (error) {
-        return false;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export const logoutUser = async (username) => {
     let response = await axios({
@@ -117,7 +44,7 @@ export const getCustomerProfileById = async (data) => {
 export const getCustomerProfileByCSVFile = async (data) => {
     let response = await axios({
         method: 'POST',
-        data: data,
+        data:data,
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -125,17 +52,17 @@ export const getCustomerProfileByCSVFile = async (data) => {
     });
     return response;
 }
-export const getCallTrace = async (data) => {
+export const getCallTrace = async (data) =>{
     let response = await axios({
-        method: 'GET',
-        params: data,
-        url: urls.call_trace,
+        method:'GET',
+        params:data,
+        url:urls.call_trace,
     });
     return response;
 }
 
 export const getCellTrace = async (data) => {
-    let response = await axios({
+    let response = await axios ({
         method: 'GET',
         params: data,
         url: urls.cell_trace
@@ -144,9 +71,9 @@ export const getCellTrace = async (data) => {
 }
 
 
-export const getCellTracrByFile = async (data) => {
+export const getCellTracrByFile = async (data) =>{
     let response = await axios({
-        method: 'POST',
+        method:'POST',
         data: data,
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -179,7 +106,7 @@ export const getCustomerProfileByIMEI = async (data) => {
 export const getCustomerProfileByIMEIFile = async (data) => {
     let response = await axios({
         method: 'POST',
-        data: data,
+        data:data,
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -188,23 +115,23 @@ export const getCustomerProfileByIMEIFile = async (data) => {
     return response;
 }
 
-export const ipQuerygetStatus = async (data) => {
+export const ipQuerygetStatus = async (data) =>{
     let response = await axios({
         method: 'GET',
-        url: urls.ip_query,
-        params: data,
+        url:urls.ip_query,
+        params:data,
 
     })
     return response;
 
 }
 
-export const ipQuerySendFile = async (data) => {
+export const ipQuerySendFile = async(data) =>{
     let response = await axios({
         method: 'POST',
-        data: data,
-        headers: {
-            "Content-Type": "multipart/form-data"
+        data:data,
+        headers:{
+            "Content-Type" : "multipart/form-data"
         },
         url: urls.ip_query,
     })
@@ -212,10 +139,10 @@ export const ipQuerySendFile = async (data) => {
 
 }
 
-export const ipQueryDownloadFile = async (data) => {
+export const ipQueryDownloadFile = async(data) =>{
     let response = await axios({
         method: 'GET',
-        url: urls.ip_queryDownload + data
+        url:urls.ip_queryDownload + data
     })
     return response
 

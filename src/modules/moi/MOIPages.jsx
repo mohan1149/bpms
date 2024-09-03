@@ -5,13 +5,14 @@ import IMEIDetails from './IMEIDetails';
 import IpQuery from './IpQuery';
 import CallTrace from './CallTrace';
 import CellTrace from './CellTrace';
+import VoucherRedemption from "./VoucherRedemption";
 const MOIPages = (props) => {
     const params = useParams();
     return (
         <div className="card p-4">
             {
-                params.page === "customer-profile" &&
-                <CustomerProfile />
+                params.page === "VoucherRedemption" &&
+                <VoucherRedemption />
             }
             {
                 params.page === "imei-details" &&

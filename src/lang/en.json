@@ -1,9 +1,4 @@
 {
     "login_title": "Login to your Account",
-    "email": "Email",
-    "password": "Password",
-    "username": "User Name",
-    "login": "Login",
-    "branches":"Branches",
-    "manage_branches":"Manage Your Branches"
+    "users": "Users"
 }

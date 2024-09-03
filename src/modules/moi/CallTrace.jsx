@@ -7,20 +7,23 @@ import { getCallTrace } from '../../apis/services';
 import { FilterMatchMode } from 'primereact/api';
 import * as XLSX from 'xlsx';
 import { Calendar } from 'primereact/calendar';
-
+import store from "../../redux/store";
+import { InputNumber } from 'primereact/inputnumber';
 const CallTrace = (props) => {
     const lineTypes = [
         { value: 'VOICE', label: 'Voice/SMS' },
         { value: 'DATA', label: 'Data' }
     ];
-    const [lineType, setLineType] = useState();
-    const [fromDate, setFromDate] = useState('');
-    const [toDate, setToDate] = useState('');
-    const [msisdn, setMsisdn] = useState('');
+    const [lineType, setLineType] = useState({ value: 'VOICE', label: 'Voice/SMS' });
+    const [fromDate, setFromDate] = useState(new Date());
+    const [toDate, setToDate] = useState(new Date());
+    const [msisdn, setMsisdn] = useState('12345678');
+    const [remarks, setRemarks] = useState();
     const [callTrace, setCallTrace] = useState([]);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
+    const [hasFormErrors, setHasFormErrors] = useState(true);
     function pad(number) {
         if (number < 10) {
             return '0' + number;
@@ -30,7 +33,7 @@ const CallTrace = (props) => {
     const getFromattedDateTime = (date) => {
         let currentDate = date;
         var year = currentDate.getFullYear();
-        var month = pad(currentDate.getMonth() + 1); // Months are zero-based
+        var month = pad(currentDate.getMonth() + 1);
         var day = pad(currentDate.getDate());
         var hours = pad(currentDate.getHours());
         var minutes = pad(currentDate.getMinutes());
@@ -39,7 +42,6 @@ const CallTrace = (props) => {
         var formattedDateTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
         return formattedDateTime;
     }
-
     const handleSearchCallTrace = async () => {
         try {
             const fDate = new Date(fromDate);
@@ -51,6 +53,7 @@ const CallTrace = (props) => {
                 // fromDate: fDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replaceAll('/','-'),
                 // toDate: tDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replaceAll('/','-'),
                 lineType: lineType.value,
+                remarks: remarks,
             }
             const res = await getCallTrace(data);
             setCallTrace(res.data.businessResponse);
@@ -76,29 +79,18 @@ const CallTrace = (props) => {
                 'User IP': item.userIp,
                 'Cell Address': item.cellAddress,
                 'Cell ID': item.cellId,
-                'Location':item.cellId,
+                'Location': item.cellId,
                 'Cell Name A-Number': item.cellNameANumber,
             }
         });
-        const worksheet = XLSX.utils.json_to_sheet(formattedResults);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-        const binaryData = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
-        const blob = new Blob([s2ab(binaryData)], { type: 'application/octet-stream' });
-        function s2ab(s) {
-            const buf = new ArrayBuffer(s.length);
-            const view = new Uint8Array(buf);
-            for (let i = 0; i < s.length; i++) {
-                view[i] = s.charCodeAt(i) & 0xFF;
-            }
-            return buf;
-        }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'CDR-Dashboard-Call-Trace-' + new Date().toDateString() + '.xlsx';
-        a.click();
-        URL.revokeObjectURL(url);
+        const user = store.getState().app.user;
+        let Heading = [['Requested By', user.username], ['Request date ', new Date().toLocaleString()], ['Remark', remarks], ['Mobile number', msisdn], ['From Date', fromDate], ['To Date', toDate]];
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet([]);
+        XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'D2' });
+        XLSX.utils.sheet_add_json(ws, formattedResults, { origin: 'A10', skipHeader: false });
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+        XLSX.writeFile(wb, 'CDR-Dashboard-Call-Trace-' + new Date().toDateString() + '.xlsx');
     }
     return (
         <div>
@@ -110,22 +102,31 @@ const CallTrace = (props) => {
                 }}
             >
                 <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group my-2">
-                            <label htmlFor="msisdn" className="mb-2 required">MSISDN</label>
-                            <input type="number" id="msisdn" required className="form-control" value={msisdn} onChange={(e) => { setMsisdn(e.target.value) }} />
-                        </div>
+                    <div className="col-md-6 mb-2">
                         <div className="form-group">
-                            <label htmlFor="from_date" className='mb-2 required'>From Date</label>
-                            <Calendar value={fromDate} onChange={(e) => setFromDate(e.value)} className='pr-input' maxDate={new Date()} dateFormat="dd/mm/yy" />
-                        </div>
-                        <div className="form-group d-flex mt-3">
-                            <input type="submit" value="Search" className="btn btn-round bg-red text-bold" />
-                            <input type="reset" value="Reset" className="btn btn-round bg-black text-white text-bold mx-2" />
+                            <label htmlFor="msisdn" className="mb-2 required">MSISDN</label>
+                            {/* <input type="number" id="msisdn" required className="form-control" value={msisdn} onChange={(e) => { setMsisdn(e.target.value) }} /> */}
+                            <InputNumber
+                                placeholder="Enter a Mobile Number with or with out 965"
+                                maxLength={11}
+                                tooltip="Please Enter a Mobile Number with or with out 965 (Only 8 or 11 digits allowed)"
+                                useGrouping={false}
+                                invalid={!/^(?:\d{8}|\d{11})$/.test(msisdn)}
+                                className='pr-input'
+                                onChange={(e) => {
+                                    setMsisdn(e.value);
+                                    if (!/^(?:\d{8}|\d{11})$/.test(e.value)) {
+                                        setHasFormErrors(true);
+                                    } else {
+                                        setHasFormErrors(false);
+                                    }
+                                }}
+                                value={msisdn}
+                            />
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <div className="form-group my-2">
+                    <div className="col-md-6 mb-2">
+                        <div className="form-group">
                             <label htmlFor="lineType" className="required mb-2">Line Type</label>
                             <Select options={lineTypes} id="lineType"
                                 onChange={(e) => {
@@ -134,9 +135,36 @@ const CallTrace = (props) => {
                                 value={lineType}
                             />
                         </div>
+                    </div>
+                    <div className="col-md-6 mb-2">
+                        <div className="form-group">
+                            <label htmlFor="from_date" className='mb-2 required'>From Date</label>
+                            <Calendar value={fromDate} onChange={(e) => setFromDate(e.value)} className='pr-input' maxDate={new Date()} dateFormat="dd/mm/yy" />
+                        </div>
+                    </div>
+                    <div className="col-md-6 mb-2">
                         <div className="form-group">
                             <label htmlFor="to_date" className='mb-2 required'>To Date</label>
                             <Calendar value={toDate} onChange={(e) => setToDate(e.value)} className='pr-input' maxDate={new Date()} dateFormat="dd/mm/yy" />
+                        </div>
+                    </div>
+                    <div className="col-12 mb-2 ">
+                        <div className="form-group">
+                            <label htmlFor="remarks" className="mb-2 required">Remarks</label>
+                            <input type="text" className="form-control" required id="remarks" name="remarks"
+                                value={remarks}
+                                onChange={(e) => {
+                                    setRemarks(e.target.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="col-12 mt-3 mb-3">
+                        <div className="form-group d-flex mt-3">
+                            <input type="submit" value="Search" className="btn btn-round bg-red text-bold"  
+                                disabled={hasFormErrors}
+                            />
+                            <input type="reset" value="Reset" className="btn btn-round bg-black text-white text-bold mx-2" />
                         </div>
                     </div>
                 </div>
@@ -268,7 +296,7 @@ const CallTrace = (props) => {
                             sortable
                             style={{ minWidth: '8rem' }}
                         />
-                          <Column
+                        <Column
                             field="cellId"
                             header="Location"
                             sortable
@@ -285,6 +313,5 @@ const CallTrace = (props) => {
             </div>
         </div>
     );
-
 }
 export default CallTrace;

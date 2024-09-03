@@ -8,23 +8,17 @@ import Login from './../modules/auth/Login';
 import Splash from './../modules/splash/Splash';
 import Profile from './../modules/auth/Profile';
 import Logout from './../modules/auth/Logout';
-import { Dialog, Button } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Toast } from 'primereact/toast';
 import Page403 from './Page403';
 import Page404 from './Page404';
+
+import Users from './../modules/users/Users';
+
+
+
+
+
 import { setShowDeleteDialog, setErrorToast } from '../redux/reducer';
-import MOI from '../modules/moi/MOI';
-import MOIPages from './../modules/moi/MOIPages';
-
-
-
-
-
-
-import AddProduct from '../modules/products/AddProduct';
-import Branches from '../modules/settings/branches/Branches';
-import ProductCategories from '../modules/products/categories/ProductCategories';
 
 const AppRouter = () => {
     const store = useStore();
@@ -59,7 +53,7 @@ const AppRouter = () => {
         }
         setLoading(false);
     });
-
+   
     if (loading) {
         return (
             <BrowserRouter>
@@ -87,9 +81,9 @@ const AppRouter = () => {
             <BrowserRouter>
                 <div className='container-fluid'>
                     <div className="row">
-                        <div className="col-lg-2 col-md-3 d-none d-lg-block no_mp"
+                        <div className="col-lg-2 col-md-3 d-none d-lg-block no_mp p-0 m-0"
                             style={{
-                                width: sideMenuSize ? '' : '3.6%',
+                                width: sideMenuSize ? '' : '4.3%',
                             }}>
                             <div className='side-menu fh glass-card-no-radius'>
                                 <Sidebar onSizeToggle={(check) => {
@@ -97,9 +91,9 @@ const AppRouter = () => {
                                 }} />
                             </div>
                         </div>
-                        <div className="col-lg-10 col-sm-12 col-md-12 app-content no_mp"
+                        <div className="col-lg-10 col-sm-12 col-md-12 app-content no_mp m-0 p-0"
                             style={{
-                                width: sideMenuSize ? '' : '96.4%',
+                                width: sideMenuSize ? '' : '95.7%',
                             }}
                         >
                             <Header />
@@ -110,7 +104,7 @@ const AppRouter = () => {
                                     padding: '1.5rem'
                                 }}>
                                 <Toast ref={toast} />
-                                <Dialog
+                                {/* <Dialog
                                     maxWidth="xs"
                                     open={showReqDialog}
                                     aria-labelledby="alert-dialog-loading"
@@ -124,15 +118,10 @@ const AppRouter = () => {
                                     >
                                         <CircularProgress color='secondary' />
                                     </div>
-                                </Dialog>
+                                </Dialog> */}
                                 <Routes>
                                     <Route index path='/' element={<Home />} />
-
-                                    <Route path='/products/add' element={<AddProduct />} />
-                                    <Route path='/products/categories' element={<ProductCategories />} />
-                                    <Route path='/settings/branches' element={<Branches />} />
-                                    <Route path='/moi' element={<MOI />} />
-                                    <Route path='/moi/:page' element={<MOIPages />} />
+                                    <Route path='/users' element={<Users />} />
                                     <Route path='/logout' element={<Logout />} />
                                     <Route path='*' element={<Page404 />} />
                                 </Routes>

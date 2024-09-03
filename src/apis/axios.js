@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 });
 axiosInstance.interceptors.request.use(
     async (config) => {
-        config.headers['Authorization'] = 'Bearer '+localStorage.getItem('access_token');
+        config.headers['Authorization'] = localStorage.getItem('access_token');
         if (!config.url.includes('auth')) {
             store.dispatch(setShowDialog(true));
         }
@@ -28,8 +28,12 @@ axiosInstance.interceptors.response.use(
         store.dispatch(setShowDialog(false));
         store.dispatch(setErrorToast({
             flag: true,
-            content: error.response.data.error,
+            content: error.message,
         }));
+        // if (error.response.status === 403) {
+        //     localStorage.removeItem('access_token');
+        //     window.location.assign('/');
+        // }
         return Promise.reject(error);
     },
 );

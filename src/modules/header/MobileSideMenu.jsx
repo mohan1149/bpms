@@ -47,42 +47,76 @@ const MobileSideMenu = (props) => {
                     <Link to="/" onClick={() => { props.hideSidemenu() }}>{t("home")}</Link>
                 </span>
             </li>
-            <li className={`app-sidemenu-bar-item ${activePath === '/moc' ? 'active-moc' : ''}`}>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('voucher') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey}>
                     <Accordion.Item eventKey="0">
                         <Accordion.Header onClick={() => handleAccordionToggle('0')}>
-                            <Link to="/moc" className="link">
+                            <Link className="link">
                                 <img src="/assets/svg/hires.svg" alt="" />
-                                MOC
+                                Voucher
                             </Link>
                         </Accordion.Header>
                         <Accordion.Body>
                             <ul>
                                 <li>
-                                    <Link to="/moc/customer-profile"
-                                        onClick={() => { props.hideSidemenu() }}
-                                    >Customer Profile</Link>
+                                    <Link to="/voucher/VoucherRedemption" onClick={() => { props.hideSidemenu() }}>Voucher Redemption</Link>
                                 </li>
                                 <li>
-                                    <Link to="/moc/imei-details"
-                                        onClick={() => { props.hideSidemenu() }}
-                                    >IMEI Details</Link>
+                                    <Link to="/voucher/RedemptionReport" onClick={() => { props.hideSidemenu() }}>Redemption Report</Link>
+                                </li>
+
+                            </ul>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            </li>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('points') ? 'active' : ''}`}>
+                <Accordion activeKey={accordionActiveKey}>
+                    <Accordion.Item eventKey="1">
+                        <Accordion.Header onClick={() => handleAccordionToggle('1')}>
+                            <Link className="link">
+                                <img src="/assets/svg/hires.svg" alt="" />
+                                Points
+                            </Link>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ul>
+                                <li>
+                                    <Link to="/points/earn-points" onClick={() => { props.hideSidemenu() }} >Earn Points</Link>
                                 </li>
                                 <li>
-                                    <Link to="/moc/call-trace"
-                                        onClick={() => { props.hideSidemenu() }}
-                                    >Call Trace</Link>
+                                    <Link to="/points/transaction-report" onClick={() => { props.hideSidemenu() }}>Transaction Report</Link>
+                                </li>
+
+                            </ul>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            </li>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('admin') ? 'active' : ''}`}>
+                <Accordion activeKey={accordionActiveKey}>
+                    <Accordion.Item eventKey="2">
+                        <Accordion.Header onClick={() => handleAccordionToggle('2')}>
+                            <Link className="link">
+                                <img src="/assets/svg/hires.svg" alt="" />
+                                Admin
+                            </Link>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ul>
+                            <li>
+                                    <Link to="/admin/manageUsers" onClick={() => { props.hideSidemenu() }}>Manage Users</Link>
                                 </li>
                                 <li>
-                                    <Link to="/moc/cell-trace"
-                                        onClick={() => { props.hideSidemenu() }}
-                                    >Cell Trace</Link>
+                                    <Link to="/admin/createNewUser" onClick={() => { props.hideSidemenu() }}>Create New User</Link>
                                 </li>
                                 <li>
-                                    <Link to="/moc/ip-query"
-                                        onClick={() => { props.hideSidemenu() }}
-                                    >IP Query</Link>
+                                    <Link to="/admin/managePartners" onClick={() => { props.hideSidemenu() }}>Manage Partners</Link>
                                 </li>
+                                <li>
+                                    <Link to="/admin/remilttanceRequest" onClick={() => { props.hideSidemenu() }}>Remilttance Request</Link>
+                                </li>
+
                             </ul>
                         </Accordion.Body>
                     </Accordion.Item>
@@ -98,7 +132,7 @@ const MobileSideMenu = (props) => {
                         }}
                     >
                         <img src="/assets/svg/users.svg" alt="" />
-                        { t('Logout')}
+                        {t('Logout')}
                     </a>
                 </span>
             </li>

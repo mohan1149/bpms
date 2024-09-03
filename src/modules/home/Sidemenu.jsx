@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-bootstrap';
-import IconButton from '@mui/material/IconButton';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import SecurityIcon from '@mui/icons-material/Security';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { Button } from 'primereact/button';
+
 const Sidebar = (props) => {
     const [sizeToggler, setSizeToggler] = useState(true);
     const { t } = useTranslation();
@@ -37,24 +31,68 @@ const Sidebar = (props) => {
     return (
         <div className={`app-sidemenu-bar ${sizeToggler ? 'open' : 'closed'}`}>
             <li className={`app-sidemenu-bar-item ${activePath === '/' ? 'active' : ''}`}>
-                <span>
-                    <Link to="/">
-                        <DashboardIcon />
-                        {sizeToggler && t('home')}
-                    </Link>
-                </span>
+                <Link to="/">
+                    <span className='link-container'>
+                        <span className="material-symbols-outlined">
+                            space_dashboard
+                        </span>
+                        <span className='link_title'>
+                            {sizeToggler && t('home')}
+                        </span>
+
+                    </span>
+                </Link>
             </li>
             {
-                //super admin menu
-                <li className={`app-sidemenu-bar-item ${activePath === '/permissions' ? 'active' : ''}`}>
-                    <span>
-                        <Link to="/permissions">
-                            <SecurityIcon />
-                            {sizeToggler && t('permissions')}
-                        </Link>
-                    </span>
+                <li className={`app-sidemenu-bar-item ${activePath.includes('admins') ? 'active' : ''}`}>
+                    <Link to="/admins">
+                        <span className='link-container'>
+                            <span className="material-symbols-outlined">
+                                shield_person
+                            </span>
+                            <span className='link_title'>
+                                {sizeToggler && t('admins')}
+                            </span>
+                        </span>
+                    </Link>
                 </li>
             }
+             <li className={`app-sidemenu-bar-item ${activePath.includes('branches') ? 'active' : ''}`}>
+                <Link to="/branches">
+                    <span className='link-container'>
+                        <span className="material-symbols-outlined">
+                            home_pin
+                        </span>
+                        <span className='link_title'>
+                            {sizeToggler && t('branches')}
+                        </span>
+                    </span>
+                </Link>
+            </li>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('users') ? 'active' : ''}`}>
+                <Link to="/users">
+                    <span className='link-container'>
+                        <span className="material-symbols-outlined">
+                            account_circle
+                        </span>
+                        <span className='link_title'>
+                            {sizeToggler && t('users')}
+                        </span>
+                    </span>
+                </Link>
+            </li>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('employees') ? 'active' : ''}`}>
+                <Link to="/employees">
+                    <span className='link-container'>
+                        <span className="material-symbols-outlined">
+                            people
+                        </span>
+                        <span className='link_title'>
+                            {sizeToggler && t('employees')}
+                        </span>
+                    </span>
+                </Link>
+            </li>
             <li className={`app-sidemenu-bar-item ${activePath.includes('services') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="0">
@@ -62,120 +100,72 @@ const Sidebar = (props) => {
                             className={sizeToggler ? 'expaned' : 'collapsed'}
                         >
                             <Link to="/services" className="link">
-                                <FavoriteIcon/>
-                                {sizeToggler && t('services')}
+                                <div className='link-container'>
+                                    <span className="material-symbols-outlined">
+                                        spa
+                                    </span>
+                                    <span className='link_title'>
+                                        {sizeToggler && t('services')}
+                                    </span>
+                                </div>
                             </Link>
                         </Accordion.Header>
                         <Accordion.Body>
                             <ul>
                                 <li>
-                                    <Link to="/services/add-category">{t('add_service_category')}</Link>
-                                </li>
-                                <li>
-                                    <Link to="/services/categories">{t('manage_service_categories')}</Link>
+                                    <Link to="/services">{t('all_services')}</Link>
                                 </li>
                                 <li>
                                     <Link to="/services/add">{t('add_service')}</Link>
                                 </li>
-                                <li >
-                                    <Link to="/services">{t('manage_services')}</Link>
+                                <li>
+                                    <Link to="/services/categories">{t('service_categories')}</Link>
                                 </li>
                             </ul>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
             </li>
-            {/* <li className={`app-sidemenu-bar-item ${activePath.includes('products') ? 'active' : ''}`}>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('bookings') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="1">
                         <Accordion.Header onClick={() => handleAccordionToggle('1')}
                             className={sizeToggler ? 'expaned' : 'collapsed'}
                         >
-                            <Link to="/products" className="link">
-                                <img src="/assets/svg/hires.svg" alt="" />
-                                {sizeToggler && t('products')}
+                            <Link to="/bookings" className="link">
+                                <div className='link-container'>
+                                    <span className="material-symbols-outlined">
+                                        history
+                                    </span>
+                                    <span className='link_title'>
+                                        {sizeToggler && t('bookings')}
+                                    </span>
+                                </div>
                             </Link>
                         </Accordion.Header>
                         <Accordion.Body>
                             <ul>
                                 <li>
-                                    <Link to="/products">{t("manage_products")}</Link>
+                                    <Link to="/bookings">{t('all_bookings')}</Link>
                                 </li>
                                 <li>
-                                    <Link to="/products/add">{t('add_product')}</Link>
+                                    <Link to="/bookings/today">{t('today_bookings')}</Link>
                                 </li>
                                 <li>
-                                    <Link to="/products/categories">{t('manage_categories')}</Link>
-                                </li>
-                                <li>
-                                    <Link to="/products/units">{t('product_units')}</Link>
-                                </li>
-                                <li>
-                                    <Link to="/products/brands">{t('product_brands')}</Link>
+                                    <Link to="/bookings/add">{t('add_booking')}</Link>
                                 </li>
                             </ul>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
-            </li> */}
-            <li className={`app-sidemenu-bar-item ${activePath.includes('settings') ? 'active' : ''}`}>
-                <Accordion activeKey={accordionActiveKey} className=''>
-                    <Accordion.Item eventKey="2">
-                        <Accordion.Header onClick={() => handleAccordionToggle('2')}
-                            className={sizeToggler ? 'expaned' : 'collapsed'}
-                        >
-                            <Link to="/settings" className="link">
-                                <SettingsSuggestIcon/>
-                                {sizeToggler && t('settings')}
-                            </Link>
-                        </Accordion.Header>
-                        <Accordion.Body>
-                            <ul>
-                                <li>
-                                    <Link to="/settings/branches">{t("branches")}</Link>
-                                </li>
-                                <li>
-                                    <Link to="/products/add">{t('add_product')}</Link>
-                                </li>
-                                <li>
-                                    <Link to="/products/categories">{t('manage_categories')}</Link>
-                                </li>
-                                <li>
-                                    <Link to="/products/units">{t('product_units')}</Link>
-                                </li>
-                                <li>
-                                    <Link to="/products/brands">{t('product_brands')}</Link>
-                                </li>
-                            </ul>
-                        </Accordion.Body>
-                    </Accordion.Item>
-                </Accordion>
-            </li>
-
-            {/* <li className={`app-sidemenu-bar-item ${activePath === '/vcd' ? 'active' : ''}`}>
-                <span>
-                    <Link to="/vcd">
-                        <img src="/assets/svg/users.svg" alt="" />
-                        {sizeToggler && t('View Call Details')}
-                    </Link>
-                </span>
-            </li> */}
-            <li className={`app-sidemenu-bar-item ${activePath === '/logout' ? 'active' : ''}`}>
-                <span>
-                    <a href="/"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            localStorage.removeItem('access_token');
-                            window.location.assign('/');
-                        }}
-                    >
-                        <LogoutIcon/>
-                        {sizeToggler && t('Logout')}
-                    </a>
-                </span>
             </li>
             <div className="mt-3">
-                <IconButton
+                <Button
+                    className='icon-btn' severity='secondary'
+                    style={{
+                        marginLeft: 8,
+                        marginRight:12,
+                    }}
                     onClick={() => {
                         const check = !sizeToggler;
                         props.onSizeToggle(check);
@@ -183,11 +173,16 @@ const Sidebar = (props) => {
                     }}
                 >
                     {sizeToggler ? (
-                        <FirstPageIcon htmlColor="#FFF" fontSize="large" />
+
+                        <span className="material-symbols-outlined">
+                            first_page
+                        </span>
                     ) : (
-                        <LastPageIcon htmlColor="#FFF" fontSize="large" />
+                        <span className="material-symbols-outlined">
+                            last_page
+                        </span>
                     )}
-                </IconButton>
+                </Button>
             </div>
         </div>
     );

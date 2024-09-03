@@ -8,6 +8,11 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './lang/i18n';
 
 function App() {
+  const appLang = localStorage.getItem('lang');
+  const lang = appLang === null ? 'en' : appLang;
+  const rtlLangs = ['ar','he'];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = rtlLangs.includes(lang) ? 'rtl' : 'ltr';
   return (
     <Provider store={store}>
       <Suspense fallback="....loading">

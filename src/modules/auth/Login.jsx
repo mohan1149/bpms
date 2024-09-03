@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { startLogin } from './../../apis/services';
-import ButtonLoadingIndicator from './../../widgets/ButtonLoadingIndicator';
 import { setUserLoggedStatus, setUser } from './../../redux/reducer';
-import { IconButton } from '@mui/material';
-import LockIcon from '@mui/icons-material/Lock';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Button } from 'primereact/button';
 const Login = () => {
     const navigte = useNavigate();
     const { t } = useTranslation();
@@ -22,22 +16,26 @@ const Login = () => {
 
 
     const handleLogin = async () => {
-        try {
-            setLoading(true);
-            let data = {
-                email: username,
-                password: password
-            }
-            const res = await startLogin(data);
-            if (!res.data.error) {
-                localStorage.setItem('access_token', res.data.access_token);
-                store.dispatch(setUser(res.data.user));
-                store.dispatch(setUserLoggedStatus(true));
-            }
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-        }
+        localStorage.setItem('access_token', 'token');
+        store.dispatch(setUser({}));
+        store.dispatch(setUserLoggedStatus(true));
+        // try {
+        //     setLoading(true);
+        //     let data = {
+        //         username: username,
+        //         password: password
+        //     }
+        //     const res = await startLogin(data);
+        //     if (res.data.businessResponse.authenticate !== 'false') {
+        //         localStorage.setItem('access_token', res.data.businessResponse.authenticate);
+        //         store.dispatch(setUser(res.data.businessResponse.userData));
+        //         store.dispatch(setUserLoggedStatus(true));
+        //     }
+        //     setLoading(false);
+        // } catch (error) {
+        //     setLoading(false);
+        //     console.log(error);
+        // }
     }
 
 
@@ -53,7 +51,7 @@ const Login = () => {
                             }}
                         >
                             <h1>Ooredoo</h1>
-                            <h2>CDR Portal</h2>
+                            <h2>Nojoom Partner Portal</h2>
                         </div>
                     </div>
                 </div>
@@ -73,7 +71,7 @@ const Login = () => {
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="form-group">
-                                            <label htmlFor="username" className='required mb-2'>Username/Email</label>
+                                            <label htmlFor="username" className='required mb-1'>Username/Email</label>
                                             <input type="text" name="username" id="username" className='form-control p-3' required
                                                 onChange={(e) => {
                                                     setUsername(e.target.value);
@@ -84,42 +82,37 @@ const Login = () => {
                                     </div>
                                     <div className="col-12 mt-3">
                                         <div className="form-group">
-                                            <label htmlFor="password" className='required mb-2'>Password</label>
+                                            <label htmlFor="password" className='required mb-1'>Password</label>
                                             <input type={showPassword ? "text" : "password"} name="password" id="password" className='form-control p-3' required
                                                 onChange={(e) => {
                                                     setPassword(e.target.value);
                                                 }}
                                                 value={password}
+
                                             />
-                                            <IconButton
-                                                className='password-toggle'
+                                            <Button
+                                                type='button'
+                                                severity="secondary"
+                                                className='password-toggle icon-btn'
                                                 onClick={() => { setShowPassword(!showPassword) }}
                                             >
                                                 {
                                                     showPassword &&
-                                                    <VisibilityIcon className='' />
+                                                    <span className="material-symbols-outlined">
+                                                        visibility
+                                                    </span>
                                                 }
                                                 {
                                                     !showPassword &&
-                                                    <VisibilityOffIcon className='' />
+                                                    <span className="material-symbols-outlined">
+                                                        visibility_off
+                                                    </span>
                                                 }
-
-                                            </IconButton>
+                                            </Button>
                                         </div>
                                     </div>
                                     <div className="col-12">
-                                        <LoadingButton
-                                            loadingIndicator={
-                                                <ButtonLoadingIndicator color="primary" size={40} thickness={5} />
-                                            }
-                                            type='submit'
-                                            loading={loading}
-                                            loadingPosition="center"
-                                            className='sign_in_btn btn-red'
-                                            variant="contained"
-                                        >
-                                            {t("login")}
-                                        </LoadingButton>
+                                        <Button label={t("login")} rounded loading={loading} type='submit' />
                                     </div>
                                 </div>
                             </form>

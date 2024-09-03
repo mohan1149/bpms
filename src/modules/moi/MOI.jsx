@@ -63,9 +63,7 @@ const MOI = () => {
                     <div className='card p-3'>
                         <div className="d-flex justify-content-between align-items-center">
                             <Link to="/moi/customer-profile"><strong>Customer Profile</strong></Link>
-                            <span className="material-symbols-outlined bg-red">
-                                group
-                            </span>
+                            <img className = "moiImg bg-red" src="/assets/img/user.png"/>
                         </div>
 
                     </div>
@@ -74,9 +72,7 @@ const MOI = () => {
                     <div className='card p-3'>
                         <div className="d-flex justify-content-between align-items-center">
                             <Link to="/moi/imei-details"><strong>IMEI Details</strong></Link>
-                            <span className="material-symbols-outlined bg-black">
-                                device_unknown
-                            </span>
+                            <img className = "moiImg bg-black" src="/assets/img/phone-book.png"/>
                         </div>
 
                     </div>
@@ -85,9 +81,7 @@ const MOI = () => {
                     <div className='card p-3'>
                         <div className="d-flex justify-content-between align-items-center">
                             <Link to="/moi/call-trace"><strong>Call Trace</strong></Link>
-                            <span className="material-symbols-outlined bg-green">
-                                call_log
-                            </span>
+                            <img className = "moiImg bg-green" src="/assets/img/mobile-phone.png"/>
                         </div>
 
                     </div>
@@ -96,9 +90,7 @@ const MOI = () => {
                     <div className='card p-3'>
                         <div className="d-flex justify-content-between align-items-center">
                             <Link to="/moi/cell-trace"><strong>Cell Trace</strong></Link>
-                            <span className="material-symbols-outlined bg-pink">
-                                phone_in_talk
-                            </span>
+                            <img className = "moiImg bg-pink" src="/assets/img/phone.png"/>
                         </div>
 
                     </div>
@@ -107,9 +99,7 @@ const MOI = () => {
                     <div className='card p-3'>
                         <div className="d-flex justify-content-between align-items-center">
                             <Link to="/moi/ip-query"><strong>IP Query</strong></Link>
-                            <span className="material-symbols-outlined bg-blue">
-                                smartphone
-                            </span>
+                            <img className = "moiImg bg-blue" src="/assets/img/ip.png"/>
                         </div>
 
                     </div>
