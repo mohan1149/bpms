@@ -13,7 +13,7 @@ import Page403 from './Page403';
 import Page404 from './Page404';
 
 import Users from './../modules/users/Users';
-
+import Admins from './../modules/admins/Admins';
 
 
 
@@ -122,6 +122,8 @@ const AppRouter = () => {
                                 <Routes>
                                     <Route index path='/' element={<Home />} />
                                     <Route path='/users' element={<Users />} />
+                                    <Route path='/admins' element={<Admins />} />
+                                    
                                     <Route path='/logout' element={<Logout />} />
                                     <Route path='*' element={<Page404 />} />
                                 </Routes>

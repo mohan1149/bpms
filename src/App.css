@@ -248,3 +248,17 @@ ul.p-contextmenu-root-list{
   margin-right: 10px;
   margin-left: 10px;
 }
+.jcsb{
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.link-btn{
+  text-decoration: none;
+  background-color: #141B4D;
+  color: #FFF;
+  border-radius: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
