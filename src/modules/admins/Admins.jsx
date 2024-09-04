@@ -9,8 +9,8 @@ const Admins = () => {
         <div>
             <div className="glass-card p-3">
                 <div className="d-flex jcsb">
-                    <div>
-                        <h2>{t('manage_admins')}</h2>
+                    <div className='mt-2 mb-2'>
+                        <h4>{t('manage_admins')}</h4>
                     </div>
                     <div>
                         <Link to='/admins/add' className="link-btn">

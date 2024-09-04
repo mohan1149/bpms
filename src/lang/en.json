@@ -1,4 +1,15 @@
 {
     "login_title": "Login to your Account",
-    "users": "Users"
+    "users": "Users",
+    "data_not_available":"Data not availble to show.",
+    "name":"Name",
+    "full_name":"Full Name",
+    "username":"Username",
+    "add_admin":"Add Admin",
+    "email":"Email",
+    "password":"Password",
+    "branches":"Branches",
+    "home":"Home",
+    "phone":"Phone",
+    "confirm_password":"Confirm Password"
 }
