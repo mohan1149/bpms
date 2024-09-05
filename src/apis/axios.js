@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 });
 axiosInstance.interceptors.request.use(
     async (config) => {
-        config.headers['Authorization'] = localStorage.getItem('access_token');
+        config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('_jwt');
         if (!config.url.includes('auth')) {
             store.dispatch(setShowDialog(true));
         }

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { startLogin } from './../../apis/services';
+import { startLogin,getUserData } from './../../apis/services';
 import { setUserLoggedStatus, setUser } from './../../redux/reducer';
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
 const Login = () => {
     const navigte = useNavigate();
     const { t } = useTranslation();
@@ -13,34 +14,31 @@ const Login = () => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [showPassword, setShowPassword] = useState(false);
-
+    const toast = useRef(null);
 
     const handleLogin = async () => {
-        localStorage.setItem('access_token', 'token');
-        store.dispatch(setUser({}));
-        store.dispatch(setUserLoggedStatus(true));
-        // try {
-        //     setLoading(true);
-        //     let data = {
-        //         username: username,
-        //         password: password
-        //     }
-        //     const res = await startLogin(data);
-        //     if (res.data.businessResponse.authenticate !== 'false') {
-        //         localStorage.setItem('access_token', res.data.businessResponse.authenticate);
-        //         store.dispatch(setUser(res.data.businessResponse.userData));
-        //         store.dispatch(setUserLoggedStatus(true));
-        //     }
-        //     setLoading(false);
-        // } catch (error) {
-        //     setLoading(false);
-        //     console.log(error);
-        // }
+        try {
+            setLoading(true);
+            let data = {
+                email: username,
+                password: password
+            }
+            const res = await startLogin(data);
+            localStorage.setItem('_jwt', res.data.access_token);
+            const userData = await getUserData();
+            store.dispatch(setUser(userData.data));
+            store.dispatch(setUserLoggedStatus(true));
+            setLoading(false);
+        } catch (error) {
+            toast.current.show({ severity: 'error', summary: t('request_failed'), detail: t('bad_credentials'), life: 1000 });
+            setLoading(false);
+        }
     }
-
-
     return (
         <div className="container-fluid">
+            <Toast ref={toast}
+                severity="danger"
+            />
             <div className='row'>
                 <div className="col-lg-6 col-md-6 d-none d-lg-block d-md-block p-0">
                     <div className='vh-center bg-img-vhicle'>
@@ -71,7 +69,7 @@ const Login = () => {
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="form-group">
-                                            <label htmlFor="username" className='required mb-1'>Username/Email</label>
+                                            <label htmlFor="username" className='required mb-1'>{t('email')}</label>
                                             <input type="text" name="username" id="username" className='form-control p-3' required
                                                 onChange={(e) => {
                                                     setUsername(e.target.value);
@@ -112,7 +110,7 @@ const Login = () => {
                                         </div>
                                     </div>
                                     <div className="col-12">
-                                        <Button label={t("login")} rounded loading={loading} type='submit' />
+                                        <Button label={t("login")} loading={loading} type='submit' className='save-btn' />
                                     </div>
                                 </div>
                             </form>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { logoutUser } from './../../apis/services';
+// import { logoutUser } from './../../apis/services';
 import { useStore } from 'react-redux';
 import { setUserLoggedStatus } from '../../redux/reducer';
 import { useNavigate } from 'react-router-dom';
@@ -12,12 +12,13 @@ const Logout = () => {
     }, []);
     const logout = async () => {
         try {
-            const res = await logoutUser(user.username);
-            localStorage.removeItem('access_token');
-            store.dispatch(setUserLoggedStatus(false));
-            navigate('/');
+            // const res = await logoutUser(user.username);
+            // localStorage.removeItem('_jwt');
+            // store.dispatch(setUserLoggedStatus(false));
+            // navigate('/');
         } catch (error) {
-
+            console.log(error);
+            
         }
 
     }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { checkLogin } from './../../apis/services';
+import { getUserData } from './../../apis/services';
 import { useStore } from 'react-redux';
 import { setUserLoggedStatus, setUser } from './../../redux/reducer';
 
@@ -9,17 +9,15 @@ const Splash = () => {
         checkUserLoginStaus();
     }, []);
     const checkUserLoginStaus = async () => {
-        const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem('_jwt');
         if (token === null) {
             store.dispatch(setUserLoggedStatus(false));
         } else {
-            store.dispatch(setUser({}));
-            store.dispatch(setUserLoggedStatus(true));
-            // const status = await checkLogin(token);
-            // if (status !== false) {
-            //     store.dispatch(setUser(status.data));
-            //     store.dispatch(setUserLoggedStatus(true));
-            // }
+            const status = await getUserData(token);
+            if (status !== false) {
+                store.dispatch(setUser(status.data));
+                store.dispatch(setUserLoggedStatus(true));
+            }
         }
     }
     return (
@@ -40,7 +38,6 @@ const Splash = () => {
                 />
             </div>
             <div>
-                {/* <CircularProgress color="secondary" size="2rem" /> */}
             </div>
         </div>
     );

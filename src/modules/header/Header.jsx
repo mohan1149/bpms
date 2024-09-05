@@ -5,14 +5,20 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import MobileSideMenu from './MobileSideMenu';
 import { Button } from 'primereact/button';
 import { ContextMenu } from 'primereact/contextmenu';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
     const store = useStore();
     const user = store.getState().app.user;
+    console.log(user);
+    
     const [showSidemenu, setShowSidemenu] = useState(false);
-    const cm = useRef(null);
-    const items = [
+    const langCM = useRef(null);
+    const profileCM = useRef(null);
+    const langItems = [
         {
             label: 'English',
             command: () => {
@@ -32,6 +38,30 @@ const Header = () => {
             }
         }
     ];
+    const profileItems = [
+        {
+            label: t('profile'),
+            command: () => {
+
+            }
+        },
+        {
+            label: 'settings',
+            command: () => {
+
+            }
+        },
+        {
+            label: 'logout',
+            command: () => {
+                logoutUser();
+            }
+        }
+    ];
+    const logoutUser = () => {
+        localStorage.removeItem('_jwt');
+        window.location.assign('/');
+    }
     const updateAppLang = (newLang) => {
         localStorage.setItem('lang', newLang);
         window.location.reload();
@@ -81,13 +111,22 @@ const Header = () => {
                             }
                         </div>
                         <div>
-                            <ContextMenu model={items} ref={cm} breakpoint="767px" />
+                            <ContextMenu model={langItems} ref={langCM} breakpoint="767px" />
                             <Button
                                 className='icon-btn' severity='secondary'
-                                onClick={(e) => cm.current.show(e)}
+                                onClick={(e) => langCM.current.show(e)}
                             >
                                 <span className="material-symbols-outlined">
                                     translate
+                                </span>
+                            </Button>
+                            <ContextMenu model={profileItems} ref={profileCM} breakpoint="767px" />
+                            <Button
+                                className='icon-btn mx-3' severity='secondary'
+                                onClick={(e) => profileCM.current.show(e)}
+                            >
+                                <span className="material-symbols-outlined">
+                                    person
                                 </span>
                             </Button>
                         </div>

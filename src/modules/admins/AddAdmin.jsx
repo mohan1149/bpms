@@ -71,6 +71,24 @@ const AddAdmin = () => {
                                     <input type="password" className='form-control' id="confirmPassword" required />
                                 </div>
                             </div>
+                            <div className="col-md-4 mb-2">
+                                <div className="form-group">
+                                    <label htmlFor="maxBranches" className='required mb-1' >{t('max_branches')}</label>
+                                    <input type="number" className='form-control' id="maxBranches" required />
+                                </div>
+                            </div>
+                            <div className="col-md-4 mb-2">
+                                <div className="form-group">
+                                    <label htmlFor="maxEmps" className='required mb-1' >{t('max_employess')}</label>
+                                    <input type="number" className='form-control' id="maxEmps" required />
+                                </div>
+                            </div>
+                            <div className="col-md-4 mb-2">
+                                <div className="form-group">
+                                    <label htmlFor="address" className='required mb-1' >{t('address')}</label>
+                                    <input type="address" className='form-control' id="address" required />
+                                </div>
+                            </div>
                             <div className="col-12">
                                 <h5 className='mt-2 mb-3 opacity'>{t('admin_payment_details')}</h5>
                             </div>
