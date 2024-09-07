@@ -26,10 +26,13 @@ axiosInstance.interceptors.response.use(
     },
     async (error) => {
         store.dispatch(setShowDialog(false));
-        store.dispatch(setErrorToast({
-            flag: true,
-            content: error.message,
-        }));
+        if (!error.config.url.includes('auth')) {
+            store.dispatch(setErrorToast({
+                flag: true,
+                content: error.message,
+            }));
+        }
+       
         // if (error.response.status === 403) {
         //     localStorage.removeItem('access_token');
         //     window.location.assign('/');

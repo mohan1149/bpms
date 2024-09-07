@@ -16,19 +16,27 @@ export const checkLogin = async (token) => {
 
 }
 export const startLogin = async (user) => {
-    let response = await axios({
-        method: 'POST',
-        data: user,
-        url: urls.login_url,
-    });
-    return response;
+    try {
+        let response = await axios({
+            method: 'POST',
+            data: user,
+            url: urls.login_url,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
 }
 export const getUserData = async (token) => {
+   try {
     let response = await axios({
         method: 'GET',
         url: urls.get_user,
     });
     return response;
+   } catch (error) {
+    return error;
+   }
 }
 
 

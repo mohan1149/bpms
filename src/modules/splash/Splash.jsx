@@ -9,16 +9,24 @@ const Splash = () => {
         checkUserLoginStaus();
     }, []);
     const checkUserLoginStaus = async () => {
-        const token = localStorage.getItem('_jwt');
-        if (token === null) {
-            store.dispatch(setUserLoggedStatus(false));
-        } else {
-            const status = await getUserData(token);
-            if (status !== false) {
-                store.dispatch(setUser(status.data));
-                store.dispatch(setUserLoggedStatus(true));
+        try {
+            const token = localStorage.getItem('_jwt');
+            if (token === null) {
+                store.dispatch(setUserLoggedStatus(false));
+            } else {
+                const status = await getUserData(token);
+                if(status.response.status !== 401){
+                    if (status !== false) {
+                        store.dispatch(setUser(status.data));
+                        store.dispatch(setUserLoggedStatus(true));
+                    }
+                }
             }
+        } catch (error) {
+            console.log(error);
+            
         }
+       
     }
     return (
         <div
