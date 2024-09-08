@@ -15,7 +15,9 @@ const Splash = () => {
                 store.dispatch(setUserLoggedStatus(false));
             } else {
                 const status = await getUserData(token);
-                if(status.response.status !== 401){
+                console.log(status);
+                
+                if( status !== undefined && status.status === 200){
                     if (status !== false) {
                         store.dispatch(setUser(status.data));
                         store.dispatch(setUserLoggedStatus(true));
@@ -23,8 +25,7 @@ const Splash = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
-            
+            console.log(error);            
         }
        
     }

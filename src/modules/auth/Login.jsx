@@ -110,7 +110,7 @@ const Login = () => {
                                         </div>
                                     </div>
                                     <div className="col-12">
-                                        <Button label={t("login")} loading={loading} type='submit' className='save-btn' />
+                                        <Button label={t("login")} loading={loading} type='submit' className='p-btn' />
                                     </div>
                                 </div>
                             </form>

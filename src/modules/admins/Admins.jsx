@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+
 const Admins = () => {
     const { t } = useTranslation();
     return (
@@ -12,13 +13,15 @@ const Admins = () => {
                     <div className='mt-2 mb-2'>
                         <h4>{t('manage_admins')}</h4>
                     </div>
-                    <div>
+                    <div className='p-2'>
                         <Link to='/admins/add' className="link-btn">
                             {t('add_admin')}
                         </Link>
+
+
                     </div>
                 </div>
-                <div className="data-table">
+                <div className="data-table mt-2">
                     <DataTable value={[]}
                         paginator
                         rows={10}
@@ -30,8 +33,8 @@ const Admins = () => {
                         emptyMessage={t('data_not_available')}
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     >
-                        <Column 
-                            field="name" 
+                        <Column
+                            field="name"
                             header={t('name')}
                             sortable
                         />
