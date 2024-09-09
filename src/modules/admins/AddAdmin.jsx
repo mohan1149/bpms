@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { useForm, SubmitHandler } from "react-hook-form";
 import Select from 'react-select';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { useStore } from 'react-redux';
+import { storeAdmin } from './../../apis/services';
 const AddAdmin = () => {
     const { t } = useTranslation();
     const store = useStore();
     let paymentmodes = [
         {
             label: t('monthly'),
-            value: 'MONTH',
+            value: 'month',
         },
         {
             label: t('yearly'),
-            value: 'YEAR',
+            value: 'year',
         },
     ];
     const [fullName, setFullName] = useState();
@@ -37,26 +37,29 @@ const AddAdmin = () => {
     const handleAddAdmin = async () => {
         try {
             let data = {
-                created_by:user.id,
-                fullName:fullName,
-                username:username,
-                email:email,
-                phone:phone,
-                pasword:pasword,
-                maxBranches:maxBranches,
-                maxEmployess:maxEmployess,
-                address:address,
-                currenySymbol:currenySymbol,
-                decimalPoints:decimalPoints,
-                paymentMode:paymentMode.value,
-                paymentAmount:paymentAmount,
-                gracePeriod:gracePeriod,
+                created_by: user.id,
+                fullName: fullName,
+                username: username,
+                email: email,
+                phone: phone,
+                pasword: pasword,
+                maxBranches: maxBranches,
+                maxEmployess: maxEmployess,
+                address: address,
+                currenySymbol: currenySymbol,
+                decimalPoints: decimalPoints,
+                paymentMode: paymentMode.value,
+                paymentAmount: paymentAmount,
+                gracePeriod: gracePeriod,
             }
-            console.log(data);
-            
+            // console.log(data);
+            const res = await storeAdmin(data);
+            console.log(res.data);
+             
+
         } catch (error) {
             console.log(error);
-            
+
         }
     }
     return (
@@ -87,55 +90,82 @@ const AddAdmin = () => {
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="fullName" className='required mb-1' >{t('full_name')}</label>
-                                    <input type="text" id="fullName" className='form-control' required />
+                                    <input type="text" id="fullName" className='form-control' required
+                                        value={fullName}
+                                        onChange={(e) => { setFullName(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="username" className='required mb-1' >{t('username')}</label>
-                                    <input type="text" className='form-control' id="username" required />
+                                    <input type="text" className='form-control' id="username" required
+                                        value={username}
+                                        onChange={(e) => { setUsername(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="email" className='required mb-1' >{t('email')}</label>
-                                    <input type="email" className='form-control' id="email" required />
+                                    <input type="email" className='form-control' id="email" required
+                                        value={email}
+                                        onChange={(e) => { setEmail(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="phone" className='required mb-1' >{t('phone')}</label>
-                                    <input type="number" className='form-control' id="phone" required />
+                                    <input type="number" className='form-control' id="phone" required
+                                        value={phone}
+                                        onChange={(e) => { setPhone(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="password" className='required mb-1' >{t('password')}</label>
-                                    <input type="password" className='form-control' id="password" required />
+                                    <input type="password" className='form-control' id="password" required
+                                        value={pasword}
+                                        onChange={(e) => { setPassword(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="confirmPassword" className='required mb-1' >{t('confirm_password')}</label>
-                                    <input type="password" className='form-control' id="confirmPassword" required />
+                                    <input type="password" className='form-control' id="confirmPassword" required
+                                        value={confrimPassword}
+                                        onChange={(e) => { setConfrimPassword(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="maxBranches" className='required mb-1' >{t('max_branches')}</label>
-                                    <input type="number" className='form-control' id="maxBranches" required />
+                                    <input type="number" className='form-control' id="maxBranches" required
+                                        value={maxBranches}
+                                        onChange={(e) => { setMaxBranches(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="maxEmps" className='required mb-1' >{t('max_employess')}</label>
-                                    <input type="number" className='form-control' id="maxEmps" required />
+                                    <input type="number" className='form-control' id="maxEmps" required
+                                        value={maxEmployess}
+                                        onChange={(e) => { setMaxEmployees(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="address" className='required mb-1' >{t('address')}</label>
-                                    <input type="address" className='form-control' id="address" required />
+                                    <input type="address" className='form-control' id="address" required
+                                        value={address}
+                                        onChange={(e) => { setAddress(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-12">
@@ -144,13 +174,19 @@ const AddAdmin = () => {
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="currencySymbol" className='required mb-1' >{t('currency_symbol')}</label>
-                                    <input type="text" className='form-control' id="currencySymbol" required />
+                                    <input type="text" className='form-control' id="currencySymbol" required
+                                        value={currenySymbol}
+                                        onChange={(e) => { setCurrencySymbol(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="decimalPoints" className='required mb-1' >{t('decimal_points')}</label>
-                                    <input type="number" className='form-control' id="decimalPoints" required />
+                                    <input type="number" className='form-control' id="decimalPoints" required
+                                        value={decimalPoints}
+                                        onChange={(e) => { setDecimalPoints(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
@@ -158,7 +194,7 @@ const AddAdmin = () => {
                                     <label htmlFor="paymentMode" className='required mb-1' >{t('payment_mode')}</label>
                                     <Select
                                         options={paymentmodes}
-                                        onChange={(e)=>{
+                                        onChange={(e) => {
                                             setPaymentmode(e)
                                         }}
                                         value={paymentMode}
@@ -168,14 +204,19 @@ const AddAdmin = () => {
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="paymentAmount" className='required mb-1' >{t('payment_amount')}</label>
-                                    {/* <input type="number"  /> */}
-                                    <InputNumber className='pr-input' id="paymentAmount" required />
+                                    <InputNumber className='pr-input' id="paymentAmount" required
+                                        value={paymentAmount}
+                                        onChange={(e) => { setPaymentAmount(e.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="gracePeriod" className='required mb-1' >{t('grace_period')}</label>
-                                    <input type="number" className='form-control' id="gracePeriod" required />
+                                    <input type="number" className='form-control' id="gracePeriod" required
+                                        value={gracePeriod}
+                                        onChange={(e) => { setGracePeriod(e.target.value) }}
+                                    />
                                 </div>
                             </div>
                             <div className="col-12 mt-3">

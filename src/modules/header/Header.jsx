@@ -12,9 +12,7 @@ const Header = () => {
     const { t } = useTranslation();
 
     const store = useStore();
-    const user = store.getState().app.user;
-    console.log(user);
-    
+    const user = store.getState().app.user;    
     const [showSidemenu, setShowSidemenu] = useState(false);
     const langCM = useRef(null);
     const profileCM = useRef(null);
