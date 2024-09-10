@@ -122,6 +122,7 @@ const Header = () => {
                             <Button
                                 className='icon-btn mx-3' severity='secondary'
                                 onClick={(e) => profileCM.current.show(e)}
+                                id="profile-btn"
                             >
                                 <span className="material-symbols-outlined">
                                     person
