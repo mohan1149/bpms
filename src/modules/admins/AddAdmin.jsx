@@ -76,7 +76,6 @@ const AddAdmin = () => {
                     </div>
                 </div>
                 <div>
-                    <hr />
                     <form action=""
                         onSubmit={(e) => {
                             e.preventDefault();

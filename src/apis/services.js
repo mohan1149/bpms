@@ -51,6 +51,22 @@ export const storeAdmin = async (data) => {
         return error;
     }
 }
+export const storePaymentType = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.add_payment_type,
+            data: data,
+            headers:{
+                'Content-Type':'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
 
 
 

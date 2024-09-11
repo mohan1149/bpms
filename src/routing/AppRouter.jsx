@@ -13,8 +13,17 @@ import Page403 from './Page403';
 import Page404 from './Page404';
 
 import Users from './../modules/users/Users';
+
 import Admins from './../modules/admins/Admins';
 import AddAdmin from './../modules/admins/AddAdmin';
+
+import Branches from '../modules/branches/Branches';
+import AddBranch from '../modules/branches/AddBranch';
+
+
+
+//SETTINGS
+import PaymentTypes from '../modules/settings/PaymentTypes';
 
 
 
@@ -124,7 +133,12 @@ const AppRouter = () => {
                                     <Route path='/users' element={<Users />} />
                                     <Route path='/admins' element={<Admins />} />
                                     <Route path='/admins/add' element={<AddAdmin />} />
+                                    <Route path='/branches/' element={<Branches />} />
+                                    <Route path='/branches/add' element={<AddBranch />} />
+                                    <Route path='/settings/payment-types' element={<PaymentTypes />} />
+
                                     
+
                                     <Route path='/logout' element={<Logout />} />
                                     <Route path='*' element={<Page404 />} />
                                 </Routes>

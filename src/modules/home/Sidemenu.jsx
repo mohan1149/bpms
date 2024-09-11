@@ -159,6 +159,40 @@ const Sidebar = (props) => {
                     </Accordion.Item>
                 </Accordion>
             </li>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('settings') ? 'active' : ''}`}>
+                <Accordion activeKey={accordionActiveKey} className=''>
+                    <Accordion.Item eventKey="2">
+                        <Accordion.Header onClick={() => handleAccordionToggle('2')}
+                            className={sizeToggler ? 'expaned' : 'collapsed'}
+                        >
+                            <Link to="/settings" className="link">
+                                <div className='link-container'>
+                                    <span className="material-symbols-outlined">
+                                        settings
+                                    </span>
+                                    <span className='link_title'>
+                                        {sizeToggler && t('settings')}
+                                    </span>
+                                </div>
+                            </Link>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ul>
+                                <li>
+                                    <Link to="/settings">{t('all_bookings')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/settings/payment-types">{t('payment_types')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/settings/add">{t('add_booking')}</Link>
+                                </li>
+                            </ul>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            </li>
+
             <div className="mt-3">
                 <Button
                     className='icon-btn' severity='secondary'
