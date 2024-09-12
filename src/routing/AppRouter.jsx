@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '../modules/home/Home';
 import Header from '../modules/header/Header';
@@ -6,17 +6,31 @@ import Sidebar from '../modules/home/Sidemenu';
 import { useStore } from 'react-redux';
 import Login from './../modules/auth/Login';
 import Splash from './../modules/splash/Splash';
-import Profile from './../modules/auth/Profile';
 import Logout from './../modules/auth/Logout';
 import { Toast } from 'primereact/toast';
+import { Modal } from 'react-bootstrap';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { useTranslation } from 'react-i18next';
+import { Button } from 'primereact/button';
+
+import { deleteRecord } from './../apis/services';
+
+
+
+
+
+
 import Page403 from './Page403';
 import Page404 from './Page404';
 
+//UERS
 import Users from './../modules/users/Users';
 
+//ADMINS
 import Admins from './../modules/admins/Admins';
 import AddAdmin from './../modules/admins/AddAdmin';
 
+//BRANCHES
 import Branches from '../modules/branches/Branches';
 import AddBranch from '../modules/branches/AddBranch';
 
@@ -31,6 +45,8 @@ import { setShowDeleteDialog, setErrorToast } from '../redux/reducer';
 
 const AppRouter = () => {
     const store = useStore();
+    const { t } = useTranslation();
+
     const [isUserLogged, setIsUserLogged] = useState(false);
     const [showReqDialog, setShowReqDialog] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState({
@@ -62,7 +78,14 @@ const AppRouter = () => {
         }
         setLoading(false);
     });
-   
+
+    const handleDeleteRecord = async () =>{
+        let recordPath = store.getState().app.showDeleteDialog.url;
+        const res = await deleteRecord(recordPath);
+        console.log(res.data);
+        
+        
+    }
     if (loading) {
         return (
             <BrowserRouter>
@@ -113,21 +136,48 @@ const AppRouter = () => {
                                     padding: '1.5rem'
                                 }}>
                                 <Toast ref={toast} />
-                                {/* <Dialog
-                                    maxWidth="xs"
-                                    open={showReqDialog}
-                                    aria-labelledby="alert-dialog-loading"
-                                    aria-describedby="alert-dialog-loading-indicator"
+                                <Modal
+                                    size="sm"
+                                    show={showReqDialog}
+                                    centered
+                                    className='loading'
                                 >
-                                    <div className='p-4'
-                                        style={{
-                                            display: 'grid',
-                                            placeItems: 'center'
-                                        }}
-                                    >
-                                        <CircularProgress color='secondary' />
+                                    <ProgressSpinner
+                                        style={{ width: '50px', height: '50px' }}
+                                        strokeWidth="3"
+                                        animationDuration=".5s"
+                                    />
+                                </Modal>
+                                <Modal
+                                    size="md"
+                                    show={deleteDialog.show}
+                                    top
+                                    className='delete_modal'
+                                >
+                                    <div className="p-4">
+                                        <div className="d-flex align-items-center jscb">
+                                            <h4>{t('confirm_deletion')}</h4>
+                                            <Button severity='secondary' raised className='icon-btn'
+                                                onClick={() => {
+                                                    store.dispatch(setShowDeleteDialog({ show: false }));
+                                                }}
+                                            >
+                                                <span className="material-symbols-outlined">
+                                                    cancel
+                                                </span>
+                                            </Button>
+
+                                        </div>
+                                        <h6>{t('delete_text_message')}</h6>
+                                        <div className='mt-4'>
+                                            <Button severity='danger' raised className='btn-pill'
+                                                onClick={()=>{
+                                                    handleDeleteRecord();
+                                                }}
+                                            >{t('confirm_delete')}</Button>
+                                        </div>
                                     </div>
-                                </Dialog> */}
+                                </Modal>
                                 <Routes>
                                     <Route index path='/' element={<Home />} />
                                     <Route path='/users' element={<Users />} />
@@ -137,7 +187,7 @@ const AppRouter = () => {
                                     <Route path='/branches/add' element={<AddBranch />} />
                                     <Route path='/settings/payment-types' element={<PaymentTypes />} />
 
-                                    
+
 
                                     <Route path='/logout' element={<Logout />} />
                                     <Route path='*' element={<Page404 />} />

@@ -57,8 +57,8 @@ export const storePaymentType = async (data) => {
             method: 'POST',
             url: urls.add_payment_type,
             data: data,
-            headers:{
-                'Content-Type':'multipart/form-data'
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
         });
         return response;
@@ -66,6 +66,46 @@ export const storePaymentType = async (data) => {
         return error;
     }
 }
+export const updatePaymentType = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.edit_payment_type,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const getPaymentTypes = async () => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_payment_types,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const deleteRecord = async (url) => {
+    try {
+        let response = await axios({
+            method: 'DELETE',
+            url: urls.delete_record + url,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
 
 
 

@@ -306,7 +306,20 @@ input[type=number] {
   padding-right: 2rem !important;
   font-size: 1.1rem !important;
 }
+.btn-pill{
+  border-radius: 2rem !important;
+
+}
 
 .p-contextmenu-root-list li a {
   text-decoration: none;
+}
+.loading .modal-content{
+  background-color:transparent;
+  width: auto;
+  padding: 0.5rem;
+  border: none;
+}
+.jscb{
+  justify-content: space-between;
 }
