@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'primereact/button';
-import { InputNumber } from 'primereact/inputnumber';
 import { useStore } from 'react-redux';
-import { storeAdmin } from './../../apis/services';
+import { getPaymentTypes } from '../../apis/services';
+import { Avatar } from 'primereact/avatar';
+
 const AddBranch = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -14,7 +15,21 @@ const AddBranch = () => {
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
     const [address, setAddress] = useState();
+    const [paymentTypes, setPaymentTypes] = useState([]);
+
     const user = store.getState().app.user;
+
+    useEffect(() => {
+        loadPaymentTypes();
+    }, []);
+    const loadPaymentTypes = async () => {
+        try {
+            const res = await getPaymentTypes();
+            setPaymentTypes(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     const handleAddBranch = async () => {
         try {
             let data = {
@@ -25,13 +40,14 @@ const AddBranch = () => {
                 phone: phone,
                 address: address,
             }
-            console.log(data); 
+            console.log(data);
 
         } catch (error) {
             console.log(error);
 
         }
     }
+
     return (
         <div>
             <div className="glass-card p-3">
@@ -63,7 +79,7 @@ const AddBranch = () => {
                                     />
                                 </div>
                             </div>
-                           
+
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="email" className='required mb-1' >{t('email')}</label>
@@ -82,8 +98,8 @@ const AddBranch = () => {
                                     />
                                 </div>
                             </div>
-                           
-                          
+
+
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="address" className='required mb-1' >{t('address')}</label>
@@ -96,9 +112,28 @@ const AddBranch = () => {
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="image" className='required mb-1' >{t('image')}</label>
-                                    <input type="file" className='form-control' id="image" required/>
+                                    <input type="file" className='form-control' id="image" required />
                                 </div>
                             </div>
+
+                            <div className="col-12 mb-2">
+                                <div className="form-group">
+                                    <label htmlFor="payment_types" className='required mb-1' >{t('payment_types')}</label>
+                                    <Select options={paymentTypes} id="payment_types" isMulti={true} required
+                                        placeholder={t('choose_payment_types')}
+                                        getOptionLabel={(e) => {
+                                            return (
+                                                <div className='d-flex align-items-center'>
+                                                    <Avatar image={e.payment_image} size="normal" imageAlt={e.payment_title} />
+                                                    <span className='mx-2'>{e.payment_title}</span>
+                                                </div>
+                                            )
+                                        }}
+                                        getOptionValue={(e) => e.id}
+                                    />
+                                </div>
+                            </div>
+
                             <div className="col-12 mt-3">
                                 <Button type='submit' className='p-btn'>{t('add_admin')}</Button>
                             </div>

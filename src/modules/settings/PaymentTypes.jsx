@@ -16,7 +16,6 @@ const PaymentTypes = () => {
     const { t } = useTranslation();
     const store = useStore();
     const [paymentTypes, setPaymentTypes] = useState([]);
-    const user = store.getState().app.user;
     const [showAddPaymentTypeModal, setShowAddPaymentTypeModal] = useState(false);
     const [showEditPaymentTypeModal, setShowEditPaymentTypeModal] = useState({ show: false, item: '' });
     useEffect(() => {
