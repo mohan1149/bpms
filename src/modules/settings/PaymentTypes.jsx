@@ -11,6 +11,7 @@ import { Column } from 'primereact/column';
 import { Avatar } from 'primereact/avatar';
 import { InputSwitch } from "primereact/inputswitch";
 import { setShowDeleteDialog } from '../../redux/reducer';
+import DeleteModalContent from '../../commons/DeleteModalContent';
 const PaymentTypes = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -75,6 +76,14 @@ const PaymentTypes = () => {
                         />
                     </div>
                 </Modal>
+                {
+                    
+                }
+                <DeleteModalContent
+                    reload={()=>{
+                        loadPaymentTypes();
+                    }}
+                />
                 <div className="data-table mt-2">
                     <DataTable
                         value={paymentTypes}

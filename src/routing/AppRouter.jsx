@@ -11,12 +11,6 @@ import { Toast } from 'primereact/toast';
 import { Modal } from 'react-bootstrap';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'primereact/button';
-
-import { deleteRecord } from './../apis/services';
-
-
-
 
 
 
@@ -41,7 +35,7 @@ import PaymentTypes from '../modules/settings/PaymentTypes';
 
 
 
-import { setShowDeleteDialog, setErrorToast } from '../redux/reducer';
+import { setErrorToast } from '../redux/reducer';
 
 const AppRouter = () => {
     const store = useStore();
@@ -49,11 +43,7 @@ const AppRouter = () => {
 
     const [isUserLogged, setIsUserLogged] = useState(false);
     const [showReqDialog, setShowReqDialog] = useState(false);
-    const [deleteDialog, setDeleteDialog] = useState({
-        show: false,
-        url: '',
-        id: '',
-    });
+
     const [sideMenuSize, setSideMenuSize] = useState(true);
     const [loading, setLoading] = useState(true);
     const toast = useRef(null);
@@ -71,21 +61,8 @@ const AppRouter = () => {
         } else {
             setIsUserLogged(false);
         }
-        if (store.getState().app.showDeleteDialog.show) {
-            setDeleteDialog(store.getState().app.showDeleteDialog);
-        } else {
-            setDeleteDialog({ show: false });
-        }
         setLoading(false);
     });
-
-    const handleDeleteRecord = async () =>{
-        let recordPath = store.getState().app.showDeleteDialog.url;
-        const res = await deleteRecord(recordPath);
-        console.log(res.data);
-        
-        
-    }
     if (loading) {
         return (
             <BrowserRouter>
@@ -147,36 +124,6 @@ const AppRouter = () => {
                                         strokeWidth="3"
                                         animationDuration=".5s"
                                     />
-                                </Modal>
-                                <Modal
-                                    size="md"
-                                    show={deleteDialog.show}
-                                    top
-                                    className='delete_modal'
-                                >
-                                    <div className="p-4">
-                                        <div className="d-flex align-items-center jscb">
-                                            <h4>{t('confirm_deletion')}</h4>
-                                            <Button severity='secondary' raised className='icon-btn'
-                                                onClick={() => {
-                                                    store.dispatch(setShowDeleteDialog({ show: false }));
-                                                }}
-                                            >
-                                                <span className="material-symbols-outlined">
-                                                    cancel
-                                                </span>
-                                            </Button>
-
-                                        </div>
-                                        <h6>{t('delete_text_message')}</h6>
-                                        <div className='mt-4'>
-                                            <Button severity='danger' raised className='btn-pill'
-                                                onClick={()=>{
-                                                    handleDeleteRecord();
-                                                }}
-                                            >{t('confirm_delete')}</Button>
-                                        </div>
-                                    </div>
                                 </Modal>
                                 <Routes>
                                     <Route index path='/' element={<Home />} />
