@@ -53,7 +53,7 @@ const AddBranch = () => {
             <div className="glass-card p-3">
                 <div className="d-flex jcsb">
                     <div className='mt-2 mb-2'>
-                        <h4>{t('add_new_admin')}</h4>
+                        <h4>{t('add_new_branch')}</h4>
                     </div>
                     <div className='p-2'>
                         <Link to='/branches' className="link-btn">
@@ -135,7 +135,7 @@ const AddBranch = () => {
                             </div>
 
                             <div className="col-12 mt-3">
-                                <Button type='submit' className='p-btn'>{t('add_admin')}</Button>
+                                <Button type='submit' className='p-btn'>{t('add_branch')}</Button>
                             </div>
                         </div>
                     </form>
