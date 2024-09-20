@@ -12,6 +12,7 @@ import { Avatar } from 'primereact/avatar';
 import { InputSwitch } from "primereact/inputswitch";
 import { setShowDeleteDialog } from '../../redux/reducer';
 import DeleteModalContent from '../../commons/DeleteModalContent';
+import {getTimeStamp} from '../../helpers/helpers';
 const PaymentTypes = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -128,7 +129,7 @@ const PaymentTypes = () => {
                             header={t('actions')}
                             body={(row) => {
                                 return (
-                                    <div>
+                                    <div className='d-flex'>
                                         <Button
                                             onClick={(e) => {
                                                 setShowEditPaymentTypeModal({ show: true, item: row });
@@ -158,6 +159,7 @@ const PaymentTypes = () => {
     );
 
 }
+
 const AddPaymentType = (props) => {
     const { t } = useTranslation();
     const [paymentTitle, setPaymentTitle] = useState();
@@ -169,6 +171,8 @@ const AddPaymentType = (props) => {
             formData.append('paymentTitle', paymentTitle);
             formData.append('paymentImage', image);
             formData.append('trackField', trackField);
+            formData.append('created_at', getTimeStamp(new Date()));
+            formData.append('updated_at', getTimeStamp(new Date()));
             await storePaymentType(formData);
             props.submit();
         } catch (error) {
@@ -216,7 +220,7 @@ const AddPaymentType = (props) => {
                         />
                     </div>
                 </div>
-                <div className="col-1 mb-2 mt-2">
+                <div className="col-12 mb-2 mt-2">
                     <div className="d-flex align-items-center">
                         <Checkbox inputId="trackField" name="trackField" id="trackField" checked={trackField}
                             onChange={() => {
@@ -246,6 +250,7 @@ const EditPaymentType = (props) => {
             formData.append('paymentTitle', paymentTitle);
             formData.append('paymentImage', image);
             formData.append('trackField', trackField);
+            formData.append('updated_at', getTimeStamp(new Date()));
             await updatePaymentType(formData);
             props.submit();
         } catch (error) {
@@ -293,7 +298,7 @@ const EditPaymentType = (props) => {
                         />
                     </div>
                 </div>
-                <div className="col-1 mb-2 mt-2">
+                <div className="col-12 mb-2 mt-2">
                     <div className="d-flex align-items-center">
                         <Checkbox inputId="trackField" name="trackField" id="trackField" checked={trackField}
                             onChange={() => {

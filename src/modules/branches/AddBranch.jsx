@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'primereact/button';
 import { useStore } from 'react-redux';
-import { getPaymentTypes } from '../../apis/services';
+import { getPaymentTypes, addBranch } from '../../apis/services';
 import { Avatar } from 'primereact/avatar';
-
+import { Calendar } from 'primereact/calendar';
+import { getTimeStamp } from '../../helpers/helpers';
+import { Toast } from 'primereact/toast';
 const AddBranch = () => {
     const { t } = useTranslation();
     const store = useStore();
+    const toast = useRef();
+
+    
     const [branchName, setBranchName] = useState();
-    const [username, setUsername] = useState();
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
     const [address, setAddress] = useState();
     const [paymentTypes, setPaymentTypes] = useState([]);
-
+    const [openingTime, setOpeningTime] = useState();
+    const [closingTime, setClosingTime] = useState();
+    const [branchImage, setBranchImage] = useState();
     const user = store.getState().app.user;
-
     useEffect(() => {
         loadPaymentTypes();
     }, []);
@@ -32,15 +37,24 @@ const AddBranch = () => {
     }
     const handleAddBranch = async () => {
         try {
-            let data = {
-                created_by: user.id,
-                branchName: branchName,
-                username: username,
-                email: email,
-                phone: phone,
-                address: address,
+            let paymentMethods = paymentTypes.map((e) => { return { id: e.id } });
+            let formData = new FormData();
+            formData.append('branchName', branchName);
+            formData.append('email', email);
+            formData.append('phone', phone);
+            formData.append('address', address);
+            formData.append('openingTime', getTimeStamp(openingTime));
+            formData.append('closingTime', getTimeStamp(closingTime));
+            formData.append('created_at', getTimeStamp(new Date()));
+            formData.append('updated_at', getTimeStamp(new Date()));
+            formData.append('paymentTypes', JSON.stringify(paymentMethods));
+            formData.append('branchImage', branchImage);
+            const res = await addBranch(formData);
+            if(res.data.staus){
+                toast.current.show({ severity: 'success', summary: t('success'), detail: t(res.data.message), life: 3000 });
+            }else{
+                toast.current.show({ severity: 'error', summary: t('error'), detail: t(res.data.message), life: 3000 });
             }
-            console.log(data);
 
         } catch (error) {
             console.log(error);
@@ -50,6 +64,7 @@ const AddBranch = () => {
 
     return (
         <div>
+            <Toast ref={toast}/>
             <div className="glass-card p-3">
                 <div className="d-flex jcsb">
                     <div className='mt-2 mb-2'>
@@ -109,14 +124,31 @@ const AddBranch = () => {
                                     />
                                 </div>
                             </div>
+
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
-                                    <label htmlFor="image" className='required mb-1' >{t('image')}</label>
-                                    <input type="file" className='form-control' id="image" required />
+                                    <label htmlFor="image" className=' mb-1' >{t('opening_time')}</label>
+                                    <Calendar timeOnly className='pr-input' hourFormat="12"
+                                        value={openingTime}
+                                        onChange={(e) => {
+                                            setOpeningTime(e.value);
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-4 mb-2">
+                                <div className="form-group">
+                                    <label htmlFor="image" className=' mb-1' >{t('closing_time')}</label>
+                                    <Calendar timeOnly className='pr-input' hourFormat="12"
+                                        value={closingTime}
+                                        onChange={(e) => {
+                                            setClosingTime(e.value);
+                                        }}
+                                    />
                                 </div>
                             </div>
 
-                            <div className="col-12 mb-2">
+                            <div className="col-8 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="payment_types" className='required mb-1' >{t('payment_types')}</label>
                                     <Select options={paymentTypes} id="payment_types" isMulti={true} required
@@ -130,6 +162,16 @@ const AddBranch = () => {
                                             )
                                         }}
                                         getOptionValue={(e) => e.id}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-4 mb-2">
+                                <div className="form-group">
+                                    <label htmlFor="image" className='required mb-1' >{t('image')}</label>
+                                    <input type="file" className='form-control pr-input' id="image" required accept="image/*"
+                                        onChange={(e) => {
+                                            setBranchImage(e.target.files[0]);
+                                        }}
                                     />
                                 </div>
                             </div>

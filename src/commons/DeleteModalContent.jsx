@@ -48,7 +48,7 @@ const DeleteModalContent = (props) => {
                     </Button>
 
                 </div>
-                <h6>{t('delete_text_message')}</h6>
+                <h6 className="mt-3">{t('delete_text_message')}</h6>
                 <div className='mt-4'>
                     <Button severity='danger' raised className='btn-pill'
                         onClick={() => {

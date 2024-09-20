@@ -107,6 +107,35 @@ export const deleteRecord = async (url) => {
 }
 
 
+export const addBranch = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.add_branch,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const getBranches = async (data) => {
+    try {
+        let response = await axios({
+            method: 'get',
+            url: urls.get_branches,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
+
 
 
 

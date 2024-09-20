@@ -8,9 +8,10 @@ const urls = {
 
     add_payment_type: baseUrl + '/payment-types/store',
     get_payment_types: baseUrl + '/payment-types',
-    edit_payment_type: baseUrl + '/payment-types/update'
+    edit_payment_type: baseUrl + '/payment-types/update',
 
-
+    add_branch: baseUrl + '/branches/store',
+    get_branches: baseUrl + '/branches'
 }
 
 export default urls;

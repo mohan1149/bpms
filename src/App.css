@@ -323,3 +323,16 @@ input[type=number] {
 .jscb{
   justify-content: space-between;
 }
+ul.p-dropdown-items{
+  padding-left: 0px !important;
+}
+.link-icon-btn{
+  background-color: #4F46E5;
+  color: #fff;
+  border-radius: 25px;
+  align-items: center;
+  display: flex;
+  text-decoration: none;
+  padding: 9px;
+
+}
