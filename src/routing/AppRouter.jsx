@@ -27,7 +27,7 @@ import AddAdmin from './../modules/admins/AddAdmin';
 //BRANCHES
 import Branches from '../modules/branches/Branches';
 import AddBranch from '../modules/branches/AddBranch';
-
+import EditBranch from '../modules/branches/EditBranch';
 
 
 //SETTINGS
@@ -130,8 +130,12 @@ const AppRouter = () => {
                                     <Route path='/users' element={<Users />} />
                                     <Route path='/admins' element={<Admins />} />
                                     <Route path='/admins/add' element={<AddAdmin />} />
+
                                     <Route path='/branches/' element={<Branches />} />
                                     <Route path='/branches/add' element={<AddBranch />} />
+                                    <Route path='/branches/edit' element={<EditBranch />} />
+
+                                    
                                     <Route path='/settings/payment-types' element={<PaymentTypes />} />
 
 

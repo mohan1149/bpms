@@ -10,8 +10,7 @@ import { Button } from 'primereact/button';
 import DeleteModalContent from '../../commons/DeleteModalContent';
 import { useStore } from 'react-redux';
 import { setShowDeleteDialog } from '../../redux/reducer';
-
-
+import { Chip } from 'primereact/chip';
 const Branches = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -43,7 +42,7 @@ const Branches = () => {
                     </div>
                 </div>
                 <DeleteModalContent
-                    reload={()=>{
+                    reload={() => {
                         loadBranches();
                     }}
                 />
@@ -63,45 +62,58 @@ const Branches = () => {
                             header={t('image')}
                             body={(row) => {
                                 return (
-                                    <Avatar image={row.branch_image} size="large" imageAlt={row.branch_image} />
+                                    <Avatar image={row.branch.branch_image} size="large" imageAlt={row.branch.branch_image} />
                                 )
                             }}
                         />
                         <Column
-                            field="branch_name"
+                            field="branch.branch_name"
                             header={t('branch_name')}
                             sortable
                         />
 
                         <Column
-                            field="branch_email"
+                            field="branch.branch_email"
                             header={t('email')}
                             sortable
                         />
                         <Column
-                            field="branch_phone"
+                            field="branch.branch_phone"
                             header={t('phone')}
                             sortable
                         />
                         <Column
-                            field="branch_address"
+                            field="branch.branch_address"
                             header={t('address')}
                             sortable
                         />
                         <Column
                             header={t('opening_time')}
-                            body={(i) => getTimeFromString(i.opening_time)}
+                            body={(i) => getTimeFromString(i.branch.opening_time)}
                             sortable
                         />
                         <Column
-                            body={(i) => getTimeFromString(i.closing_time)}
+                            body={(i) => getTimeFromString(i.branch.closing_time)}
                             header={t('closing_time')}
                             sortable
                         />
                         <Column
-                            field="payment_types"
                             header={t('payment_types')}
-                            sortable
+                            body={(row) => {
+                                return (
+                                    <div>
+                                        {
+                                            row.payment_types.map((i, key) => {
+                                                return (
+                                                    // <Chip label={i.payment_title} key={key} className='mx-1' />
+                                                    <Avatar image={i.payment_image} className='mx-1' imageAlt={i.payment_title} title={i.payment_title}/>
+                                                )
+                                            })
+                                        }
+
+                                    </div>
+                                );
+                            }}
                         />
                         <Column
                             header={t('actions')}
@@ -109,9 +121,8 @@ const Branches = () => {
                                 return (
                                     <div className='d-flex'>
                                         <Link
-                                            onClick={(e) => {
-                                                // setShowEditPaymentTypeModal({ show: true, item: row });
-                                            }}
+                                            to="/branches/edit"
+                                            state={JSON.stringify(row)}
                                             className='link-icon-btn mx-1' severity='primary' id="edit-btn">
                                             <span className="material-symbols-outlined">
                                                 edit

@@ -122,6 +122,22 @@ export const addBranch = async (data) => {
         return error;
     }
 }
+export const updateBranch = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_branch,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
 export const getBranches = async (data) => {
     try {
         let response = await axios({

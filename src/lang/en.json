@@ -41,5 +41,7 @@
     "max_branches_count_reached":"Maximum number of Branches Limit Reached.",
     "confirm_deletion":"Confirm the Deletion.?",
     "delete_text_message":"Plaese note that, once this item is deleted it's not possible to recover it. All the data releated to this item will be deleted and it's is non reversible operation.",
-    "confirm_delete":"Confirm & Delete"
+    "confirm_delete":"Confirm & Delete",
+    "edit_branch":"Edit Branch",
+    "branch_updated_successfully":"Branch Information updated successfully."
 }

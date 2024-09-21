@@ -13,13 +13,12 @@ const AddBranch = () => {
     const { t } = useTranslation();
     const store = useStore();
     const toast = useRef();
-
-    
     const [branchName, setBranchName] = useState();
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
     const [address, setAddress] = useState();
     const [paymentTypes, setPaymentTypes] = useState([]);
+    const [branchPaymentTypes, setBranchPaymentTypes] = useState([]);
     const [openingTime, setOpeningTime] = useState();
     const [closingTime, setClosingTime] = useState();
     const [branchImage, setBranchImage] = useState();
@@ -37,7 +36,7 @@ const AddBranch = () => {
     }
     const handleAddBranch = async () => {
         try {
-            let paymentMethods = paymentTypes.map((e) => { return { id: e.id } });
+            let paymentMethods = branchPaymentTypes.map((e) => { return { id: e.id } });
             let formData = new FormData();
             formData.append('branchName', branchName);
             formData.append('email', email);
@@ -153,6 +152,9 @@ const AddBranch = () => {
                                     <label htmlFor="payment_types" className='required mb-1' >{t('payment_types')}</label>
                                     <Select options={paymentTypes} id="payment_types" isMulti={true} required
                                         placeholder={t('choose_payment_types')}
+                                        onChange={(e)=>{
+                                            setBranchPaymentTypes(e);
+                                        }}
                                         getOptionLabel={(e) => {
                                             return (
                                                 <div className='d-flex align-items-center'>
