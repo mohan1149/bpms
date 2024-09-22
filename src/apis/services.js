@@ -150,6 +150,49 @@ export const getBranches = async (data) => {
     }
 }
 
+export const storeServiceCategory = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_service_category,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const getServiceCategories = async (data) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_service_categories,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const updateServiceCategory = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_service_category,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
 
 
 

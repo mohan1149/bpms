@@ -40,8 +40,15 @@
     "update":"Update",
     "max_branches_count_reached":"Maximum number of Branches Limit Reached.",
     "confirm_deletion":"Confirm the Deletion.?",
-    "delete_text_message":"Plaese note that, once this item is deleted it's not possible to recover it. All the data releated to this item will be deleted and it's is non reversible operation.",
+    "delete_text_message":"Please note that, once this item is deleted it's not possible to recover it. All the data releated to this item will be deleted and it's is non reversible operation.",
     "confirm_delete":"Confirm & Delete",
     "edit_branch":"Edit Branch",
-    "branch_updated_successfully":"Branch Information updated successfully."
+    "branch_updated_successfully":"Branch Information updated successfully.",
+    "manage_service_categories":"Manage Service Categories",
+    "category_title":"Category Title",
+    "category_desc":"Category Description",
+    "add_service_category":"Add Service Category",
+    "add_new_service_category":"Add new Service Category",
+    "edit_service_category":"Edit Service Category",
+    "service_categories":"Service Categories"
 }

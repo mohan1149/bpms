@@ -12,7 +12,12 @@ const urls = {
 
     add_branch: baseUrl + '/branches/store',
     get_branches: baseUrl + '/branches',
-    update_branch: baseUrl + '/branches/update'
+    update_branch: baseUrl + '/branches/update',
+
+    store_service_category: baseUrl + '/services/categories/store',
+    get_service_categories: baseUrl + '/services/categories',
+    update_service_category: baseUrl + '/services/categories/update',
+
 }
 
 export default urls;
