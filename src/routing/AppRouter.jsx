@@ -36,7 +36,8 @@ import PaymentTypes from '../modules/settings/PaymentTypes';
 
 //SERVICES
 import ServiceCategories from '../modules/services/categories/ServiceCategories';
-
+import Services from '../modules/services/Services';
+import AddService from '../modules/services/AddService';
 
 import { setErrorToast } from '../redux/reducer';
 
@@ -138,8 +139,11 @@ const AppRouter = () => {
                                     <Route path='/branches/add' element={<AddBranch />} />
                                     <Route path='/branches/edit' element={<EditBranch />} />
 
+                                    
                                     <Route path='/services/categories' element={<ServiceCategories />} />
-
+                                    <Route path='/services' element={<Services />} />
+                                    <Route path='/services/add' element={<AddService />} />
+                                    
                                     
 
                                     

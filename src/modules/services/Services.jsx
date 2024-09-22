@@ -11,7 +11,7 @@ import DeleteModalContent from '../../commons/DeleteModalContent';
 import { useStore } from 'react-redux';
 import { setShowDeleteDialog } from '../../redux/reducer';
 import { Chip } from 'primereact/chip';
-const Branches = () => {
+const Services = () => {
     const { t } = useTranslation();
     const store = useStore();
     const [branches, setBranches] = useState();
@@ -31,12 +31,14 @@ const Branches = () => {
             <div className="glass-card p-3">
                 <div className="d-flex jcsb">
                     <div className='mt-2 mb-2'>
-                        <h4>{t('manage_branches')}</h4>
+                        <h4>{t('manage_services')}</h4>
                     </div>
                     <div className='p-2'>
-                        <Link to='/branches/add' className="link-btn">
-                            {t('add_branch')}
+                        <Link to='/services/add' className="link-btn">
+                            {t('add_service')}
                         </Link>
+
+
                     </div>
                 </div>
                 <DeleteModalContent
@@ -146,4 +148,4 @@ const Branches = () => {
         </div>
     );
 }
-export default Branches;
+export default Services;

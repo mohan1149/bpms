@@ -4,7 +4,6 @@ import { Button } from 'primereact/button';
 import { useStore } from 'react-redux';
 import { storeServiceCategory, getServiceCategories, updateServiceCategory } from './../../../apis/services';
 import { Modal } from 'react-bootstrap';
-import { Checkbox } from "primereact/checkbox";
 import { useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
