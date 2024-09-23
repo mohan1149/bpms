@@ -18,6 +18,10 @@ const urls = {
     get_service_categories: baseUrl + '/services/categories',
     update_service_category: baseUrl + '/services/categories/update',
 
+    store_service_variation: baseUrl + '/services/variations/store',
+    get_service_variations: baseUrl + '/services/variations',
+    update_service_variation: baseUrl + '/services/variations/update',
+
 }
 
 export default urls;

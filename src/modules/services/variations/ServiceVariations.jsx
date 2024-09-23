@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'primereact/button';
 import { useStore } from 'react-redux';
-import { storeServiceCategory, getServiceCategories, updateServiceCategory } from './../../../apis/services';
+import { storeServiceVariation, getServiceVariations, updateServiceVariation } from './../../../apis/services';
 import { Modal } from 'react-bootstrap';
 import { useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
@@ -11,19 +11,19 @@ import { Avatar } from 'primereact/avatar';
 import { setShowDeleteDialog } from '../../../redux/reducer';
 import DeleteModalContent from '../../../commons/DeleteModalContent';
 import { getTimeStamp } from '../../../helpers/helpers';
-const ServiceCategories = () => {
+const ServiceVariations = () => {
     const { t } = useTranslation();
     const store = useStore();
-    const [serviceCategories, setServiceCategories] = useState([]);
-    const [showAddServiceCategoryModal, setShowAddServiceCategoryModal] = useState(false);
-    const [showEditServiceCategoryModal, setShowEditServiceCategoryModal] = useState({ show: false, item: '' });
+    const [serviceVariations, setServiceVariations] = useState([]);
+    const [showAddServiceVariationModal, setShowAddServiceVariationModal] = useState(false);
+    const [showEditServiceVariationModal, setShowEditServiceVariationModal] = useState({ show: false, item: '' });
     useEffect(() => {
-        loadServiceCategories();
+        loadServiceVariations();
     }, []);
-    const loadServiceCategories = async () => {
+    const loadServiceVariations = async () => {
         try {
-            const res = await getServiceCategories();
-            setServiceCategories(res.data.data);
+            const res = await getServiceVariations();
+            setServiceVariations(res.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -33,44 +33,44 @@ const ServiceCategories = () => {
             <div className="glass-card p-3">
                 <div className="d-flex jcsb">
                     <div className='mt-2 mb-2'>
-                        <h4>{t('manage_service_categories')}</h4>
+                        <h4>{t('manage_service_variations')}</h4>
                     </div>
                     <div className='p-2'>
                         <Button className='p-btn'
                             onClick={() => {
-                                setShowAddServiceCategoryModal(true);
+                                setShowAddServiceVariationModal(true);
                             }}
-                        > {t('add_service_category')}</Button>
+                        > {t('add_service_variation')}</Button>
                     </div>
                 </div>
                 <Modal
-                    show={showAddServiceCategoryModal}
+                    show={showAddServiceVariationModal}
                 >
                     <div className='p-4'>
-                        <AddServiceCategory
+                        <AddServiceVariation
                             submit={() => {
-                                setShowAddServiceCategoryModal(false);
-                                loadServiceCategories();
+                                setShowAddServiceVariationModal(false);
+                                loadServiceVariations();
                             }}
                             cancel={() => {
-                                setShowAddServiceCategoryModal(false);
+                                setShowAddServiceVariationModal(false);
                             }}
                         />
                     </div>
                 </Modal>
                 <Modal
-                    show={showEditServiceCategoryModal.show}
+                    show={showEditServiceVariationModal.show}
                 >
                     <div className='p-4'>
-                        <EditServiceCategory
+                        <EditServiceVariation
                             submit={() => {
-                                setShowEditServiceCategoryModal({ show: false, item: '' });
-                                loadServiceCategories();
+                                setShowEditServiceVariationModal({ show: false, item: '' });
+                                loadServiceVariations();
                             }}
                             cancel={() => {
-                                setShowEditServiceCategoryModal({ show: false, item: '' });
+                                setShowEditServiceVariationModal({ show: false, item: '' });
                             }}
-                            item={showEditServiceCategoryModal.item}
+                            item={showEditServiceVariationModal.item}
                         />
                     </div>
                 </Modal>
@@ -79,12 +79,12 @@ const ServiceCategories = () => {
                 }
                 <DeleteModalContent
                     reload={() => {
-                        loadServiceCategories();
+                        loadServiceVariations();
                     }}
                 />
                 <div className="data-table mt-2">
                     <DataTable
-                        value={serviceCategories}
+                        value={serviceVariations}
                         paginator
                         rows={10}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -95,22 +95,15 @@ const ServiceCategories = () => {
                         emptyMessage={t('data_not_available')}
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     >
+                        
                         <Column
-                            header={t('image')}
-                            body={(row) => {
-                                return (
-                                    <Avatar image={row.category_image} size="large" imageAlt={row.category_title} />
-                                )
-                            }}
-                        />
-                        <Column
-                            field="category_title"
-                            header={t('category_title')}
+                            field="variation_title"
+                            header={t('variation_title')}
                             sortable
                         />
                         <Column
-                            field="category_desc"
-                            header={t('category_desc')}
+                            field="variation_desc"
+                            header={t('variation_desc')}
                             sortable
                         />
                         <Column
@@ -128,7 +121,7 @@ const ServiceCategories = () => {
                                     <div className='d-flex'>
                                         <Button
                                             onClick={(e) => {
-                                                setShowEditServiceCategoryModal({ show: true, item: row });
+                                                setShowEditServiceVariationModal({ show: true, item: row });
                                             }}
                                             className='icon-btn mx-1' severity='primary' id="edit-btn">
                                             <span className="material-symbols-outlined">
@@ -137,7 +130,7 @@ const ServiceCategories = () => {
                                         </Button>
                                         <Button
                                             onClick={() => {
-                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/services/categories/delete/' + row.id }))
+                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/services/variations/delete/' + row.id }))
                                             }}
                                             className='icon-btn mx-1' severity='danger' id="edit-btn">
                                             <span className="material-symbols-outlined">
@@ -156,20 +149,19 @@ const ServiceCategories = () => {
 
 }
 
-const AddServiceCategory = (props) => {
+const AddServiceVariation = (props) => {
     const { t } = useTranslation();
-    const [categoryTitle, setCategoryTitle] = useState();
-    const [categoryDesc, setCategoryDesc] = useState();
-    const [image, setImage] = useState();
-    const handleAddServiceCategory = async () => {
+    const [variationTitle, setVariationTitle] = useState();
+    const [variationDesc, setVariationDesc] = useState();
+    const handleAddServiceVariation = async () => {
         try {
-            let formData = new FormData();
-            formData.append('categoryTitle', categoryTitle);
-            formData.append('categoryImage', image);
-            formData.append('categoryDesc', categoryDesc);
-            formData.append('created_at', getTimeStamp(new Date()));
-            formData.append('updated_at', getTimeStamp(new Date()));
-            await storeServiceCategory(formData);
+            let data = {
+                variationTitle:variationTitle,
+                variationDesc:variationDesc,
+                created_at:getTimeStamp(new Date()),
+                updated_at:getTimeStamp(new Date()),
+            };
+            await storeServiceVariation(data);
             props.submit();
         } catch (error) {
             console.log(error);
@@ -179,13 +171,13 @@ const AddServiceCategory = (props) => {
         <form action=""
             onSubmit={(e) => {
                 e.preventDefault();
-                handleAddServiceCategory();
+                handleAddServiceVariation();
             }}
         >
             <div className="row">
                 <div className="col-12">
                     <div className="d-flex jcsb align-items-center">
-                        <h5 className='mt-2 mb-3 opacity'>{t('add_new_service_category')}</h5>
+                        <h5 className='mt-2 mb-3 opacity'>{t('add_new_service_variation')}</h5>
                         <Button raised className='icon-btn' severity='secondary' type='button'
                             onClick={() => {
                                 props.cancel();
@@ -199,33 +191,22 @@ const AddServiceCategory = (props) => {
                 </div>
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="categoryTitle" className='required mb-1' >{t('category_title')}</label>
-                        <input type="text" id="categoryTitle" className='form-control' required
-                            value={categoryTitle}
-                            onChange={(e) => { setCategoryTitle(e.target.value) }}
+                        <label htmlFor="variationTitle" className='required mb-1' >{t('variation_title')}</label>
+                        <input type="text" id="variationTitle" className='form-control' required
+                            value={variationTitle}
+                            onChange={(e) => { setVariationTitle(e.target.value) }}
                         />
                     </div>
                 </div>
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="categoryDesc" className='required mb-1' >{t('category_desc')}</label>
-                        <input type="text" id="categoryDesc" className='form-control' required
-                            value={categoryDesc}
-                            onChange={(e) => { setCategoryDesc(e.target.value) }}
+                        <label htmlFor="variationDesc" className='required mb-1' >{t('variation_desc')}</label>
+                        <input type="text" id="variationDesc" className='form-control' required
+                            value={variationDesc}
+                            onChange={(e) => { setVariationDesc(e.target.value) }}
                         />
                     </div>
                 </div>
-                <div className="col-12 mb-2">
-                    <div className="form-group">
-                        <label htmlFor="image" className='required mb-1' >{t('image')}</label>
-                        <input type="file" className='form-control' id="image" required accept="image/*"
-                            onChange={(e) => {
-                                setImage(e.target.files[0]);
-                            }}
-                        />
-                    </div>
-                </div>
-
                 <div className="col-12 mt-3">
                     <Button type='submit' className='p-btn'>{t('save')}</Button>
                 </div>
@@ -233,21 +214,20 @@ const AddServiceCategory = (props) => {
         </form>
     );
 }
-const EditServiceCategory = (props) => {
+const EditServiceVariation = (props) => {
     const { t } = useTranslation();
     const item = props.item;
-    const [categoryTitle, setCategoryTitle] = useState(item.category_title);
-    const [image, setImage] = useState();
-    const [categoryDesc, setCategoryDesc] = useState(item.category_desc);
-    const handleEditServiceCategory = async () => {
+    const [variationTitle, setVariationTitle] = useState(item.variation_title);
+    const [variationDesc, setVariationDesc] = useState(item.variation_desc);
+    const handleEditServiceVariation = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', item.id);
-            formData.append('categoryTitle', categoryTitle);
-            formData.append('categoryImage', image);
-            formData.append('categoryDesc', categoryDesc);
-            formData.append('updated_at', getTimeStamp(new Date()));
-            await updateServiceCategory(formData);
+            let data = {
+                id:item.id,
+                variationTitle:variationTitle,
+                variationDesc:variationDesc,
+                updated_at:getTimeStamp(new Date()),
+            };
+            await updateServiceVariation(data);
             props.submit();
         } catch (error) {
             console.log(error);
@@ -257,13 +237,13 @@ const EditServiceCategory = (props) => {
         <form action=""
             onSubmit={(e) => {
                 e.preventDefault();
-                handleEditServiceCategory();
+                handleEditServiceVariation();
             }}
         >
             <div className="row">
                 <div className="col-12">
                     <div className="d-flex jcsb align-items-center">
-                        <h5 className='mt-2 mb-3 opacity'>{t('edit_service_category')}</h5>
+                        <h5 className='mt-2 mb-3 opacity'>{t('edit_service_variation')}</h5>
                         <Button raised className='icon-btn' severity='secondary' type='button'
                             onClick={() => {
                                 props.cancel();
@@ -277,29 +257,19 @@ const EditServiceCategory = (props) => {
                 </div>
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="categoryTitle" className='required mb-1' >{t('category_title')}</label>
-                        <input type="text" id="categoryTitle" className='form-control' required
-                            value={categoryTitle}
-                            onChange={(e) => { setCategoryTitle(e.target.value) }}
+                        <label htmlFor="variationTitle" className='required mb-1' >{t('variation_title')}</label>
+                        <input type="text" id="variationTitle" className='form-control' required
+                            value={variationTitle}
+                            onChange={(e) => { setVariationTitle(e.target.value) }}
                         />
                     </div>
                 </div>
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="categoryDesc" className='required mb-1' >{t('category_desc')}</label>
-                        <input type="text" id="categoryDesc" className='form-control' required
-                            value={categoryDesc}
-                            onChange={(e) => { setCategoryDesc(e.target.value) }}
-                        />
-                    </div>
-                </div>
-                <div className="col-12 mb-2">
-                    <div className="form-group">
-                        <label htmlFor="image" className='mb-1' >{t('image')}</label>
-                        <input type="file" className='form-control' id="image" accept="image/*"
-                            onChange={(e) => {
-                                setImage(e.target.files[0]);
-                            }}
+                        <label htmlFor="variationDesc" className='required mb-1' >{t('variation_desc')}</label>
+                        <input type="text" id="variationDesc" className='form-control' required
+                            value={variationDesc}
+                            onChange={(e) => { setVariationDesc(e.target.value) }}
                         />
                     </div>
                 </div>
@@ -310,4 +280,4 @@ const EditServiceCategory = (props) => {
         </form>
     );
 }
-export default ServiceCategories;
+export default ServiceVariations;

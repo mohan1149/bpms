@@ -116,11 +116,12 @@ const Sidebar = (props) => {
                                     <Link to="/services">{t('all_services')}</Link>
                                 </li>
                                 <li>
-                                    <Link to="/services/add">{t('add_service')}</Link>
-                                </li>
-                                <li>
                                     <Link to="/services/categories">{t('service_categories')}</Link>
                                 </li>
+                                <li>
+                                    <Link to="/services/variations">{t('service_variations')}</Link>
+                                </li>
+                                
                             </ul>
                         </Accordion.Body>
                     </Accordion.Item>

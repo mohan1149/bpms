@@ -36,6 +36,7 @@ import PaymentTypes from '../modules/settings/PaymentTypes';
 
 //SERVICES
 import ServiceCategories from '../modules/services/categories/ServiceCategories';
+import ServiceVariations from '../modules/services/variations/ServiceVariations';
 import Services from '../modules/services/Services';
 import AddService from '../modules/services/AddService';
 
@@ -141,6 +142,8 @@ const AppRouter = () => {
 
                                     
                                     <Route path='/services/categories' element={<ServiceCategories />} />
+                                    <Route path='/services/variations' element={<ServiceVariations />} />
+                                    
                                     <Route path='/services' element={<Services />} />
                                     <Route path='/services/add' element={<AddService />} />
                                     

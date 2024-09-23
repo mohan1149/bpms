@@ -192,6 +192,41 @@ export const updateServiceCategory = async (data) => {
         return error;
     }
 }
+export const getServiceVariations = async () => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_service_variations,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const storeServiceVariation = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_service_variation,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const updateServiceVariation = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_service_variation,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 
 
 

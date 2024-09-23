@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import { getServiceCategories, getBranches } from '../../apis/services';
+import { getServiceCategories, getBranches,getServiceVariations } from '../../apis/services';
 import { InputNumber } from 'primereact/inputnumber';
 const AddService = () => {
     const { t } = useTranslation();
@@ -11,9 +11,12 @@ const AddService = () => {
     const [selectedServiceCategory, setSelectedServiceCategory] = useState();
     const [branches, setBranches] = useState([]);
     const [selectedBranches, setSelectedBranches] = useState();
+    const [serviceVariations, setServiceVariations] = useState([]);
+
     useEffect(() => {
         loadServiceCategories();
         loadBranches();
+        loadServiceVariations();
     }, []);
 
     const loadServiceCategories = async () => {
@@ -30,6 +33,14 @@ const AddService = () => {
             setBranches(res.data.data);
         } catch (error) {
 
+        }
+    }
+    const loadServiceVariations = async () =>{
+        try {
+            const res = await getServiceVariations();
+            setServiceVariations(res.data.data);
+        } catch (error) {
+            
         }
     }
 
@@ -91,6 +102,21 @@ const AddService = () => {
                             <div className="form-group">
                                 <label htmlFor="service_charge" className='mb-1 required'>{t('service_charge')}</label>
                                 <InputNumber id="service_charge"  useGrouping={false} maxFractionDigits={3} className='pr-input' />
+                            </div>
+                        </div>
+                        <div className="col-md-4 m,b-2">
+                            <div className="form-group">
+                                <label htmlFor="serviceVariations" className='mb-1 required'>{t('service_variation')}</label>
+                                <Select id="serviceVariations" className='pr-input' options={serviceVariations}
+                                    getOptionLabel={(i) => i.variation_title}
+                                    getOptionValue={(i) => i.id}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-8 mb-2">
+                            <div className="form-group">
+                                <label htmlFor="serviceDesc" className='mb-1 required'>{t('service_desc')}</label>
+                                <input type="text" name="serviceDesc" id="serviceDesc" className='form-control' required />
                             </div>
                         </div>
                         <div className="col-12 mb-2 mt-3">

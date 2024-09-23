@@ -40,6 +40,7 @@ const DeleteModalContent = (props) => {
                     <Button severity='secondary' raised className='icon-btn'
                         onClick={() => {
                             setDeleteDialog(false);
+                            store.dispatch(setShowDeleteDialog({show:false}));
                         }}
                     >
                         <span className="material-symbols-outlined">

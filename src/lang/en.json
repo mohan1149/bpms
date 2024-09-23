@@ -50,5 +50,12 @@
     "add_service_category":"Add Service Category",
     "add_new_service_category":"Add new Service Category",
     "edit_service_category":"Edit Service Category",
-    "service_categories":"Service Categories"
+    "service_categories":"Service Categories",
+    "manage_service_variations":"Manage Service Variations",
+    "add_service_variation":"Add Service Variation",
+    "variation_title":"Variation Title",
+    "variation_desc":"Variatiopn Description",
+    "add_new_service_variation":"Add new Service Variation",
+    "edit_service_variation":"Edit Service Variation",
+    "service_variations":"Service Variations"
 }
