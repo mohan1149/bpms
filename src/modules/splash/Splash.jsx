@@ -15,8 +15,6 @@ const Splash = () => {
                 store.dispatch(setUserLoggedStatus(false));
             } else {
                 const status = await getUserData(token);
-                console.log(status);
-                
                 if( status !== undefined && status.status === 200){
                     if (status !== false) {
                         store.dispatch(setUser(status.data));

@@ -336,3 +336,12 @@ ul.p-dropdown-items{
   padding: 9px;
 
 }
+.outline-btn{
+  border: 3px solid #141B4D !important;
+  font-weight: bold !important;
+  border-radius: 3rem !important;
+}
+
+.outline-btn:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #b1b3f8, 0 1px 2px 0 rgb(0, 0, 0);
+}

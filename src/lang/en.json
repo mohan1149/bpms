@@ -57,5 +57,13 @@
     "variation_desc":"Variatiopn Description",
     "add_new_service_variation":"Add new Service Variation",
     "edit_service_variation":"Edit Service Variation",
-    "service_variations":"Service Variations"
+    "service_variations":"Service Variations",
+    "service_modifiers":"Service Modifiers",
+    "manage_service_modifiers":"Manage Service Modifiers",
+    "modifier_title":"Modifier Title",
+    "modifier_desc":"Modifier Description",
+    "modifier_price":"Modifier Price",
+    "add_service_modifier":"Add Service Modifier",
+    "add_new_service_modifier":"Add new Service Modifier",
+    "edit_service_modifier":"Edit Service Modifier"
 }

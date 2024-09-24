@@ -2,27 +2,28 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'primereact/button';
 import { useStore } from 'react-redux';
-import { storeServiceVariation, getServiceVariations, updateServiceVariation } from './../../../apis/services';
+import { storeServiceModifier, getServiceModifiers, updateServiceModifier } from './../../../apis/services';
 import { Modal } from 'react-bootstrap';
 import { useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { setShowDeleteDialog } from '../../../redux/reducer';
 import DeleteModalContent from '../../../commons/DeleteModalContent';
-import { getTimeStamp } from '../../../helpers/helpers';
-const ServiceVariations = () => {
+import { getTimeStamp,getFormattedCurrency } from '../../../helpers/helpers';
+import { InputNumber } from 'primereact/inputnumber';
+const ServiceModifiers = () => {
     const { t } = useTranslation();
     const store = useStore();
-    const [serviceVariations, setServiceVariations] = useState([]);
-    const [showAddServiceVariationModal, setShowAddServiceVariationModal] = useState(false);
-    const [showEditServiceVariationModal, setShowEditServiceVariationModal] = useState({ show: false, item: '' });
+    const [serviceModifiers, setServiceModifiers] = useState([]);
+    const [showAddServiceModifierModal, setShowAddServiceModifierModal] = useState(false);
+    const [showEditServiceModifierModal, setShowEditServiceModifierModal] = useState({ show: false, item: '' });
     useEffect(() => {
-        loadServiceVariations();
+        loadServiceModifiers();
     }, []);
-    const loadServiceVariations = async () => {
+    const loadServiceModifiers = async () => {
         try {
-            const res = await getServiceVariations();
-            setServiceVariations(res.data.data);
+            const res = await getServiceModifiers();
+            setServiceModifiers(res.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -32,44 +33,44 @@ const ServiceVariations = () => {
             <div className="glass-card p-3">
                 <div className="d-flex jcsb">
                     <div className='mt-2 mb-2'>
-                        <h4>{t('manage_service_variations')}</h4>
+                        <h4>{t('manage_service_modifiers')}</h4>
                     </div>
                     <div className='p-2'>
                         <Button className='p-btn'
                             onClick={() => {
-                                setShowAddServiceVariationModal(true);
+                                setShowAddServiceModifierModal(true);
                             }}
-                        > {t('add_service_variation')}</Button>
+                        > {t('add_service_modifier')}</Button>
                     </div>
                 </div>
                 <Modal
-                    show={showAddServiceVariationModal}
+                    show={showAddServiceModifierModal}
                 >
                     <div className='p-4'>
-                        <AddServiceVariation
+                        <AddServiceModifier
                             submit={() => {
-                                setShowAddServiceVariationModal(false);
-                                loadServiceVariations();
+                                setShowAddServiceModifierModal(false);
+                                loadServiceModifiers();
                             }}
                             cancel={() => {
-                                setShowAddServiceVariationModal(false);
+                                setShowAddServiceModifierModal(false);
                             }}
                         />
                     </div>
                 </Modal>
                 <Modal
-                    show={showEditServiceVariationModal.show}
+                    show={showEditServiceModifierModal.show}
                 >
                     <div className='p-4'>
-                        <EditServiceVariation
+                        <EditServiceModifier
                             submit={() => {
-                                setShowEditServiceVariationModal({ show: false, item: '' });
-                                loadServiceVariations();
+                                setShowEditServiceModifierModal({ show: false, item: '' });
+                                loadServiceModifiers();
                             }}
                             cancel={() => {
-                                setShowEditServiceVariationModal({ show: false, item: '' });
+                                setShowEditServiceModifierModal({ show: false, item: '' });
                             }}
-                            item={showEditServiceVariationModal.item}
+                            item={showEditServiceModifierModal.item}
                         />
                     </div>
                 </Modal>
@@ -78,12 +79,12 @@ const ServiceVariations = () => {
                 }
                 <DeleteModalContent
                     reload={() => {
-                        loadServiceVariations();
+                        loadServiceModifiers();
                     }}
                 />
                 <div className="data-table mt-2">
                     <DataTable
-                        value={serviceVariations}
+                        value={serviceModifiers}
                         paginator
                         rows={10}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -94,16 +95,22 @@ const ServiceVariations = () => {
                         emptyMessage={t('data_not_available')}
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     >
-                        
+
                         <Column
-                            field="variation_title"
-                            header={t('variation_title')}
+                            field="modifier_title"
+                            header={t('modifier_title')}
                             sortable
                         />
                         <Column
-                            field="variation_desc"
-                            header={t('variation_desc')}
+                            field="modifier_desc"
+                            header={t('modifier_desc')}
                             sortable
+                        />
+                        <Column
+                            sortField="modifier_price"
+                            header={t('modifier_price')}
+                            sortable
+                            body={(row)=> getFormattedCurrency(row.modifier_price)}
                         />
                         <Column
                             field="created_at"
@@ -120,7 +127,7 @@ const ServiceVariations = () => {
                                     <div className='d-flex'>
                                         <Button
                                             onClick={(e) => {
-                                                setShowEditServiceVariationModal({ show: true, item: row });
+                                                setShowEditServiceModifierModal({ show: true, item: row });
                                             }}
                                             className='icon-btn mx-1' severity='primary' id="edit-btn">
                                             <span className="material-symbols-outlined">
@@ -129,7 +136,7 @@ const ServiceVariations = () => {
                                         </Button>
                                         <Button
                                             onClick={() => {
-                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/services/variations/delete/' + row.id }))
+                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/services/modifiers/delete/' + row.id }))
                                             }}
                                             className='icon-btn mx-1' severity='danger' id="edit-btn">
                                             <span className="material-symbols-outlined">
@@ -148,19 +155,22 @@ const ServiceVariations = () => {
 
 }
 
-const AddServiceVariation = (props) => {
+const AddServiceModifier = (props) => {
     const { t } = useTranslation();
-    const [variationTitle, setVariationTitle] = useState();
-    const [variationDesc, setVariationDesc] = useState();
-    const handleAddServiceVariation = async () => {
+    const [modifierTitle, setModifierTitle] = useState();
+    const [modifierDesc, setModifierDesc] = useState();
+    const [modifierPrice, setModifierPrice] = useState();
+
+    const handleAddServiceModifier = async () => {
         try {
             let data = {
-                variationTitle:variationTitle,
-                variationDesc:variationDesc,
-                created_at:getTimeStamp(new Date()),
-                updated_at:getTimeStamp(new Date()),
+                modifierTitle: modifierTitle,
+                modifierDesc: modifierDesc,
+                modifierPrice: modifierPrice,
+                created_at: getTimeStamp(new Date()),
+                updated_at: getTimeStamp(new Date()),
             };
-            await storeServiceVariation(data);
+            await storeServiceModifier(data);
             props.submit();
         } catch (error) {
             console.log(error);
@@ -170,13 +180,13 @@ const AddServiceVariation = (props) => {
         <form action=""
             onSubmit={(e) => {
                 e.preventDefault();
-                handleAddServiceVariation();
+                handleAddServiceModifier();
             }}
         >
             <div className="row">
                 <div className="col-12">
                     <div className="d-flex jcsb align-items-center">
-                        <h5 className='mt-2 mb-3 opacity'>{t('add_new_service_variation')}</h5>
+                        <h5 className='mt-2 mb-3 opacity'>{t('add_new_service_modifier')}</h5>
                         <Button raised className='icon-btn' severity='secondary' type='button'
                             onClick={() => {
                                 props.cancel();
@@ -190,19 +200,30 @@ const AddServiceVariation = (props) => {
                 </div>
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="variationTitle" className='required mb-1' >{t('variation_title')}</label>
-                        <input type="text" id="variationTitle" className='form-control' required
-                            value={variationTitle}
-                            onChange={(e) => { setVariationTitle(e.target.value) }}
+                        <label htmlFor="modifierTitle" className='required mb-1' >{t('modifier_title')}</label>
+                        <input type="text" id="modifierTitle" className='form-control' required
+                            value={modifierTitle}
+                            onChange={(e) => { setModifierTitle(e.target.value) }}
                         />
                     </div>
                 </div>
+
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="variationDesc" className='required mb-1' >{t('variation_desc')}</label>
-                        <input type="text" id="variationDesc" className='form-control' required
-                            value={variationDesc}
-                            onChange={(e) => { setVariationDesc(e.target.value) }}
+                        <label htmlFor="modifierPrice" className='required mb-1' >{t('modifier_price')}</label>
+                        <InputNumber type="text" id="modifierPrice" className='pr-input' required useGrouping={false} maxFractionDigits={3}
+                            value={modifierPrice}
+                            onChange={(e) => { setModifierPrice(e.value) }}
+                        />
+                    </div>
+                </div>
+
+                <div className="col-12 mb-2">
+                    <div className="form-group">
+                        <label htmlFor="modifierDesc" className='required mb-1' >{t('modifier_desc')}</label>
+                        <input type="text" id="modifierDesc" className='form-control' required
+                            value={modifierDesc}
+                            onChange={(e) => { setModifierDesc(e.target.value) }}
                         />
                     </div>
                 </div>
@@ -213,20 +234,22 @@ const AddServiceVariation = (props) => {
         </form>
     );
 }
-const EditServiceVariation = (props) => {
+const EditServiceModifier = (props) => {
     const { t } = useTranslation();
     const item = props.item;
-    const [variationTitle, setVariationTitle] = useState(item.variation_title);
-    const [variationDesc, setVariationDesc] = useState(item.variation_desc);
-    const handleEditServiceVariation = async () => {
+    const [modifierTitle, setModifierTitle] = useState(item.modifier_title);
+    const [modifierDesc, setModifierDesc] = useState(item.modifier_desc);
+    const [modifierPrice, setModifierPrice] = useState(item.modifier_price);
+    const handleEditServiceModifier = async () => {
         try {
             let data = {
-                id:item.id,
-                variationTitle:variationTitle,
-                variationDesc:variationDesc,
-                updated_at:getTimeStamp(new Date()),
+                id: item.id,
+                modifierTitle: modifierTitle,
+                modifierDesc: modifierDesc,
+                modifierPrice: modifierPrice,
+                updated_at: getTimeStamp(new Date()),
             };
-            await updateServiceVariation(data);
+            await updateServiceModifier(data);
             props.submit();
         } catch (error) {
             console.log(error);
@@ -236,13 +259,13 @@ const EditServiceVariation = (props) => {
         <form action=""
             onSubmit={(e) => {
                 e.preventDefault();
-                handleEditServiceVariation();
+                handleEditServiceModifier();
             }}
         >
             <div className="row">
                 <div className="col-12">
                     <div className="d-flex jcsb align-items-center">
-                        <h5 className='mt-2 mb-3 opacity'>{t('edit_service_variation')}</h5>
+                        <h5 className='mt-2 mb-3 opacity'>{t('edit_service_modifier')}</h5>
                         <Button raised className='icon-btn' severity='secondary' type='button'
                             onClick={() => {
                                 props.cancel();
@@ -256,19 +279,28 @@ const EditServiceVariation = (props) => {
                 </div>
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="variationTitle" className='required mb-1' >{t('variation_title')}</label>
-                        <input type="text" id="variationTitle" className='form-control' required
-                            value={variationTitle}
-                            onChange={(e) => { setVariationTitle(e.target.value) }}
+                        <label htmlFor="modifierTitle" className='required mb-1' >{t('modifier_title')}</label>
+                        <input type="text" id="modifierTitle" className='form-control' required
+                            value={modifierTitle}
+                            onChange={(e) => { setModifierTitle(e.target.value) }}
                         />
                     </div>
                 </div>
                 <div className="col-12 mb-2">
                     <div className="form-group">
-                        <label htmlFor="variationDesc" className='required mb-1' >{t('variation_desc')}</label>
-                        <input type="text" id="variationDesc" className='form-control' required
-                            value={variationDesc}
-                            onChange={(e) => { setVariationDesc(e.target.value) }}
+                        <label htmlFor="modifierPrice" className='required mb-1' >{t('modifier_price')}</label>
+                        <InputNumber type="text" id="modifierPrice" className='pr-input' required useGrouping={false} maxFractionDigits={3}
+                            value={modifierPrice}
+                            onChange={(e) => { setModifierPrice(e.value) }}
+                        />
+                    </div>
+                </div>
+                <div className="col-12 mb-2">
+                    <div className="form-group">
+                        <label htmlFor="modifierDesc" className='required mb-1' >{t('modifier_desc')}</label>
+                        <input type="text" id="modifierDesc" className='form-control' required
+                            value={modifierDesc}
+                            onChange={(e) => { setModifierDesc(e.target.value) }}
                         />
                     </div>
                 </div>
@@ -279,4 +311,4 @@ const EditServiceVariation = (props) => {
         </form>
     );
 }
-export default ServiceVariations;
+export default ServiceModifiers;

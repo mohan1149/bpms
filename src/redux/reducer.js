@@ -6,6 +6,7 @@ export const appReducer = createSlice({
         user: {},
         isuserlogged: false,
         showDialog: false,
+        showSidemenu:true,
         showErrorToast: {
             flag:false,
             content:'',
@@ -32,11 +33,14 @@ export const appReducer = createSlice({
         setErrorToast: (state, action) => {
             state.showErrorToast = action.payload;
         },
+        setShowSidemenu: (state, action) => {
+            state.showSidemenu = action.payload
+        },
 
 
 
     }
 })
-export const { setUser, setUserLoggedStatus, setShowDialog, setShowDeleteDialog,setErrorToast } = appReducer.actions
+export const { setUser, setUserLoggedStatus, setShowDialog, setShowDeleteDialog,setErrorToast,setShowSidemenu } = appReducer.actions
 
 export default appReducer.reducer

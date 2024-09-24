@@ -230,6 +230,44 @@ export const updateServiceVariation = async (data) => {
 
 
 
+export const getServiceModifiers = async () => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_service_modifiers,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const storeServiceModifier = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_service_modifier,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const updateServiceModifier = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_service_modifier,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
+
 
 
 

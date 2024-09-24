@@ -22,6 +22,10 @@ const urls = {
     get_service_variations: baseUrl + '/services/variations',
     update_service_variation: baseUrl + '/services/variations/update',
 
+    store_service_modifier: baseUrl + '/services/modifiers/store',
+    get_service_modifiers: baseUrl + '/services/modifiers',
+    update_service_modifier: baseUrl + '/services/modifiers/update',
+
 }
 
 export default urls;

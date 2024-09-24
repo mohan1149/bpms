@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '../modules/home/Home';
 import Header from '../modules/header/Header';
 import Sidebar from '../modules/home/Sidemenu';
-import { useStore } from 'react-redux';
+import { useStore,useSelector } from 'react-redux';
 import Login from './../modules/auth/Login';
 import Splash from './../modules/splash/Splash';
 import Logout from './../modules/auth/Logout';
@@ -37,19 +37,19 @@ import PaymentTypes from '../modules/settings/PaymentTypes';
 //SERVICES
 import ServiceCategories from '../modules/services/categories/ServiceCategories';
 import ServiceVariations from '../modules/services/variations/ServiceVariations';
+import ServiceModifiers from '../modules/services/modifiers/ServiceModifiers';
 import Services from '../modules/services/Services';
 import AddService from '../modules/services/AddService';
+import AddServiceOrder from '../modules/services/terminal/AddServiceOrder';
 
 import { setErrorToast } from '../redux/reducer';
 
 const AppRouter = () => {
     const store = useStore();
     const { t } = useTranslation();
-
     const [isUserLogged, setIsUserLogged] = useState(false);
     const [showReqDialog, setShowReqDialog] = useState(false);
-
-    const [sideMenuSize, setSideMenuSize] = useState(true);
+    const sideMenuSize = useSelector((state) => state.app.showSidemenu);
     const [loading, setLoading] = useState(true);
     const toast = useRef(null);
     store.subscribe(() => {
@@ -100,9 +100,7 @@ const AppRouter = () => {
                                 width: sideMenuSize ? '' : '4.3%',
                             }}>
                             <div className='side-menu fh glass-card-no-radius'>
-                                <Sidebar onSizeToggle={(check) => {
-                                    setSideMenuSize(check)
-                                }} />
+                                <Sidebar/>
                             </div>
                         </div>
                         <div className="col-lg-10 col-sm-12 col-md-12 app-content no_mp m-0 p-0"
@@ -140,25 +138,25 @@ const AppRouter = () => {
                                     <Route path='/branches/add' element={<AddBranch />} />
                                     <Route path='/branches/edit' element={<EditBranch />} />
 
-                                    
+
                                     <Route path='/services/categories' element={<ServiceCategories />} />
                                     <Route path='/services/variations' element={<ServiceVariations />} />
-                                    
+                                    <Route path='/services/modifiers' element={<ServiceModifiers />} />
+
                                     <Route path='/services' element={<Services />} />
                                     <Route path='/services/add' element={<AddService />} />
-                                    
-                                    
 
                                     
+                                    <Route path='/services/terminal' element={<AddServiceOrder />}></Route>
+
+
+
+
                                     <Route path='/settings/payment-types' element={<PaymentTypes />} />
-
-
-
                                     <Route path='/logout' element={<Logout />} />
                                     <Route path='*' element={<Page404 />} />
                                 </Routes>
                             </div>
-                            {/* <Footer /> */}
                         </div>
                     </div>
                 </div>

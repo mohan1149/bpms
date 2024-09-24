@@ -1,3 +1,4 @@
+import store from "../redux/store";
 export const getTimeStamp = (date) => {
     const formattedDate = date.getFullYear() + "-" +
         String(date.getMonth() + 1).padStart(2, '0') + "-" +
@@ -7,6 +8,11 @@ export const getTimeStamp = (date) => {
         String(date.getSeconds()).padStart(2, '0');
     return formattedDate;
 }
-export const getTimeFromString = (string) =>{
+export const getTimeFromString = (string) => {
     return new Date(string).toLocaleTimeString();
+}
+
+export const getFormattedCurrency = (currency) => {
+    let settings = store.getState().app.user.settings;
+    return settings.currency_code + ' ' + parseFloat(currency).toFixed(settings.decimal_points);
 }

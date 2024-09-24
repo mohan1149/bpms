@@ -3,25 +3,22 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-bootstrap';
 import { Button } from 'primereact/button';
-
+import { useSelector, useStore } from 'react-redux';
+import {setShowSidemenu} from '../../redux/reducer';
 const Sidebar = (props) => {
-    const [sizeToggler, setSizeToggler] = useState(true);
+    const store = useStore();
     const { t } = useTranslation();
     const location = useLocation();
     const [activePath, setActivePath] = useState('/');
     const [accordionActiveKey, setAccordionActiveKey] = useState('null');
-
+    const sizeToggler = useSelector((state) => state.app.showSidemenu);
     useEffect(() => {
         const path = location.pathname;
         setActivePath(path);
-    }, [location.pathname]);
-
-    useEffect(() => {
         if (!sizeToggler) {
             setAccordionActiveKey(null);
         }
-    }, [sizeToggler]);
-
+    }, [location.pathname, sizeToggler]);
     const handleAccordionToggle = (eventKey) => {
         if (sizeToggler) {
             setAccordionActiveKey(accordionActiveKey === eventKey ? null : eventKey);
@@ -57,7 +54,7 @@ const Sidebar = (props) => {
                     </Link>
                 </li>
             }
-             <li className={`app-sidemenu-bar-item ${activePath.includes('branches') ? 'active' : ''}`}>
+            <li className={`app-sidemenu-bar-item ${activePath.includes('branches') ? 'active' : ''}`}>
                 <Link to="/branches">
                     <span className='link-container'>
                         <span className="material-symbols-outlined">
@@ -121,7 +118,10 @@ const Sidebar = (props) => {
                                 <li>
                                     <Link to="/services/variations">{t('service_variations')}</Link>
                                 </li>
-                                
+                                <li>
+                                    <Link to="/services/modifiers">{t('service_modifiers')}</Link>
+                                </li>
+
                             </ul>
                         </Accordion.Body>
                     </Accordion.Item>
@@ -199,12 +199,11 @@ const Sidebar = (props) => {
                     className='icon-btn' severity='secondary'
                     style={{
                         marginLeft: 8,
-                        marginRight:12,
+                        marginRight: 12,
                     }}
                     onClick={() => {
                         const check = !sizeToggler;
-                        props.onSizeToggle(check);
-                        setSizeToggler(check);
+                        store.dispatch(setShowSidemenu(check));
                     }}
                 >
                     {sizeToggler ? (

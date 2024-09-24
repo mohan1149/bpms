@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from 'react-redux';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import MobileSideMenu from './MobileSideMenu';
@@ -93,7 +93,6 @@ const Header = () => {
 
                         <div>
                             {window.location.pathname !== "/" &&
-
                                 <Button
                                     className='icon-btn' severity='secondary'
                                     onClick={() => {
@@ -110,6 +109,7 @@ const Header = () => {
                         </div>
                         <div>
                             <ContextMenu model={langItems} ref={langCM} breakpoint="767px" />
+                            <Link to="/services/terminal" className='btn outline-btn mx-2'>{t('service_terminal')}</Link>
                             <Button
                                 className='icon-btn' severity='secondary'
                                 onClick={(e) => langCM.current.show(e)}
