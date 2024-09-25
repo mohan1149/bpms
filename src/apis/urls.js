@@ -11,7 +11,7 @@ const urls = {
     edit_payment_type: baseUrl + '/payment-types/update',
 
     add_branch: baseUrl + '/branches/store',
-    get_branches: baseUrl + '/branches',
+    get_branches: baseUrl + '/branches?onlyActive=',
     update_branch: baseUrl + '/branches/update',
 
     store_service_category: baseUrl + '/services/categories/store',

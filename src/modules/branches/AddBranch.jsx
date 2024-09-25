@@ -3,15 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'primereact/button';
-import { useStore } from 'react-redux';
 import { getPaymentTypes, addBranch } from '../../apis/services';
 import { Avatar } from 'primereact/avatar';
 import { Calendar } from 'primereact/calendar';
 import { getTimeStamp } from '../../helpers/helpers';
 import { Toast } from 'primereact/toast';
+import { Checkbox } from 'primereact/checkbox';
 const AddBranch = () => {
     const { t } = useTranslation();
-    const store = useStore();
     const toast = useRef();
     const [branchName, setBranchName] = useState();
     const [email, setEmail] = useState();
@@ -22,7 +21,8 @@ const AddBranch = () => {
     const [openingTime, setOpeningTime] = useState();
     const [closingTime, setClosingTime] = useState();
     const [branchImage, setBranchImage] = useState();
-    const user = store.getState().app.user;
+    const [status, setStatus] = useState(true);
+
     useEffect(() => {
         loadPaymentTypes();
     }, []);
@@ -44,14 +44,15 @@ const AddBranch = () => {
             formData.append('address', address);
             formData.append('openingTime', getTimeStamp(openingTime));
             formData.append('closingTime', getTimeStamp(closingTime));
+            formData.append('status',status ? 1: 0);
             formData.append('created_at', getTimeStamp(new Date()));
             formData.append('updated_at', getTimeStamp(new Date()));
             formData.append('paymentTypes', JSON.stringify(paymentMethods));
             formData.append('branchImage', branchImage);
             const res = await addBranch(formData);
-            if(res.data.staus){
+            if (res.data.staus) {
                 toast.current.show({ severity: 'success', summary: t('success'), detail: t(res.data.message), life: 3000 });
-            }else{
+            } else {
                 toast.current.show({ severity: 'error', summary: t('error'), detail: t(res.data.message), life: 3000 });
             }
 
@@ -63,7 +64,7 @@ const AddBranch = () => {
 
     return (
         <div>
-            <Toast ref={toast}/>
+            <Toast ref={toast} />
             <div className="glass-card p-3">
                 <div className="d-flex jcsb">
                     <div className='mt-2 mb-2'>
@@ -152,7 +153,7 @@ const AddBranch = () => {
                                     <label htmlFor="payment_types" className='required mb-1' >{t('payment_types')}</label>
                                     <Select options={paymentTypes} id="payment_types" isMulti={true} required
                                         placeholder={t('choose_payment_types')}
-                                        onChange={(e)=>{
+                                        onChange={(e) => {
                                             setBranchPaymentTypes(e);
                                         }}
                                         getOptionLabel={(e) => {
@@ -177,7 +178,18 @@ const AddBranch = () => {
                                     />
                                 </div>
                             </div>
-
+                            <div className="col-md-12 mt-2">
+                                <div className="d-flex">
+                                    <div className="flex align-items-center">
+                                        <Checkbox inputId="status" name="status" checked={status} className='mx-1' 
+                                            onChange={()=>{
+                                                setStatus(!status);
+                                            }}
+                                        />
+                                        <label htmlFor="status" className="ml-2">{t('enable_for_use')}</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="col-12 mt-3">
                                 <Button type='submit' className='p-btn'>{t('add_branch')}</Button>
                             </div>

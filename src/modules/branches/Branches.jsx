@@ -10,7 +10,7 @@ import { Button } from 'primereact/button';
 import DeleteModalContent from '../../commons/DeleteModalContent';
 import { useStore } from 'react-redux';
 import { setShowDeleteDialog } from '../../redux/reducer';
-import { Chip } from 'primereact/chip';
+import { InputSwitch } from 'primereact/inputswitch';
 const Branches = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -97,21 +97,32 @@ const Branches = () => {
                         />
                         <Column
                             header={t('payment_types')}
+                            style={{
+                                minWidth:'10rem'
+                            }}
                             body={(row) => {
                                 return (
-                                    <div>
+                                    <div className='d-flex-wrap d-flex'>
                                         {
                                             row.payment_types.map((i, key) => {
                                                 return (
-                                                    // <Chip label={i.payment_title} key={key} className='mx-1' />
-                                                    <Avatar image={i.payment_image} className='mx-1' imageAlt={i.payment_title} title={i.payment_title}/>
+                                                    <Avatar image={i.payment_image} className='mx-1 mb-1' imageAlt={i.payment_title} title={i.payment_title} />
                                                 )
                                             })
                                         }
-
                                     </div>
                                 );
                             }}
+                        />
+                        <Column
+                            sortField='status'
+                            header={t('status')}
+                            body={(row) => {
+                                return (
+                                    <InputSwitch checked={row.branch.status === 1 ? true : false} />
+                                );
+                            }}
+                            sortable
                         />
                         <Column
                             header={t('actions')}
@@ -128,7 +139,7 @@ const Branches = () => {
                                         </Link>
                                         <Button
                                             onClick={() => {
-                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/branches/delete/' + row.id }))
+                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/branches/delete/' + row.branch.id }))
                                             }}
                                             className='icon-btn mx-1' severity='danger' id="edit-btn">
                                             <span className="material-symbols-outlined">

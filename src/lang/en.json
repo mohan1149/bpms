@@ -65,5 +65,6 @@
     "modifier_price":"Modifier Price",
     "add_service_modifier":"Add Service Modifier",
     "add_new_service_modifier":"Add new Service Modifier",
-    "edit_service_modifier":"Edit Service Modifier"
+    "edit_service_modifier":"Edit Service Modifier",
+    "status":"Status"
 }

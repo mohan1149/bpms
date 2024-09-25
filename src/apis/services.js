@@ -138,11 +138,11 @@ export const updateBranch = async (data) => {
     }
 }
 
-export const getBranches = async (data) => {
+export const getBranches = async (onlyActive = 0) => {
     try {
         let response = await axios({
             method: 'get',
-            url: urls.get_branches,
+            url: urls.get_branches + onlyActive
         });
         return response;
     } catch (error) {

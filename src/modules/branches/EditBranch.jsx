@@ -3,17 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'primereact/button';
-import { useStore } from 'react-redux';
 import { getPaymentTypes, updateBranch } from '../../apis/services';
 import { Avatar } from 'primereact/avatar';
 import { Calendar } from 'primereact/calendar';
 import { getTimeStamp } from '../../helpers/helpers';
 import { Toast } from 'primereact/toast';
+import { Checkbox } from 'primereact/checkbox';
 const EditBranch = () => {
     const { t } = useTranslation();
-    const store = useStore();
     const toast = useRef();
-    const location = useLocation();    
+    const location = useLocation();
     const branch = JSON.parse(location.state).branch;
     const [branchName, setBranchName] = useState(branch.branch_name);
     const [email, setEmail] = useState(branch.branch_email);
@@ -24,7 +23,7 @@ const EditBranch = () => {
     const [openingTime, setOpeningTime] = useState(new Date(branch.opening_time));
     const [closingTime, setClosingTime] = useState(new Date(branch.closing_time));
     const [branchImage, setBranchImage] = useState();
-    const user = store.getState().app.user;
+    const [status, setStatus] = useState(branch.status === 1 ? true : false);
     useEffect(() => {
         loadPaymentTypes();
     }, []);
@@ -38,9 +37,9 @@ const EditBranch = () => {
         }
     }
     const setExistingPaymentTypes = (types) => {
-        let existingPaymentTypesIds = JSON.parse(branch.payment_types).map((e)=> e.id);        
+        let existingPaymentTypesIds = JSON.parse(branch.payment_types).map((e) => e.id);
         let existingPaymentTypes = types.filter((i) => existingPaymentTypesIds.includes(i.id));
-        setBranchPaymentTypes(existingPaymentTypes);        
+        setBranchPaymentTypes(existingPaymentTypes);
     }
     const handleEditBranch = async () => {
         try {
@@ -51,6 +50,7 @@ const EditBranch = () => {
             formData.append('email', email);
             formData.append('phone', phone);
             formData.append('address', address);
+            formData.append('status',status ? 1: 0);
             formData.append('openingTime', getTimeStamp(openingTime));
             formData.append('closingTime', getTimeStamp(closingTime));
             formData.append('created_at', getTimeStamp(new Date()));
@@ -162,7 +162,7 @@ const EditBranch = () => {
                                     <Select options={paymentTypes} id="payment_types" isMulti={true} required
                                         placeholder={t('choose_payment_types')}
                                         value={branchPaymentTypes}
-                                        onChange={(e)=>{
+                                        onChange={(e) => {
                                             setBranchPaymentTypes(e);
                                         }}
                                         getOptionLabel={(e) => {
@@ -187,7 +187,18 @@ const EditBranch = () => {
                                     />
                                 </div>
                             </div>
-
+                            <div className="col-md-12 mt-2">
+                                <div className="d-flex">
+                                    <div className="flex align-items-center">
+                                        <Checkbox inputId="status" name="status" checked={status} className='mx-1'
+                                            onChange={() => {
+                                                setStatus(!status);
+                                            }}
+                                        />
+                                        <label htmlFor="status" className="ml-2">{t('enable_for_use')}</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="col-12 mt-3">
                                 <Button type='submit' className='p-btn'>{t('update')}</Button>
                             </div>
