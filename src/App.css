@@ -349,3 +349,20 @@ ul.p-dropdown-items{
   display: flex;
   flex-wrap: wrap;
 }
+.search-input{
+  border-radius: 3rem !important;
+  border-width: 2px !important;
+  padding-left: 25px !important;
+  padding-right: 25px !important;
+}
+.service-btn{
+  background-color: transparent;
+  border: none;
+  padding: 0px;
+  border-radius: 8px;
+  color: #000;
+}
+.icon-sm-btn{
+  padding: 4px !important;
+  border-radius: 4rem;
+}

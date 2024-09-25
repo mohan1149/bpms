@@ -1,5 +1,7 @@
 import urls from "./urls";
 import axios from "./axios";
+
+
 export const checkLogin = async (token) => {
     try {
         const response = await axios({
@@ -38,6 +40,20 @@ export const getUserData = async (token) => {
         return error;
     }
 }
+export const deleteRecord = async (url) => {
+    try {
+        let response = await axios({
+            method: 'DELETE',
+            url: urls.delete_record + url,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
+
 
 export const storeAdmin = async (data) => {
     try {
@@ -45,6 +61,19 @@ export const storeAdmin = async (data) => {
             method: 'POST',
             url: urls.add_admin,
             data: data
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+// API CALLS FOR PAYMENTTYPES
+export const getPaymentTypes = async (onlyActive = 0) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_payment_types + onlyActive,
         });
         return response;
     } catch (error) {
@@ -81,32 +110,20 @@ export const updatePaymentType = async (data) => {
         return error;
     }
 }
+// END
 
-export const getPaymentTypes = async () => {
+// API CALLS FOR BRANCHES
+export const getBranches = async (onlyActive = 0) => {
     try {
         let response = await axios({
-            method: 'GET',
-            url: urls.get_payment_types,
+            method: 'get',
+            url: urls.get_branches + onlyActive
         });
         return response;
     } catch (error) {
         return error;
     }
 }
-
-export const deleteRecord = async (url) => {
-    try {
-        let response = await axios({
-            method: 'DELETE',
-            url: urls.delete_record + url,
-        });
-        return response;
-    } catch (error) {
-        return error;
-    }
-}
-
-
 export const addBranch = async (data) => {
     try {
         let response = await axios({
@@ -137,19 +154,20 @@ export const updateBranch = async (data) => {
         return error;
     }
 }
+// END
 
-export const getBranches = async (onlyActive = 0) => {
+// API CALLS FOR SERVICE CATEGORIES
+export const getServiceCategories = async (activeOnly = 0) => {
     try {
         let response = await axios({
-            method: 'get',
-            url: urls.get_branches + onlyActive
+            method: 'GET',
+            url: urls.get_service_categories + activeOnly,
         });
         return response;
     } catch (error) {
         return error;
     }
 }
-
 export const storeServiceCategory = async (data) => {
     try {
         let response = await axios({
@@ -165,18 +183,6 @@ export const storeServiceCategory = async (data) => {
         return error;
     }
 }
-export const getServiceCategories = async (data) => {
-    try {
-        let response = await axios({
-            method: 'GET',
-            url: urls.get_service_categories,
-        });
-        return response;
-    } catch (error) {
-        return error;
-    }
-}
-
 export const updateServiceCategory = async (data) => {
     try {
         let response = await axios({
@@ -192,11 +198,14 @@ export const updateServiceCategory = async (data) => {
         return error;
     }
 }
-export const getServiceVariations = async () => {
+// END
+
+// API CALLS FOR SERVICE VARIATIONS
+export const getServiceVariations = async (activeOnly = 0) => {
     try {
         let response = await axios({
             method: 'GET',
-            url: urls.get_service_variations,
+            url: urls.get_service_variations + activeOnly,
         });
         return response;
     } catch (error) {
@@ -227,14 +236,14 @@ export const updateServiceVariation = async (data) => {
         return error;
     }
 }
+// END
 
-
-
-export const getServiceModifiers = async () => {
+// API CALLS FOR SERVICE MODIFIERS
+export const getServiceModifiers = async (activeOnly = 0) => {
     try {
         let response = await axios({
             method: 'GET',
-            url: urls.get_service_modifiers,
+            url: urls.get_service_modifiers + activeOnly,
         });
         return response;
     } catch (error) {
@@ -265,6 +274,7 @@ export const updateServiceModifier = async (data) => {
         return error;
     }
 }
+// END
 
 
 

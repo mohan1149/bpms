@@ -10,6 +10,8 @@ import { Column } from 'primereact/column';
 import { setShowDeleteDialog } from '../../../redux/reducer';
 import DeleteModalContent from '../../../commons/DeleteModalContent';
 import { getTimeStamp } from '../../../helpers/helpers';
+import { Checkbox } from 'primereact/checkbox';
+import { InputSwitch } from 'primereact/inputswitch';
 const ServiceVariations = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -73,9 +75,6 @@ const ServiceVariations = () => {
                         />
                     </div>
                 </Modal>
-                {
-
-                }
                 <DeleteModalContent
                     reload={() => {
                         loadServiceVariations();
@@ -94,7 +93,6 @@ const ServiceVariations = () => {
                         emptyMessage={t('data_not_available')}
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     >
-                        
                         <Column
                             field="variation_title"
                             header={t('variation_title')}
@@ -112,7 +110,16 @@ const ServiceVariations = () => {
                             sortField='created_at'
                             body={(row) => new Date(row.created_at).toUTCString()}
                         />
-
+                        <Column
+                            header={t('status')}
+                            sortField='status'
+                            sortable
+                            body={(row) => {
+                                return (
+                                    <InputSwitch checked={row.status === 1 ? true : false} />
+                                )
+                            }}
+                        />
                         <Column
                             header={t('actions')}
                             body={(row) => {
@@ -145,20 +152,21 @@ const ServiceVariations = () => {
             </div>
         </div>
     );
-
 }
 
 const AddServiceVariation = (props) => {
     const { t } = useTranslation();
     const [variationTitle, setVariationTitle] = useState();
     const [variationDesc, setVariationDesc] = useState();
+    const [status, setStatus] = useState(true);
     const handleAddServiceVariation = async () => {
         try {
             let data = {
-                variationTitle:variationTitle,
-                variationDesc:variationDesc,
-                created_at:getTimeStamp(new Date()),
-                updated_at:getTimeStamp(new Date()),
+                variationTitle: variationTitle,
+                variationDesc: variationDesc,
+                status: status,
+                created_at: getTimeStamp(new Date()),
+                updated_at: getTimeStamp(new Date()),
             };
             await storeServiceVariation(data);
             props.submit();
@@ -206,6 +214,18 @@ const AddServiceVariation = (props) => {
                         />
                     </div>
                 </div>
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className=''
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2 mx-2">{t('enable_for_use')}</label>
+                        </div>
+                    </div>
+                </div>
                 <div className="col-12 mt-3">
                     <Button type='submit' className='p-btn'>{t('save')}</Button>
                 </div>
@@ -218,13 +238,15 @@ const EditServiceVariation = (props) => {
     const item = props.item;
     const [variationTitle, setVariationTitle] = useState(item.variation_title);
     const [variationDesc, setVariationDesc] = useState(item.variation_desc);
+    const [status, setStatus] = useState(item.status === 1 ? true : false);
     const handleEditServiceVariation = async () => {
         try {
             let data = {
-                id:item.id,
-                variationTitle:variationTitle,
-                variationDesc:variationDesc,
-                updated_at:getTimeStamp(new Date()),
+                id: item.id,
+                variationTitle: variationTitle,
+                variationDesc: variationDesc,
+                status: status,
+                updated_at: getTimeStamp(new Date()),
             };
             await updateServiceVariation(data);
             props.submit();
@@ -270,6 +292,18 @@ const EditServiceVariation = (props) => {
                             value={variationDesc}
                             onChange={(e) => { setVariationDesc(e.target.value) }}
                         />
+                    </div>
+                </div>
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className=''
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2 mx-2">{t('enable_for_use')}</label>
+                        </div>
                     </div>
                 </div>
                 <div className="col-12 mt-3">

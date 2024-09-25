@@ -9,8 +9,11 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { setShowDeleteDialog } from '../../../redux/reducer';
 import DeleteModalContent from '../../../commons/DeleteModalContent';
-import { getTimeStamp,getFormattedCurrency } from '../../../helpers/helpers';
+import { getTimeStamp, getFormattedCurrency } from '../../../helpers/helpers';
 import { InputNumber } from 'primereact/inputnumber';
+import { Checkbox } from 'primereact/checkbox';
+import { InputSwitch } from 'primereact/inputswitch';
+
 const ServiceModifiers = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -110,7 +113,7 @@ const ServiceModifiers = () => {
                             sortField="modifier_price"
                             header={t('modifier_price')}
                             sortable
-                            body={(row)=> getFormattedCurrency(row.modifier_price)}
+                            body={(row) => getFormattedCurrency(row.modifier_price)}
                         />
                         <Column
                             field="created_at"
@@ -119,7 +122,16 @@ const ServiceModifiers = () => {
                             sortField='created_at'
                             body={(row) => new Date(row.created_at).toUTCString()}
                         />
-
+                        <Column
+                            header={t('status')}
+                            sortField='status'
+                            sortable
+                            body={(row) => {
+                                return (
+                                    <InputSwitch checked={row.status === 1 ? true : false} />
+                                )
+                            }}
+                        />
                         <Column
                             header={t('actions')}
                             body={(row) => {
@@ -160,6 +172,7 @@ const AddServiceModifier = (props) => {
     const [modifierTitle, setModifierTitle] = useState();
     const [modifierDesc, setModifierDesc] = useState();
     const [modifierPrice, setModifierPrice] = useState();
+    const [status, setStatus] = useState(true);
 
     const handleAddServiceModifier = async () => {
         try {
@@ -167,6 +180,7 @@ const AddServiceModifier = (props) => {
                 modifierTitle: modifierTitle,
                 modifierDesc: modifierDesc,
                 modifierPrice: modifierPrice,
+                status:status,
                 created_at: getTimeStamp(new Date()),
                 updated_at: getTimeStamp(new Date()),
             };
@@ -227,6 +241,18 @@ const AddServiceModifier = (props) => {
                         />
                     </div>
                 </div>
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className=''
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2 mx-2">{t('enable_for_use')}</label>
+                        </div>
+                    </div>
+                </div>
                 <div className="col-12 mt-3">
                     <Button type='submit' className='p-btn'>{t('save')}</Button>
                 </div>
@@ -240,6 +266,8 @@ const EditServiceModifier = (props) => {
     const [modifierTitle, setModifierTitle] = useState(item.modifier_title);
     const [modifierDesc, setModifierDesc] = useState(item.modifier_desc);
     const [modifierPrice, setModifierPrice] = useState(item.modifier_price);
+    const [status, setStatus] = useState(item.status === 1 ? true : false);
+
     const handleEditServiceModifier = async () => {
         try {
             let data = {
@@ -247,6 +275,7 @@ const EditServiceModifier = (props) => {
                 modifierTitle: modifierTitle,
                 modifierDesc: modifierDesc,
                 modifierPrice: modifierPrice,
+                status:status,
                 updated_at: getTimeStamp(new Date()),
             };
             await updateServiceModifier(data);
@@ -302,6 +331,18 @@ const EditServiceModifier = (props) => {
                             value={modifierDesc}
                             onChange={(e) => { setModifierDesc(e.target.value) }}
                         />
+                    </div>
+                </div>
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className=''
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2 mx-2">{t('enable_for_use')}</label>
+                        </div>
                     </div>
                 </div>
                 <div className="col-12 mt-3">

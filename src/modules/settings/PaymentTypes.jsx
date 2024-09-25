@@ -12,7 +12,7 @@ import { Avatar } from 'primereact/avatar';
 import { InputSwitch } from "primereact/inputswitch";
 import { setShowDeleteDialog } from '../../redux/reducer';
 import DeleteModalContent from '../../commons/DeleteModalContent';
-import {getTimeStamp} from '../../helpers/helpers';
+import { getTimeStamp } from '../../helpers/helpers';
 const PaymentTypes = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -77,10 +77,10 @@ const PaymentTypes = () => {
                     </div>
                 </Modal>
                 {
-                    
+
                 }
                 <DeleteModalContent
-                    reload={()=>{
+                    reload={() => {
                         loadPaymentTypes();
                     }}
                 />
@@ -126,6 +126,16 @@ const PaymentTypes = () => {
                             }}
                         />
                         <Column
+                            header={t('status')}
+                            sortField='status'
+                            sortable
+                            body={(row) => {
+                                return (
+                                    <InputSwitch checked={row.status === 1 ? true : false} />
+                                )
+                            }}
+                        />
+                        <Column
                             header={t('actions')}
                             body={(row) => {
                                 return (
@@ -165,12 +175,14 @@ const AddPaymentType = (props) => {
     const [paymentTitle, setPaymentTitle] = useState();
     const [image, setImage] = useState();
     const [trackField, setTrackField] = useState(true);
+    const [status, setStatus] = useState(true);
     const handleAddPaymentType = async () => {
         try {
             let formData = new FormData();
             formData.append('paymentTitle', paymentTitle);
             formData.append('paymentImage', image);
             formData.append('trackField', trackField);
+            formData.append('status', status ? 1 : 0);
             formData.append('created_at', getTimeStamp(new Date()));
             formData.append('updated_at', getTimeStamp(new Date()));
             await storePaymentType(formData);
@@ -222,12 +234,24 @@ const AddPaymentType = (props) => {
                 </div>
                 <div className="col-12 mb-2 mt-2">
                     <div className="d-flex align-items-center">
-                        <Checkbox inputId="trackField" name="trackField" id="trackField" checked={trackField}
+                        <Checkbox inputId="trackField" name="trackField" id="trackField" className='' checked={trackField}
                             onChange={() => {
                                 setTrackField(!trackField);
                             }}
                         />
                         <label htmlFor="trackField" className="mx-2">{t('require_track_field')}</label>
+                    </div>
+                </div>
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className=''
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2 mx-2">{t('enable_for_use')}</label>
+                        </div>
                     </div>
                 </div>
                 <div className="col-12 mt-3">
@@ -243,6 +267,8 @@ const EditPaymentType = (props) => {
     const [paymentTitle, setPaymentTitle] = useState(item.payment_title);
     const [image, setImage] = useState();
     const [trackField, setTrackField] = useState(item.payment_track_field === 1 ? true : false);
+    const [status, setStatus] = useState(item.status === 1 ? true : false);
+
     const handleEditPaymentType = async () => {
         try {
             let formData = new FormData();
@@ -250,6 +276,7 @@ const EditPaymentType = (props) => {
             formData.append('paymentTitle', paymentTitle);
             formData.append('paymentImage', image);
             formData.append('trackField', trackField);
+            formData.append('status', status ? 1 : 0);
             formData.append('updated_at', getTimeStamp(new Date()));
             await updatePaymentType(formData);
             props.submit();
@@ -306,6 +333,18 @@ const EditPaymentType = (props) => {
                             }}
                         />
                         <label htmlFor="trackField" className="mx-2">{t('require_track_field')}</label>
+                    </div>
+                </div>
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className=''
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2 mx-2">{t('enable_for_use')}</label>
+                        </div>
                     </div>
                 </div>
                 <div className="col-12 mt-3">

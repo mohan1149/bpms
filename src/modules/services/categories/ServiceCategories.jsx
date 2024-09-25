@@ -11,6 +11,9 @@ import { Avatar } from 'primereact/avatar';
 import { setShowDeleteDialog } from '../../../redux/reducer';
 import DeleteModalContent from '../../../commons/DeleteModalContent';
 import { getTimeStamp } from '../../../helpers/helpers';
+import { InputSwitch } from 'primereact/inputswitch';
+import { Checkbox } from "primereact/checkbox";
+
 const ServiceCategories = () => {
     const { t } = useTranslation();
     const store = useStore();
@@ -120,7 +123,16 @@ const ServiceCategories = () => {
                             sortField='created_at'
                             body={(row) => new Date(row.created_at).toUTCString()}
                         />
-
+                        <Column
+                            sortField='status'
+                            header={t('status')}
+                            body={(row) => {
+                                return (
+                                    <InputSwitch checked={row.status === 1 ? true : false} />
+                                );
+                            }}
+                            sortable
+                        />
                         <Column
                             header={t('actions')}
                             body={(row) => {
@@ -161,12 +173,14 @@ const AddServiceCategory = (props) => {
     const [categoryTitle, setCategoryTitle] = useState();
     const [categoryDesc, setCategoryDesc] = useState();
     const [image, setImage] = useState();
+    const [status, setStatus] = useState(true);
     const handleAddServiceCategory = async () => {
         try {
             let formData = new FormData();
             formData.append('categoryTitle', categoryTitle);
             formData.append('categoryImage', image);
             formData.append('categoryDesc', categoryDesc);
+            formData.append('status', status ? 1 : 0);
             formData.append('created_at', getTimeStamp(new Date()));
             formData.append('updated_at', getTimeStamp(new Date()));
             await storeServiceCategory(formData);
@@ -225,7 +239,18 @@ const AddServiceCategory = (props) => {
                         />
                     </div>
                 </div>
-
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className='mx-1'
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2">{t('enable_for_use')}</label>
+                        </div>
+                    </div>
+                </div>
                 <div className="col-12 mt-3">
                     <Button type='submit' className='p-btn'>{t('save')}</Button>
                 </div>
@@ -239,6 +264,7 @@ const EditServiceCategory = (props) => {
     const [categoryTitle, setCategoryTitle] = useState(item.category_title);
     const [image, setImage] = useState();
     const [categoryDesc, setCategoryDesc] = useState(item.category_desc);
+    const [status, setStatus] = useState(item.status === 1 ? true : false);
     const handleEditServiceCategory = async () => {
         try {
             let formData = new FormData();
@@ -246,6 +272,7 @@ const EditServiceCategory = (props) => {
             formData.append('categoryTitle', categoryTitle);
             formData.append('categoryImage', image);
             formData.append('categoryDesc', categoryDesc);
+            formData.append('status', status ? 1 : 0);
             formData.append('updated_at', getTimeStamp(new Date()));
             await updateServiceCategory(formData);
             props.submit();
@@ -301,6 +328,18 @@ const EditServiceCategory = (props) => {
                                 setImage(e.target.files[0]);
                             }}
                         />
+                    </div>
+                </div>
+                <div className="col-md-12 mt-2">
+                    <div className="d-flex">
+                        <div className="flex align-items-center">
+                            <Checkbox inputId="status" name="status" checked={status} className='mx-1'
+                                onChange={() => {
+                                    setStatus(!status);
+                                }}
+                            />
+                            <label htmlFor="status" className="ml-2">{t('enable_for_use')}</label>
+                        </div>
                     </div>
                 </div>
                 <div className="col-12 mt-3">

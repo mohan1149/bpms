@@ -28,7 +28,7 @@ const AddBranch = () => {
     }, []);
     const loadPaymentTypes = async () => {
         try {
-            const res = await getPaymentTypes();
+            const res = await getPaymentTypes(1);
             setPaymentTypes(res.data.data);
         } catch (error) {
             console.log(error);

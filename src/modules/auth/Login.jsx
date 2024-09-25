@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { startLogin,getUserData } from './../../apis/services';
+import { startLogin, getUserData } from './../../apis/services';
 import { setUserLoggedStatus, setUser } from './../../redux/reducer';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
@@ -26,8 +26,12 @@ const Login = () => {
             const res = await startLogin(data);
             localStorage.setItem('_jwt', res.data.access_token);
             const userData = await getUserData();
-            store.dispatch(setUser(userData.data));
-            store.dispatch(setUserLoggedStatus(true));
+            if (!userData.data.status) {
+                toast.current.show({ severity: 'error', summary: t('request_failed'), detail: t('user_is_suspended'), life: 1000 });
+            } else {
+                store.dispatch(setUser(userData.data));
+                store.dispatch(setUserLoggedStatus(true));
+            }
             setLoading(false);
         } catch (error) {
             toast.current.show({ severity: 'error', summary: t('request_failed'), detail: t('bad_credentials'), life: 1000 });
