@@ -36,7 +36,7 @@ const AddBranch = () => {
     }
     const handleAddBranch = async () => {
         try {
-            let paymentMethods = branchPaymentTypes.map((e) => { return { id: e.id } });
+            let paymentMethods = branchPaymentTypes.map((e) => e.id);
             let formData = new FormData();
             formData.append('branchName', branchName);
             formData.append('email', email);
@@ -44,7 +44,7 @@ const AddBranch = () => {
             formData.append('address', address);
             formData.append('openingTime', getTimeStamp(openingTime));
             formData.append('closingTime', getTimeStamp(closingTime));
-            formData.append('status',status ? 1: 0);
+            formData.append('status', status ? 1 : 0);
             formData.append('created_at', getTimeStamp(new Date()));
             formData.append('updated_at', getTimeStamp(new Date()));
             formData.append('paymentTypes', JSON.stringify(paymentMethods));
@@ -181,8 +181,8 @@ const AddBranch = () => {
                             <div className="col-md-12 mt-2">
                                 <div className="d-flex">
                                     <div className="flex align-items-center">
-                                        <Checkbox inputId="status" name="status" checked={status} className='mx-1' 
-                                            onChange={()=>{
+                                        <Checkbox inputId="status" name="status" checked={status} className='mx-1'
+                                            onChange={() => {
                                                 setStatus(!status);
                                             }}
                                         />

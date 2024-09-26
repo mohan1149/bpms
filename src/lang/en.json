@@ -66,5 +66,18 @@
     "add_service_modifier":"Add Service Modifier",
     "add_new_service_modifier":"Add new Service Modifier",
     "edit_service_modifier":"Edit Service Modifier",
-    "status":"Status"
+    "status":"Status",
+    "date":"Date",
+    "branch":"Branch",
+    "user":"User",
+    "search_here":"Search here...",
+    "customer":"Customer",
+    "items_per_row":"Items per row",
+    "6_per_row":"6 Per Row",
+    "4_per_row":"4 Per Row",
+    "3_per_row":"3 Per Row",
+    "total":"Total",
+    "filter_by_category":"Choose category",
+    "filter_by_variation":"Choose Variation"
+
 }

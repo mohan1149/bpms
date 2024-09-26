@@ -29,7 +29,7 @@ const EditBranch = () => {
     }, []);
     const loadPaymentTypes = async () => {
         try {
-            const res = await getPaymentTypes();
+            const res = await getPaymentTypes(1);
             setPaymentTypes(res.data.data);
             setExistingPaymentTypes(res.data.data);
         } catch (error) {
@@ -37,20 +37,20 @@ const EditBranch = () => {
         }
     }
     const setExistingPaymentTypes = (types) => {
-        let existingPaymentTypesIds = JSON.parse(branch.payment_types).map((e) => e.id);
+        let existingPaymentTypesIds = JSON.parse(branch.payment_types);
         let existingPaymentTypes = types.filter((i) => existingPaymentTypesIds.includes(i.id));
         setBranchPaymentTypes(existingPaymentTypes);
     }
     const handleEditBranch = async () => {
         try {
-            let paymentMethods = branchPaymentTypes.map((e) => { return { id: e.id } });
+            let paymentMethods = branchPaymentTypes.map((e) => e.id);
             let formData = new FormData();
             formData.append('id', branch.id);
             formData.append('branchName', branchName);
             formData.append('email', email);
             formData.append('phone', phone);
             formData.append('address', address);
-            formData.append('status',status ? 1: 0);
+            formData.append('status', status ? 1 : 0);
             formData.append('openingTime', getTimeStamp(openingTime));
             formData.append('closingTime', getTimeStamp(closingTime));
             formData.append('created_at', getTimeStamp(new Date()));

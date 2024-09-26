@@ -306,7 +306,8 @@ input[type=number] {
   padding-right: 2rem !important;
   font-size: 1.1rem !important;
 }
-.btn-pill{
+
+.btn-pill {
   border-radius: 2rem !important;
 
 }
@@ -314,19 +315,23 @@ input[type=number] {
 .p-contextmenu-root-list li a {
   text-decoration: none;
 }
-.loading .modal-content{
-  background-color:transparent;
+
+.loading .modal-content {
+  background-color: transparent;
   width: auto;
   padding: 0.5rem;
   border: none;
 }
-.jscb{
+
+.jscb {
   justify-content: space-between;
 }
-ul.p-dropdown-items{
+
+ul.p-dropdown-items {
   padding-left: 0px !important;
 }
-.link-icon-btn{
+
+.link-icon-btn {
   background-color: #4F46E5;
   color: #fff;
   border-radius: 25px;
@@ -336,7 +341,8 @@ ul.p-dropdown-items{
   padding: 9px;
 
 }
-.outline-btn{
+
+.outline-btn {
   border: 3px solid #141B4D !important;
   font-weight: bold !important;
   border-radius: 3rem !important;
@@ -345,24 +351,50 @@ ul.p-dropdown-items{
 .outline-btn:focus {
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #b1b3f8, 0 1px 2px 0 rgb(0, 0, 0);
 }
-.d-flex-wrap{
+
+.d-flex-wrap {
   display: flex;
   flex-wrap: wrap;
 }
-.search-input{
+
+.search-input {
   border-radius: 3rem !important;
   border-width: 2px !important;
   padding-left: 25px !important;
   padding-right: 25px !important;
 }
-.service-btn{
+
+.service-btn {
   background-color: transparent;
   border: none;
   padding: 0px;
   border-radius: 8px;
   color: #000;
 }
-.icon-sm-btn{
+
+.icon-sm-btn {
   padding: 4px !important;
   border-radius: 4rem;
+}
+
+.icon-xs-btn {
+  padding: 3px;
+  border: none;
+  border-radius: 5rem;
+}
+.icon-xs-btn:focus{
+  box-shadow: none;
+  background-color: #FFF;
+}
+.jcc{
+  justify-content: center;
+}
+.xs-input{
+  height: 40px;
+}
+.xs-input input {
+  width: 5.5rem;
+}
+.icon-xs-btn.bg:focus{
+  background-color: red;
 }

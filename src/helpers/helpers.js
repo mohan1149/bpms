@@ -12,7 +12,12 @@ export const getTimeFromString = (string) => {
     return new Date(string).toLocaleTimeString();
 }
 
-export const getFormattedCurrency = (currency) => {
+export const getFormattedCurrency = (currency, noCode = 0) => {
     let settings = store.getState().app.user.settings;
-    return settings.currency_code + ' ' + parseFloat(currency).toFixed(settings.decimal_points);
+    if (noCode === 1) {
+        return parseFloat(currency).toFixed(settings.decimal_points);
+    } else {
+        return settings.currency_code + ' ' + parseFloat(currency).toFixed(settings.decimal_points);
+    }
+
 }
