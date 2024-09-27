@@ -13,6 +13,9 @@ export const getTimeFromString = (string) => {
 }
 
 export const getFormattedCurrency = (currency, noCode = 0) => {
+    if(currency===null){
+        return 0;
+    }
     let settings = store.getState().app.user.settings;
     if (noCode === 1) {
         return parseFloat(currency).toFixed(settings.decimal_points);

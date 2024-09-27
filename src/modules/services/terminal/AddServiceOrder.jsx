@@ -8,6 +8,8 @@ import { getFormattedCurrency } from '../../../helpers/helpers';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputNumber } from 'primereact/inputnumber';
+import { Chip } from 'primereact/chip';
+import { Modal } from 'react-bootstrap';
 const AddServiceOrder = () => {
     const store = useStore();
     const { t } = useTranslation();
@@ -15,6 +17,8 @@ const AddServiceOrder = () => {
     const [showSettings, setShowSettings] = useState(false);
     const [render, setRender] = useState(false);
     const [cartItems, setCartItems] = useState([]);
+    const [showModifiersModal, setShowModifiersModal] = useState({ show: false, item: '' });
+
 
     const services = [
         {
@@ -87,9 +91,19 @@ const AddServiceOrder = () => {
         let existingCart = cartItems;
         let index = existingCart.findIndex((i) => i.id === item.id);
         if (index === -1) {
-            existingCart.push(item);
+            let cartItem = {
+                id: item.id,
+                service_name: item.service_name,
+                image: item.service_image,
+                quantity: 1,
+                service_price: item.service_price,
+                discount: 0,
+                total_price: item.service_price,
+                altered_price: item.service_price,
+                modifiers: [],
+            };
+            existingCart.push(cartItem);
         }
-
         setCartItems(existingCart);
         setRender(!render);
     }
@@ -99,6 +113,31 @@ const AddServiceOrder = () => {
         existingCart.splice(index, 1);
         setCartItems(existingCart);
         setRender(!render);
+
+    }
+    const alterItemPrice = (item, newPrice) => {
+        let existingCart = cartItems;
+        let index = existingCart.findIndex((i) => i.id === item.id);
+        let clickedItem = existingCart[index];
+        clickedItem.altered_price = newPrice;
+        clickedItem.total_price = newPrice * clickedItem.quantity;
+        existingCart[index] = clickedItem;
+        setCartItems(existingCart);
+        setRender(!render);
+    }
+    const updateItemQuantity = (item, newPrice, op) => {
+        let existingCart = cartItems;
+        let index = existingCart.findIndex((i) => i.id === item.id);
+        let clickedItem = existingCart[index];
+        if (clickedItem.quantity > 1 || op == 1) {
+            clickedItem.total_price = clickedItem.total_price + newPrice;
+            clickedItem.quantity = clickedItem.quantity + op;
+            existingCart[index] = clickedItem;
+            setCartItems(existingCart);
+            setRender(!render);
+        } else {
+            removeItemFromCart(item);
+        }
 
     }
     return (
@@ -137,6 +176,12 @@ const AddServiceOrder = () => {
                                 <InputSwitch />
                             </div>
                         </div>
+                        <div className="col-12 mt-4">
+                            <div className="d-flex jcsb align-items-center">
+                                <h6><strong>Show Images</strong></h6>
+                                <InputSwitch />
+                            </div>
+                        </div>
                     </div>
 
                 </Offcanvas.Body>
@@ -146,6 +191,48 @@ const AddServiceOrder = () => {
                     }}
                 />
             </Offcanvas>
+            <Modal
+                show={showModifiersModal.show}
+            >
+                <div className="p-3">
+                    <div className="d-flex jcsb">
+                        <h5>{t('item_modifiers')} - {showModifiersModal.item.service_name}</h5>
+                        <Button className='icon-btn' severity='danger'
+                            onClick={()=>{
+                                setShowModifiersModal({show:false,item:''});
+                            }}
+                        >
+                            <span className="material-symbols-outlined">
+                                close
+                            </span>
+                        </Button>
+
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="form-group">
+                                <label htmlFor="" className='mb-1'>{t('item_price')}</label>
+                                <InputNumber
+                                    value={showModifiersModal.item.service_price}
+                                    useGrouping={false}
+                                    maxFractionDigits={3}
+                                    className='pr-input'
+                                    onChange={(e) => {
+                                        alterItemPrice(showModifiersModal.item, e.value);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-12 mt-2 mb-3">
+                            <Button label={t('attach')} className='p-btn'
+                             onClick={()=>{
+                                setShowModifiersModal({show:false,item:''});
+                            }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </Modal>
             <div className="row">
                 <div className="col-md-8 m-0 p-0">
                     <div className="p-2 card m-1"
@@ -274,7 +361,9 @@ const AddServiceOrder = () => {
                                                             paddingTop: 3,
                                                             paddingBottom: 3,
                                                         }}
-                                                    >{i.service_name}</td>
+                                                    >
+                                                        {i.service_name}
+                                                    </td>
                                                     <td
                                                         style={{
                                                             maxWidth: '5rem',
@@ -283,13 +372,21 @@ const AddServiceOrder = () => {
                                                         }}
                                                     >
                                                         <div className="d-flex align-items-center jcc">
-                                                            <Button className='icon-xs-btn mx-1' severity="secondary" outlined>
+                                                            <Button className='icon-xs-btn' severity="secondary" outlined
+                                                                onClick={() => {
+                                                                    updateItemQuantity(i, -(i.altered_price), -1);
+                                                                }}
+                                                            >
                                                                 <span className="material-symbols-outlined">
                                                                     do_not_disturb_on
                                                                 </span>
                                                             </Button>
-                                                            <span className='mx-1'>{index}</span>
-                                                            <Button className='icon-xs-btn' severity="secondary" outlined>
+                                                            <span className='mx-1'>{i.quantity}</span>
+                                                            <Button className='icon-xs-btn' severity="secondary" outlined
+                                                                onClick={() => {
+                                                                    updateItemQuantity(i, i.altered_price, 1);
+                                                                }}
+                                                            >
                                                                 <span className="material-symbols-outlined">
                                                                     add_circle
                                                                 </span>
@@ -304,20 +401,19 @@ const AddServiceOrder = () => {
                                                             cursor: 'pointer'
                                                         }}
                                                     >
-                                                        <InputNumber
-                                                            useGrouping={false}
-                                                            maxFractionDigits={3}
-                                                            value={getFormattedCurrency(i.service_price, 1)}
-                                                            className='xs-input'
-                                                        />
+                                                        <strong>{getFormattedCurrency(i.total_price, 1)}</strong>
                                                     </td>
                                                     <td className='text-center'>
                                                         <div className="d-flex align-items-center jcc">
-                                                            {/* <Button className='icon-xs-btn mx-1' severity="secondary" outlined>
+                                                            <Button className='icon-xs-btn bg mx-1' severity="secondary"
+                                                                onClick={() => {
+                                                                    setShowModifiersModal({ show: true, item: i });
+                                                                }}
+                                                            >
                                                                 <span className="material-symbols-outlined">
-                                                                    do_not_disturb_on
+                                                                    edit_note
                                                                 </span>
-                                                            </Button> */}
+                                                            </Button>
 
                                                             <Button className='icon-xs-btn bg mx-1' severity="danger"
                                                                 onClick={(e) => {
@@ -347,15 +443,16 @@ const AddServiceOrder = () => {
                         >
                             <div>
                                 <div className='d-flex jcsb'>
-                                    <h5>{t('total')} : {getFormattedCurrency(cartItems.reduce((a, b) => a + b.service_price, 0), 1)}</h5>
+                                    <h5>{t('total')} : {getFormattedCurrency(cartItems.reduce((a, b) => a + b.total_price, 0), 1)}</h5>
                                     <h5 className='opacity'>{t('discount')} : {getFormattedCurrency(0, 1)}</h5>
+                                    {/* <Button label={t('discount') +' - '+ getFormattedCurrency(0, 1)} className='mb-1' severity='info' /> */}
+
                                 </div>
-                                <h5>{t('grand_total')} : {getFormattedCurrency(cartItems.reduce((a, b) => a + b.service_price, 0))}</h5>
+                                <h5>{t('grand_total')} : {getFormattedCurrency(cartItems.reduce((a, b) => a + b.total_price, 0))}</h5>
                             </div>
                             <div className='mt-4 d-flex jcc'>
                                 <Button label={t('confrim')} className='mb-1' />
                                 <Button label={t('hold')} className='mx-1 mb-1' severity='warning' />
-                                <Button label={t('discount')} className='mb-1' severity='info' />
                                 <Button label={t('paid')} className='mx-1 mb-1' severity='success' />
                             </div>
                         </div>
