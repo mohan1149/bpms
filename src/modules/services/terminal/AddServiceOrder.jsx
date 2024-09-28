@@ -10,6 +10,7 @@ import { InputSwitch } from 'primereact/inputswitch';
 import { InputNumber } from 'primereact/inputnumber';
 import { Chip } from 'primereact/chip';
 import { Modal } from 'react-bootstrap';
+import { getServiceModifiers } from '../../../apis/services';
 const AddServiceOrder = () => {
     const store = useStore();
     const { t } = useTranslation();
@@ -18,7 +19,7 @@ const AddServiceOrder = () => {
     const [render, setRender] = useState(false);
     const [cartItems, setCartItems] = useState([]);
     const [showModifiersModal, setShowModifiersModal] = useState({ show: false, item: '' });
-
+    const [serviceModifiers, setServiceModifiers] = useState([]);
 
     const services = [
         {
@@ -83,10 +84,20 @@ const AddServiceOrder = () => {
     ];
     useEffect(() => {
         store.dispatch(setShowSidemenu(false));
+        loadServiceModifiers();
         return () => {
             store.dispatch(setShowSidemenu(true));
         };
     }, []);
+    const loadServiceModifiers = async () => {
+        try {
+            const res = await getServiceModifiers(1);
+            setServiceModifiers(res.data.data);
+
+        } catch (error) {
+
+        }
+    }
     const addItemToCart = (item) => {
         let existingCart = cartItems;
         let index = existingCart.findIndex((i) => i.id === item.id);
@@ -101,6 +112,7 @@ const AddServiceOrder = () => {
                 total_price: item.service_price,
                 altered_price: item.service_price,
                 modifiers: [],
+                item_service_staff: '',
             };
             existingCart.push(cartItem);
         }
@@ -138,7 +150,22 @@ const AddServiceOrder = () => {
         } else {
             removeItemFromCart(item);
         }
-
+    }
+    const alterModifiers = (item, modifiers) => {
+        let existingCart = cartItems;
+        let index = existingCart.findIndex((i) => i.id === item.id);
+        let clickedItem = existingCart[index];
+        clickedItem.modifiers = modifiers;
+        existingCart[index] = clickedItem;
+        setCartItems(existingCart);
+        setRender(!render);
+    }
+    const getTotalPrice = () => {
+        let totalPrice = cartItems.reduce((a, b) => a + b.total_price, 0);
+        let modifiers_price = cartItems.map((i)=>{
+            return i.modifiers.reduce((a,b)=> a+b.modifier_price,0);
+        });
+        return getFormattedCurrency((totalPrice + modifiers_price[0]), 1)
     }
     return (
         <div className="">
@@ -193,13 +220,14 @@ const AddServiceOrder = () => {
             </Offcanvas>
             <Modal
                 show={showModifiersModal.show}
+                size="lg"
             >
                 <div className="p-3">
                     <div className="d-flex jcsb">
                         <h5>{t('item_modifiers')} - {showModifiersModal.item.service_name}</h5>
                         <Button className='icon-btn' severity='danger'
-                            onClick={()=>{
-                                setShowModifiersModal({show:false,item:''});
+                            onClick={() => {
+                                setShowModifiersModal({ show: false, item: '' });
                             }}
                         >
                             <span className="material-symbols-outlined">
@@ -223,11 +251,34 @@ const AddServiceOrder = () => {
                                 />
                             </div>
                         </div>
+                        <div className="col-12">
+                            <div className="form-group">
+                                <label htmlFor="" className='mb-1 mt-2'>{t('service_modifiers')}</label>
+                                <Select options={serviceModifiers}
+                                    getOptionValue={(i) => i.id}
+                                    getOptionLabel={(i) => i.modifier_title}
+                                    isMulti={true}
+                                    onChange={(e) => {
+                                        alterModifiers(showModifiersModal.item, e)
+                                    }}
+                                    value={showModifiersModal.item.modifiers}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-12">
+                            <div className="form-group">
+                                <label htmlFor="" className='mb-1 mt-2'>{t('service_staff')}</label>
+                                <Select options={serviceModifiers}
+                                    getOptionValue={(i) => i.id}
+                                    getOptionLabel={(i) => i.modifier_title}
+                                />
+                            </div>
+                        </div>
                         <div className="col-12 mt-2 mb-3">
                             <Button label={t('attach')} className='p-btn'
-                             onClick={()=>{
-                                setShowModifiersModal({show:false,item:''});
-                            }}
+                                onClick={() => {
+                                    setShowModifiersModal({ show: false, item: '' });
+                                }}
                             />
                         </div>
                     </div>
@@ -443,7 +494,7 @@ const AddServiceOrder = () => {
                         >
                             <div>
                                 <div className='d-flex jcsb'>
-                                    <h5>{t('total')} : {getFormattedCurrency(cartItems.reduce((a, b) => a + b.total_price, 0), 1)}</h5>
+                                    <h5>{t('total')} : {getTotalPrice()}</h5>
                                     <h5 className='opacity'>{t('discount')} : {getFormattedCurrency(0, 1)}</h5>
                                     {/* <Button label={t('discount') +' - '+ getFormattedCurrency(0, 1)} className='mb-1' severity='info' /> */}
 
