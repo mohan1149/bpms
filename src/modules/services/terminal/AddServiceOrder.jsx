@@ -162,10 +162,11 @@ const AddServiceOrder = () => {
     }
     const getTotalPrice = () => {
         let totalPrice = cartItems.reduce((a, b) => a + b.total_price, 0);
-        let modifiers_price = cartItems.map((i)=>{
-            return i.modifiers.reduce((a,b)=> a+b.modifier_price,0);
+        let modifiers_price = cartItems.map((i) => {
+            return i.modifiers.reduce((a, b) => a + b.modifier_price, 0);
         });
-        return getFormattedCurrency((totalPrice + modifiers_price[0]), 1)
+        let modifiers_total = modifiers_price.length > 0 ? modifiers_price[0] : 0;
+        return getFormattedCurrency((totalPrice + modifiers_total), 1)
     }
     return (
         <div className="">
