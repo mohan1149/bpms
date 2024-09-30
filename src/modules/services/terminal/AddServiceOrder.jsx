@@ -8,9 +8,8 @@ import { getFormattedCurrency } from '../../../helpers/helpers';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputNumber } from 'primereact/inputnumber';
-import { Chip } from 'primereact/chip';
 import { Modal } from 'react-bootstrap';
-import { getServiceModifiers, getBranches } from '../../../apis/services';
+import { getServiceModifiers, getBranches, getServiceCategories, getServiceVariations } from '../../../apis/services';
 const AddServiceOrder = () => {
     const store = useStore();
     const { t } = useTranslation();
@@ -23,6 +22,8 @@ const AddServiceOrder = () => {
     const [showModifiersModal, setShowModifiersModal] = useState({ show: false, item: '' });
     const [serviceModifiers, setServiceModifiers] = useState([]);
     const [branaches, setBranaches] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [branch, setBranch] = useState();
     const [discount, setDiscount] = useState(0);
     const [discountType, setDiscountType] = useState({
@@ -73,9 +74,8 @@ const AddServiceOrder = () => {
             service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
             service_price: 10,
         },
-
-
     ];
+    const [filteredServices, setFilteredServices] = useState(services);
     const itemsPerRowCount = [
         {
             label: t('6_per_row'),
@@ -105,6 +105,8 @@ const AddServiceOrder = () => {
         store.dispatch(setShowSidemenu(false));
         loadServiceModifiers();
         loadBranches();
+        loadServiceCategories();
+
         return () => {
             store.dispatch(setShowSidemenu(true));
         };
@@ -122,11 +124,19 @@ const AddServiceOrder = () => {
         try {
             const res = await getBranches(1);
             setBranaches(res.data.data);
-
         } catch (error) {
 
         }
     }
+    const loadServiceCategories = async () => {
+        try {
+            const res = await getServiceCategories(1);
+            setCategories(res.data.data);
+        } catch (error) {
+
+        }
+    }
+
     const addItemToCart = (item) => {
         let existingCart = cartItems;
         let index = existingCart.findIndex((i) => i.id === item.id);
@@ -196,6 +206,10 @@ const AddServiceOrder = () => {
         let modifiers_total = modifiers_price.length > 0 ? modifiers_price[0] : 0;
         return withDiscount === 1 ? getFormattedCurrency(((totalPrice - discount) + modifiers_total), 1) : getFormattedCurrency((totalPrice + modifiers_total), 1);
     }
+    const filterServices = (key) => {
+        let filteredByKey = services.filter((item) => item.service_name.toLowerCase().includes(key.toLowerCase()));
+        setFilteredServices(filteredByKey);
+    }
     return (
         <div className="">
             {
@@ -240,6 +254,18 @@ const AddServiceOrder = () => {
             {
                 serviceRegister === null &&
                 <div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '90px'
+                        }}
+                    >
+                        <h6 className=''>
+                            <span> <strong>{t('branch')}</strong> - OHQ</span> | 
+                            <span> <strong>{t('user')}</strong> - Mohan Velegacherla</span> |
+                            <span> <strong>{t('date')}</strong> - {new Date().toDateString()}</span>
+                        </h6>
+                    </div>
                     <Offcanvas show={showSettings}
                         placement="end"
                         className="p-2"
@@ -273,12 +299,20 @@ const AddServiceOrder = () => {
                                         />
                                     </div>
                                 </div>
-                                {/* <div className="col-12 mt-4">
-                            <div className="d-flex jcsb align-items-center">
-                                <h6><strong>Show Modifiers</strong></h6>
-                                <InputSwitch />
-                            </div>
-                        </div> */}
+                                <div className="col-12 mt-3">
+                                    <div className="form-group">
+                                        <label className="mb-1">{t('invoice_style')}</label>
+                                        <Select
+                                            placeholder={t('items_per_row')}
+                                            options={itemsPerRowCount}
+                                            onChange={(e) => {
+                                                setItemsPerRow(e);
+                                            }}
+                                            value={itemsPerRow}
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="col-12 mt-4">
                                     <div className="d-flex jcsb align-items-center">
                                         <h6><strong>Show Variations</strong></h6>
@@ -423,7 +457,11 @@ const AddServiceOrder = () => {
                                 <div className='mt-3 mb-3'>
                                     <div className="row">
                                         <div className="col-md-4">
-                                            <input type="text" name="" id="" className='form-control search-input' placeholder={t('search_here')} />
+                                            <input type="text" name="" id="" className='form-control search-input' placeholder={t('search_here')}
+                                                onChange={(e) => {
+                                                    filterServices(e.target.value);
+                                                }}
+                                            />
                                         </div>
                                         <div className="col-md-4">
                                             <Select
@@ -436,10 +474,16 @@ const AddServiceOrder = () => {
                                         </div>
 
                                         <div className="col-8 mt-2">
-                                            <Select options={[]}
+                                            <Select options={categories}
                                                 isMulti={true}
                                                 isClearable={true}
                                                 placeholder={t('filter_by_category')}
+                                                getOptionLabel={(e) => e.category_title}
+                                                getOptionValue={(e) => e.id}
+                                                value={selectedCategories}
+                                                onChange={(e) => {
+                                                    setSelectedCategories(e)
+                                                }}
                                             />
                                         </div>
                                         <div className="col-4 mt-2">
@@ -453,7 +497,7 @@ const AddServiceOrder = () => {
                                 <div className='mx-2 mt-2'>
                                     <div className="row">
                                         {
-                                            services.map((service, index) => {
+                                            filteredServices.map((service, index) => {
                                                 return (
                                                     <div className={"col-md-" + itemsPerRow.value + " mb-1 p-0"} key={index}>
                                                         <div className="glass-card mx-1 text-center p-1">
@@ -489,10 +533,16 @@ const AddServiceOrder = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-4 m-0 p-0">
+                        <div className="col-md-4 m-0 p-0"
+                            style={{
+                                maxHeight: '83vh',
+                                height: '83vh',
+                                overflow: 'scroll'
+                            }}
+                        >
                             <div className="p-2 glass-card m-1">
                                 <h6 className='d-flex jcsb'>
-                                    <span> <strong>{t('Date')}</strong> - {new Date().toDateString()}</span>
+                                    {/* <span> <strong>{t('Date')}</strong> - {new Date().toDateString()}</span> */}
                                     <Button className='icon-sm-btn mx-1' severity="primary"
                                         onClick={() => {
                                             setShowSettings(true);
@@ -504,15 +554,12 @@ const AddServiceOrder = () => {
                                     </Button>
                                 </h6>
 
-                                <h6 className='d-flex jcsb'>
-                                    <span> <strong>{t('branch')}</strong> - OHQ</span>
-                                    <span> <strong>{t('user')}</strong> - Mohan Velegacherla</span>
-                                </h6>
-                                <hr />
+                                {/* */}
+                                {/* <hr /> */}
                                 <div
                                     style={{
                                         maxHeight: '85vh',
-                                        height: '50vh',
+                                        height: '46vh',
                                         overflowY: 'scroll'
                                     }}
                                 >
@@ -610,6 +657,13 @@ const AddServiceOrder = () => {
                                             }
                                         </tbody>
                                     </table>
+
+                                </div>
+                                <div className="m-2">
+                                    <Select
+                                        placeholder={t('payment_methood')}
+                                        options={categories}
+                                    />
                                 </div>
                                 <div
                                     style={{
