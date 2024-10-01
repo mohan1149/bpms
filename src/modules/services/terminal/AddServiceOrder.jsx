@@ -9,8 +9,9 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputNumber } from 'primereact/inputnumber';
 import { Modal } from 'react-bootstrap';
-import { getServiceModifiers, getBranches, getServiceCategories, getServiceVariations } from '../../../apis/services';
+import { getServiceModifiers, getBranches, getServiceCategories, getServiceVariations, getPaymentTypes } from '../../../apis/services';
 import { useReactToPrint } from "react-to-print";
+import { Avatar } from 'primereact/avatar';
 const AddServiceOrder = () => {
     const store = useStore();
     const { t } = useTranslation();
@@ -26,6 +27,7 @@ const AddServiceOrder = () => {
     const [branaches, setBranaches] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [paymentTypes, setPaymentTypes] = useState([]);
     const [branch, setBranch] = useState();
     const [discount, setDiscount] = useState(0);
     const [discountType, setDiscountType] = useState({
@@ -108,6 +110,7 @@ const AddServiceOrder = () => {
         loadServiceModifiers();
         loadBranches();
         loadServiceCategories();
+        loadPaymentTypes();
 
         return () => {
             store.dispatch(setShowSidemenu(true));
@@ -138,7 +141,14 @@ const AddServiceOrder = () => {
 
         }
     }
+    const loadPaymentTypes = async () => {
+        try {
+            const res = await getPaymentTypes(1);
+            setPaymentTypes(res.data.data);
+        } catch (error) {
 
+        }
+    }
     const addItemToCart = (item) => {
         let existingCart = cartItems;
         let index = existingCart.findIndex((i) => i.id === item.id);
@@ -660,10 +670,23 @@ const AddServiceOrder = () => {
 
                                 </div>
                                 <div className="m-2">
-                                    <Select
-                                        placeholder={t('payment_methood')}
-                                        options={categories}
-                                    />
+                                    <div>
+                                        {
+                                            paymentTypes.map((i, index) => {
+                                                return (
+                                                    <Avatar
+                                                        onClick={() => {
+                                                        }}
+                                                        image={i.payment_image}
+                                                        className='mx-1'
+                                                        key={index}
+                                                        size="large"
+                                                        shape="circle"
+                                                    />
+                                                );
+                                            })
+                                        }
+                                    </div>
                                 </div>
                                 <div
                                     style={{
