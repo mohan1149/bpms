@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useStore } from 'react-redux';
 import { setShowSidemenu } from '../../../redux/reducer';
 import { Button } from 'primereact/button';
@@ -10,9 +10,11 @@ import { InputSwitch } from 'primereact/inputswitch';
 import { InputNumber } from 'primereact/inputnumber';
 import { Modal } from 'react-bootstrap';
 import { getServiceModifiers, getBranches, getServiceCategories, getServiceVariations } from '../../../apis/services';
+import { useReactToPrint } from "react-to-print";
 const AddServiceOrder = () => {
     const store = useStore();
     const { t } = useTranslation();
+    const componentRef = useRef();
     const terminalSettings = localStorage.getItem('terminalSettings');
     const serviceRegister = localStorage.getItem('serviceRegister');
     const [itemsPerRow, setItemsPerRow] = useState({ label: t('items_per_row'), value: 2 });
@@ -210,6 +212,9 @@ const AddServiceOrder = () => {
         let filteredByKey = services.filter((item) => item.service_name.toLowerCase().includes(key.toLowerCase()));
         setFilteredServices(filteredByKey);
     }
+    const handlePrint = useReactToPrint({
+        contentRef: componentRef,
+    });
     return (
         <div className="">
             {
@@ -261,7 +266,7 @@ const AddServiceOrder = () => {
                         }}
                     >
                         <h6 className=''>
-                            <span> <strong>{t('branch')}</strong> - OHQ</span> | 
+                            <span> <strong>{t('branch')}</strong> - OHQ</span> |
                             <span> <strong>{t('user')}</strong> - Mohan Velegacherla</span> |
                             <span> <strong>{t('date')}</strong> - {new Date().toDateString()}</span>
                         </h6>
@@ -553,9 +558,6 @@ const AddServiceOrder = () => {
                                         </span>
                                     </Button>
                                 </h6>
-
-                                {/* */}
-                                {/* <hr /> */}
                                 <div
                                     style={{
                                         maxHeight: '85vh',
@@ -563,9 +565,7 @@ const AddServiceOrder = () => {
                                         overflowY: 'scroll'
                                     }}
                                 >
-                                    <table className='table'
-
-                                    >
+                                    <table className='table'>
                                         <thead>
                                             <tr>
                                                 <th>{t('item')}</th>
@@ -689,8 +689,29 @@ const AddServiceOrder = () => {
                                         </div>
                                         <h5>{t('grand_total')} : {getTotalPrice(1)}</h5>
                                     </div>
+                                    <h2
+                                        id="printOrder"
+                                        style={{
+                                            display: 'none'
+                                        }}
+                                        ref={componentRef}>sws</h2>
                                     <div className='mt-4 d-flex jcc'>
-                                        <Button label={t('confrim')} className='mb-1' />
+                                        <Button label={t('confrim')} className='mb-1'
+                                            // onClick={handlePrint}
+                                            onClick={() => {
+                                                var mywindow = window.open('', 'PRINT', 'height=800,width=800');
+                                                mywindow.document.write('<html><head><title>' + document.title + '</title>');
+                                                mywindow.document.write('</head><body >');
+                                                mywindow.document.write(document.getElementById('printOrder').innerHTML);
+                                                mywindow.document.write('</body></html>');
+                                                mywindow.document.close();
+                                                mywindow.focus();
+                                                mywindow.print();
+                                                mywindow.close();
+                                                return true;
+                                            }}
+
+                                        />
                                         <Button label={t('paid')} className='mx-1 mb-1' severity='success' />
                                         <Button label={t('booking')} className='mb-1' severity='info' />
                                         {/* <Button label={t('hold')} className='mx-1 mb-1' severity='warning' /> */}
