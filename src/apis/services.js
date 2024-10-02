@@ -317,3 +317,41 @@ export const updateCustomerGroup = async (data) => {
 
 
 
+// API CALLS FOR CUSTOMERs
+export const getCustomer = async (activeOnly = 0) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_customers + activeOnly,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const storeCustomer = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_customer,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const updateCustomer = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_customer,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+//END
+

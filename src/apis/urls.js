@@ -28,9 +28,14 @@ const urls = {
     get_service_modifiers: baseUrl + '/services/modifiers?activeOnly=',
     update_service_modifier: baseUrl + '/services/modifiers/update',
 
-    store_customer_subscription_group:baseUrl+'/customers/groups/store',
-    get_customer_subscription_groups:baseUrl+'/customers/groups?activeOnly=',
-    update_customer_subscription_group:baseUrl+'/customers/groups/update',
+    store_customer_subscription_group: baseUrl + '/customers/groups/store',
+    get_customer_subscription_groups: baseUrl + '/customers/groups?activeOnly=',
+    update_customer_subscription_group: baseUrl + '/customers/groups/update',
+
+
+    store_customer: baseUrl + '/customers/store',
+    get_customers: baseUrl + '/customers?activeOnly=',
+    update_customer: baseUrl + '/customers/update',
 }
 
 export default urls;
