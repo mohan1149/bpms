@@ -1,7 +1,9 @@
 let baseUrl = process.env.REACT_APP_BASE_URL + 'api/v1';
 const urls = {
     host: baseUrl,
+
     delete_record: baseUrl,
+
     login_url: baseUrl + '/auth/login',
     get_user: baseUrl + '/auth/user',
     add_admin: baseUrl + '/admins/store',
@@ -26,6 +28,9 @@ const urls = {
     get_service_modifiers: baseUrl + '/services/modifiers?activeOnly=',
     update_service_modifier: baseUrl + '/services/modifiers/update',
 
+    store_customer_subscription_group:baseUrl+'/customers/groups/store',
+    get_customer_subscription_groups:baseUrl+'/customers/groups?activeOnly=',
+    update_customer_subscription_group:baseUrl+'/customers/groups/update',
 }
 
 export default urls;

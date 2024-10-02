@@ -42,6 +42,13 @@ import Services from '../modules/services/Services';
 import AddService from '../modules/services/AddService';
 import AddServiceOrder from '../modules/services/terminal/AddServiceOrder';
 
+//CUSTOMERS
+import AddCustomerGroup from '../modules/customers/groups/AddCustomerGroup';
+import CustomerGroups from '../modules/customers/groups/CustomerGroups';
+import EditCustomerGroup from '../modules/customers/groups/EditCustomerGroup';
+import Customers from '../modules/customers/Customers';
+import AddCustomer from '../modules/customers/AddCustomer';
+
 import { setErrorToast } from '../redux/reducer';
 
 const AppRouter = () => {
@@ -147,10 +154,19 @@ const AppRouter = () => {
                                     <Route path='/services/add' element={<AddService />} />
 
                                     
-                                    <Route path='/services/terminal' element={<AddServiceOrder />}></Route>
+                                    <Route path='/services/terminal' element={<AddServiceOrder />}/>
 
 
+                                    <Route path='/customers/groups' element={<CustomerGroups />}/>
+                                    <Route path='/customers/groups/add' element={<AddCustomerGroup />}/>
+                                    <Route path='/customers/groups/edit' element={<EditCustomerGroup />}/>
+                                    <Route path='/customers' element={<Customers />}/>
+                                    <Route path='/customers/add' element={<AddCustomer />}/>
+                                    <Route path='/customers/edit' element={<AddCustomer />}/>
 
+                                    
+
+                                    
 
                                     <Route path='/settings/payment-types' element={<PaymentTypes />} />
                                     <Route path='/logout' element={<Logout />} />

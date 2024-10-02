@@ -276,7 +276,43 @@ export const updateServiceModifier = async (data) => {
 }
 // END
 
-
+// API CALLS FOR CUSTOMER GROUPS
+export const getCustomerGroups = async (activeOnly = 0) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_customer_subscription_groups + activeOnly,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const storeCustomerGroup = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_customer_subscription_group,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const updateCustomerGroup = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_customer_subscription_group,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+//END
 
 
 

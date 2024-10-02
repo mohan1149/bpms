@@ -58,7 +58,7 @@ const Sidebar = (props) => {
                 <Link to="/branches">
                     <span className='link-container'>
                         <span className="material-symbols-outlined">
-                            home_pin
+                            apartment
                         </span>
                         <span className='link_title'>
                             {sizeToggler && t('branches')}
@@ -66,7 +66,7 @@ const Sidebar = (props) => {
                     </span>
                 </Link>
             </li>
-            <li className={`app-sidemenu-bar-item ${activePath.includes('users') ? 'active' : ''}`}>
+            {/* <li className={`app-sidemenu-bar-item ${activePath.includes('users') ? 'active' : ''}`}>
                 <Link to="/users">
                     <span className='link-container'>
                         <span className="material-symbols-outlined">
@@ -77,8 +77,43 @@ const Sidebar = (props) => {
                         </span>
                     </span>
                 </Link>
+            </li> */}
+            <li className={`app-sidemenu-bar-item ${activePath.includes('customers') ? 'active' : ''}`}>
+                <Accordion activeKey={accordionActiveKey} className=''>
+                    <Accordion.Item eventKey="3">
+                        <Accordion.Header onClick={() => handleAccordionToggle('3')}
+                            className={sizeToggler ? 'expaned' : 'collapsed'}
+                        >
+                            <Link to="/customers" className="link">
+                                <div className='link-container'>
+                                    <span className="material-symbols-outlined">
+                                        group
+                                    </span>
+                                    <span className='link_title'>
+                                        {sizeToggler && t('customers')}
+                                    </span>
+                                </div>
+                            </Link>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ul>
+                                <li>
+                                    <Link to="/customers">{t('all_customers')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/customers/groups">{t('customer_groups')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/customers/walet">{t('customers_wallet')}</Link>
+                                </li>
+                            </ul>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
             </li>
-            <li className={`app-sidemenu-bar-item ${activePath.includes('employees') ? 'active' : ''}`}>
+
+
+            {/* <li className={`app-sidemenu-bar-item ${activePath.includes('employees') ? 'active' : ''}`}>
                 <Link to="/employees">
                     <span className='link-container'>
                         <span className="material-symbols-outlined">
@@ -89,7 +124,7 @@ const Sidebar = (props) => {
                         </span>
                     </span>
                 </Link>
-            </li>
+            </li> */}
             <li className={`app-sidemenu-bar-item ${activePath.includes('services') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="0">
@@ -180,13 +215,13 @@ const Sidebar = (props) => {
                         <Accordion.Body>
                             <ul>
                                 <li>
-                                    <Link to="/settings">{t('all_bookings')}</Link>
+                                    <Link to="/settings">{t('settings')}</Link>
                                 </li>
                                 <li>
                                     <Link to="/settings/payment-types">{t('payment_types')}</Link>
                                 </li>
                                 <li>
-                                    <Link to="/settings/add">{t('add_booking')}</Link>
+                                    <Link to="/settings/taxes">{t('taxes')}</Link>
                                 </li>
                             </ul>
                         </Accordion.Body>
