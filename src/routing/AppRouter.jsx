@@ -48,6 +48,9 @@ import CustomerGroups from '../modules/customers/groups/CustomerGroups';
 import EditCustomerGroup from '../modules/customers/groups/EditCustomerGroup';
 import Customers from '../modules/customers/Customers';
 import AddCustomer from '../modules/customers/AddCustomer';
+import EditCustomer from '../modules/customers/EditCustomer';
+import ViewCustomer from '../modules/customers/ViewCustomer';
+
 
 import { setErrorToast } from '../redux/reducer';
 
@@ -162,7 +165,8 @@ const AppRouter = () => {
                                     <Route path='/customers/groups/edit' element={<EditCustomerGroup />}/>
                                     <Route path='/customers' element={<Customers />}/>
                                     <Route path='/customers/add' element={<AddCustomer />}/>
-                                    <Route path='/customers/edit' element={<AddCustomer />}/>
+                                    <Route path='/customers/edit' element={<EditCustomer />}/>
+                                    <Route path='/customers/view' element={<ViewCustomer />}/>
 
                                     
 

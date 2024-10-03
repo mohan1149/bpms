@@ -318,7 +318,7 @@ export const updateCustomerGroup = async (data) => {
 
 
 // API CALLS FOR CUSTOMERs
-export const getCustomer = async (activeOnly = 0) => {
+export const getCustomers = async (activeOnly = 0) => {
     try {
         let response = await axios({
             method: 'GET',

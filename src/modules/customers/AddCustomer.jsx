@@ -13,18 +13,16 @@ const AddCustomer = () => {
     const toast = useRef();
     const [status, setStatus] = useState(true);
     const [attachWallet, setAttachWallet] = useState(false);
-    const [customerGroups, setCustomerGroups] = useState(false);
+    const [customerGroups, setCustomerGroups] = useState([]);
     const [fullname, setFullname] = useState();
     const [phone, setPhone] = useState();
     const [phone2, setPhone2] = useState();
     const [email, setEmail] = useState();
     const [address, setAddress] = useState();
     const [plan, setPlan] = useState();
-
     useEffect(() => {
         loadCustomerGroups();
     }, []);
-
     const loadCustomerGroups = async () => {
         try {
             const res = await getCustomerGroups(1);

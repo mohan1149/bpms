@@ -88,7 +88,7 @@ const CustomerGroups = () => {
                             field="free_amount"
                             header={t('free_amount')}
                             sortable
-                            body={(row) => row.benefit_type === 'free_amount' ? row.free_amount : '***'}
+                            body={(row) => row.benefit_type === 'free_amount' ? getFormattedCurrency(row.free_amount) : '***'}
                         />
                         <Column
                             field="how_many_orders"
