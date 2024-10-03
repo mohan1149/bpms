@@ -114,7 +114,14 @@
     "customer_updated":"Customer Details Updated.",
     "customer_added":"New Customer Added.",
     "created_at":"Created At",
-    "custmer_details":"Customer Details"
+    "custmer_details":"Customer Details",
+    "balance":"Balance",
+    "recharge":"Recharge",
+    "wallet_details":"Wallet Details",
+    "subscription_details":"Subscription Details",
+    "orders":"Orders",
+    "remove_subscription":"Remove Subscription",
+    "renew_subscription":"Renew Subscription"
 
 
 }

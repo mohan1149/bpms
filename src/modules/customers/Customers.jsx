@@ -31,7 +31,7 @@ const Customers = () => {
             return <Tag severity="warning" value={t('no')}></Tag>
         } else {
             return (
-                <div className="d-fle align-items-center">
+                <div className="">
                     <h6>{row.group_title}</h6>
                     <Tag value={getFormattedCurrency(row.group_cost, 1)}></Tag>
                 </div>

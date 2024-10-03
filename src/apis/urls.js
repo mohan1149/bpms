@@ -36,6 +36,7 @@ const urls = {
     store_customer: baseUrl + '/customers/store',
     get_customers: baseUrl + '/customers?activeOnly=',
     update_customer: baseUrl + '/customers/update',
+    get_customer_details: baseUrl + '/customers/',
 }
 
 export default urls;

@@ -353,5 +353,18 @@ export const updateCustomer = async (data) => {
         return error;
     }
 }
+
+
+export const getCustomerDetails = async (id) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_customer_details + id,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 //END
 
