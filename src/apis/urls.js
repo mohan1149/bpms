@@ -28,6 +28,9 @@ const urls = {
     get_service_modifiers: baseUrl + '/services/modifiers?activeOnly=',
     update_service_modifier: baseUrl + '/services/modifiers/update',
 
+    store_service: baseUrl + '/services/store',
+    get_services: baseUrl + '/services?activeOnly=',
+
     store_customer_subscription_group: baseUrl + '/customers/groups/store',
     get_customer_subscription_groups: baseUrl + '/customers/groups?activeOnly=',
     update_customer_subscription_group: baseUrl + '/customers/groups/update',

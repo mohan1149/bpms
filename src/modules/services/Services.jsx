@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { getBranches } from '../../apis/services';
+import { getServices } from '../../apis/services';
 import { Avatar } from 'primereact/avatar';
 import { getTimeFromString } from '../../helpers/helpers';
 import { Button } from 'primereact/button';
@@ -11,17 +11,19 @@ import DeleteModalContent from '../../commons/DeleteModalContent';
 import { useStore } from 'react-redux';
 import { setShowDeleteDialog } from '../../redux/reducer';
 import { Chip } from 'primereact/chip';
+import { InputSwitch } from 'primereact/inputswitch';
+
 const Services = () => {
     const { t } = useTranslation();
     const store = useStore();
-    const [branches, setBranches] = useState();
+    const [services, setServices] = useState();
     useEffect(() => {
-        loadBranches();
+        loadServices();
     }, []);
-    const loadBranches = async () => {
+    const loadServices = async () => {
         try {
-            const res = await getBranches();
-            setBranches(res.data.data);
+            const res = await getServices();
+            setServices(res.data.data);
         } catch (error) {
 
         }
@@ -43,11 +45,11 @@ const Services = () => {
                 </div>
                 <DeleteModalContent
                     reload={() => {
-                        loadBranches();
+                        loadServices();
                     }}
                 />
                 <div className="data-table mt-2">
-                    <DataTable value={branches}
+                    <DataTable value={services}
                         paginator
                         rows={10}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -62,66 +64,59 @@ const Services = () => {
                             header={t('image')}
                             body={(row) => {
                                 return (
-                                    <Avatar image={row.branch.branch_image} size="large" imageAlt={row.branch.branch_image} />
+                                    <Avatar image={row.service_image} size="large" imageAlt={row.service_image} />
                                 )
                             }}
                         />
                         <Column
-                            field="branch.branch_name"
-                            header={t('branch_name')}
+                            field="service_name"
+                            header={t('service_name')}
                             sortable
                         />
 
                         <Column
-                            field="branch.branch_email"
-                            header={t('email')}
+                            field="category"
+                            header={t('category')}
                             sortable
                         />
                         <Column
-                            field="branch.branch_phone"
-                            header={t('phone')}
+                            field="variation"
+                            header={t('variation')}
                             sortable
                         />
                         <Column
-                            field="branch.branch_address"
-                            header={t('address')}
+                            field="variation"
+                            header={t('duration')}
                             sortable
                         />
                         <Column
-                            header={t('opening_time')}
-                            body={(i) => getTimeFromString(i.branch.opening_time)}
+                            field="variation"
+                            header={t('sevice_price')}
                             sortable
                         />
                         <Column
-                            body={(i) => getTimeFromString(i.branch.closing_time)}
-                            header={t('closing_time')}
+                            field="discount"
+                            header={t('discount')}
                             sortable
                         />
                         <Column
-                            header={t('payment_types')}
+                            sortField='status'
+                            header={t('status')}
                             body={(row) => {
                                 return (
-                                    <div>
-                                        {
-                                            row.payment_types.map((i, key) => {
-                                                return (
-                                                    // <Chip label={i.payment_title} key={key} className='mx-1' />
-                                                    <Avatar image={i.payment_image} className='mx-1' imageAlt={i.payment_title} title={i.payment_title}/>
-                                                )
-                                            })
-                                        }
-
-                                    </div>
+                                    <InputSwitch checked={row.status === 1 ? true : false} />
                                 );
                             }}
+                            sortable
                         />
+
                         <Column
                             header={t('actions')}
                             body={(row) => {
                                 return (
                                     <div className='d-flex'>
                                         <Link
-                                            to="/branches/edit"
+                                            to="/services/edit"
                                             state={JSON.stringify(row)}
                                             className='link-icon-btn mx-1' severity='primary' id="edit-btn">
                                             <span className="material-symbols-outlined">
@@ -130,7 +125,7 @@ const Services = () => {
                                         </Link>
                                         <Button
                                             onClick={() => {
-                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/branches/delete/' + row.id }))
+                                                store.dispatch(setShowDeleteDialog({ show: true, url: '/services/delete/' + row.id }))
                                             }}
                                             className='icon-btn mx-1' severity='danger' id="edit-btn">
                                             <span className="material-symbols-outlined">

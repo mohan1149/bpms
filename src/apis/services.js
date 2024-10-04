@@ -276,6 +276,37 @@ export const updateServiceModifier = async (data) => {
 }
 // END
 
+//API CALLS FOR SERVICES
+
+export const getServices = async (activeOnly = 0) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_services + activeOnly,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const addService = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_service,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+//END
+
+
 // API CALLS FOR CUSTOMER GROUPS
 export const getCustomerGroups = async (activeOnly = 0) => {
     try {
@@ -353,8 +384,6 @@ export const updateCustomer = async (data) => {
         return error;
     }
 }
-
-
 export const getCustomerDetails = async (id) => {
     try {
         let response = await axios({
