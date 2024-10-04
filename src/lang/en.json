@@ -121,7 +121,8 @@
     "subscription_details":"Subscription Details",
     "orders":"Orders",
     "remove_subscription":"Remove Subscription",
-    "renew_subscription":"Renew Subscription"
+    "renew_subscription":"Renew Subscription",
+    "grand_total":"Grand Total"
 
 
 }

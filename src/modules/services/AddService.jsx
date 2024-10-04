@@ -80,6 +80,15 @@ const AddService = () => {
                         </div>
                         <div className="col-md-4 m,b-2">
                             <div className="form-group">
+                                <label htmlFor="serviceVariations" className='mb-1 required'>{t('service_variation')}</label>
+                                <Select id="serviceVariations" className='pr-input' options={serviceVariations}
+                                    getOptionLabel={(i) => i.variation_title}
+                                    getOptionValue={(i) => i.id}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-4 m,b-2">
+                            <div className="form-group">
                                 <label htmlFor="duration" className='mb-1 required'>{t('service_duration_in_mins')}</label>
                                 <input type="number" name="duration" id="duration" className='form-control' required />
                             </div>
@@ -98,19 +107,22 @@ const AddService = () => {
                                 />
                             </div>
                         </div>
-                        <div className="col-md-4 m,b-2">
+                        <div className="col-md-4 mb-2">
                             <div className="form-group">
-                                <label htmlFor="service_charge" className='mb-1 required'>{t('service_charge')}</label>
+                                <label htmlFor="service_charge" className='mb-1 required'>{t('service_charge_exc_all_taxes')}</label>
                                 <InputNumber id="service_charge"  useGrouping={false} maxFractionDigits={3} className='pr-input' />
                             </div>
                         </div>
-                        <div className="col-md-4 m,b-2">
+                        <div className="col-md-4 mb-2">
                             <div className="form-group">
-                                <label htmlFor="serviceVariations" className='mb-1 required'>{t('service_variation')}</label>
-                                <Select id="serviceVariations" className='pr-input' options={serviceVariations}
-                                    getOptionLabel={(i) => i.variation_title}
-                                    getOptionValue={(i) => i.id}
-                                />
+                                <label htmlFor="service_charge" className='mb-1 required'>{t('service_charge_inc_all_taxes')}</label>
+                                <InputNumber id="service_charge"  useGrouping={false} maxFractionDigits={3} className='pr-input' />
+                            </div>
+                        </div>
+                        <div className="col-md-4 mb-2">
+                            <div className="form-group">
+                                <label htmlFor="service_charge" className='mb-1 required'>{t('discount')}</label>
+                                <InputNumber id="service_charge"  useGrouping={false} maxFractionDigits={3} className='pr-input' />
                             </div>
                         </div>
                         <div className="col-md-8 mb-2">
