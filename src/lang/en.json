@@ -126,7 +126,23 @@
     "add_discount":"Add Discount",
     "discoun_type":"Discount Type",
     "flat":"Flat",
-    "percent":"Percentage"
+    "percent":"Percentage",
+    "add_new_service":"Add New Service",
+    "service_name":"Service Name",
+    "service_category":"Service Category",
+    "service_variation":"Service Variation",
+    "service_duration_in_mins":"Service Duration (in mins)",
+    "service_duration":"Service Duration",
+    "choose_service_category":"Choose Service Category",
+    "service_charge_inc_all_taxes":"Service Charge Inclusive of All Taxes",
+    "service_price":"Service Charge",
+    "service_desc":"Service Description",
+    "choose_branches":"Choose Branches",
+    "choose_variation":"Choose Variation",
+    "add_service":"Add service",
+    "mins":"Mins",
+    "manage_services":"Manage Services",
+    "all_services":"All Services"
 
 
 }

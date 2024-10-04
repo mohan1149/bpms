@@ -104,7 +104,7 @@ const AddService = () => {
                     <div className="row">
                         <div className="col-md-4 mb-2">
                             <div className="form-group">
-                                <label htmlFor="serviceName" className='mb-1 required'>{t('service_title')}</label>
+                                <label htmlFor="serviceName" className='mb-1 required'>{t('service_name')}</label>
                                 <input type="text" name="serviceName" id="serviceName" className='form-control' required
                                     value={serviceTitle}
                                     onChange={(e)=>{
@@ -136,6 +136,7 @@ const AddService = () => {
                                         setSelectedVariation(e);
                                     }}
                                     value={selectedVariation}
+                                    placeholder={t('choose_variation')}
 
                                 />
                             </div>

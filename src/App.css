@@ -224,8 +224,13 @@ body {
 
 }
 
-.accordion-body {
-  background-color: #B50007 !important;
+.app-sidemenu-bar-item .accordion-body li a {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+.app-sidemenu-bar-item .accordion-body li {
+  margin-bottom: 0.2rem;
 }
 
 .side-menu li a {
@@ -400,4 +405,7 @@ ul.p-dropdown-items {
 }
 .rounded-btn{
   border-radius: 4rem !important;
+}
+ul{
+  padding-left: 0px !important;
 }
