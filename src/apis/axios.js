@@ -33,10 +33,10 @@ axiosInstance.interceptors.response.use(
             }));
         }
        
-        // if (error.response.status === 403) {
-        //     localStorage.removeItem('access_token');
-        //     window.location.assign('/');
-        // }
+        if (error.response.status === 401) {
+            localStorage.removeItem('access_token');
+            window.location.assign('/');
+        }
         return Promise.reject(error);
     },
 );

@@ -119,13 +119,13 @@ const Services = () => {
                             field="category_title"
                             header={t('service_category')}
                             sortable
-                            filter
+                            // filter
                         />
                         <Column
                             field="variation_title"
                             header={t('service_variation')}
                             sortable
-                            filter
+                            // filter
                             filterField='service_variation'
                             showFilterMatchModes={false}
                             filterElement={(options) => {
