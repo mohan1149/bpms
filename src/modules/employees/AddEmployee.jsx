@@ -60,7 +60,6 @@ const AddEmployee = () => {
             formData.append('created_at', getTimeStamp(new Date()));
             formData.append('updated_at', getTimeStamp(new Date()));
             formData.append('empImage', empImage);
-            
             const res = await addEmployee(formData);
             if (res.data.staus) {
                 toast.current.show({ severity: 'success', summary: t('success'), detail: t(res.data.message), life: 3000 });
@@ -225,7 +224,7 @@ const AddEmployee = () => {
                                 </div>
                             </div>
                             <div className="col-12 mt-3">
-                                <Button type='submit' className='p-btn'>{t('add_branch')}</Button>
+                                <Button type='submit' className='p-btn'>{t('add_employee')}</Button>
                             </div>
                         </div>
                     </form>
