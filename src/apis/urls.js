@@ -30,6 +30,7 @@ const urls = {
 
     store_service: baseUrl + '/services/store',
     get_services: baseUrl + '/services?activeOnly=',
+    get_branch_services:baseUrl+'/services/by-branches',
 
     store_customer_subscription_group: baseUrl + '/customers/groups/store',
     get_customer_subscription_groups: baseUrl + '/customers/groups?activeOnly=',
@@ -40,6 +41,8 @@ const urls = {
     get_customers: baseUrl + '/customers?activeOnly=',
     update_customer: baseUrl + '/customers/update',
     get_customer_details: baseUrl + '/customers/',
+
+    store_employee:baseUrl+'/employees/store'
 }
 
 export default urls;

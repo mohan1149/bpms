@@ -11,13 +11,14 @@ import DeleteModalContent from '../../commons/DeleteModalContent';
 import { useStore } from 'react-redux';
 import { setShowDeleteDialog } from '../../redux/reducer';
 import { InputSwitch } from 'primereact/inputswitch';
-import { FilterMatchMode,FilterOperator } from 'primereact/api';
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { MultiSelect } from 'primereact/multiselect';
 import Select from 'react-select';
 const Services = () => {
     const { t } = useTranslation();
     const store = useStore();
     const [services, setServices] = useState([]);
+    const [filteredServices, setFilteredServices] = useState([]);
     const [serviceVariations, setServiceVariations] = useState([]);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -32,16 +33,17 @@ const Services = () => {
         try {
             const res = await getServices();
             setServices(res.data.data);
+            setFilteredServices(res.data.data);
         } catch (error) {
 
         }
     }
-    const loadServiceVariations =  async () =>{
+    const loadServiceVariations = async () => {
         try {
             const res = await getServiceVariations(1);
-            setServiceVariations(res.data.data.map((e)=> { return {value:e.id,name:e.variation_title} }));
+            setServiceVariations(res.data.data.map((e) => { return { value: e.id, label: e.variation_title } }));
         } catch (error) {
-            
+
         }
     }
     const statusItemTemplate = (option) => {
@@ -51,6 +53,9 @@ const Services = () => {
             </div>
         );
     };
+    const filterServices = (varitaions) =>{
+        let filtered = services.filter
+    }
     return (
         <div>
             <div className="glass-card p-3">
@@ -73,18 +78,25 @@ const Services = () => {
                 />
                 <div className="data-table mt-2">
                     <DataTable
-                        value={services}
+                        value={filteredServices}
                         header={
                             <div>
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <input type="text" className='search-input form-control'
+                                        <input type="text" className='form-control'
                                             placeholder={t('search_here')}
                                             onChange={(e) => {
                                                 let _filters = { ...filters };
                                                 _filters['global'].value = e.target.value;
                                                 setFilters(_filters);
                                             }}
+                                        />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <Select options={serviceVariations}
+                                            isClearable
+                                            isMulti
+                                            onChange={(e)=>{ filterServices(e) }}
                                         />
                                     </div>
                                 </div>
@@ -119,7 +131,7 @@ const Services = () => {
                             field="category_title"
                             header={t('service_category')}
                             sortable
-                            // filter
+                        // filter
                         />
                         <Column
                             field="variation_title"
@@ -139,7 +151,7 @@ const Services = () => {
                                         }}
                                         optionLabel="name"
                                         placeholder={t('select_variations')}
-                                        className="p-column-filter"  
+                                        className="p-column-filter"
                                     />
                                 )
                             }}

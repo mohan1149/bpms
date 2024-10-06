@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-bootstrap';
 import { Button } from 'primereact/button';
 import { useSelector, useStore } from 'react-redux';
-import {setShowSidemenu} from '../../redux/reducer';
+import { setShowSidemenu } from '../../redux/reducer';
 const Sidebar = (props) => {
     const store = useStore();
     const { t } = useTranslation();
@@ -78,6 +78,18 @@ const Sidebar = (props) => {
                     </span>
                 </Link>
             </li> */}
+            <li className={`app-sidemenu-bar-item ${activePath.includes('employees') ? 'active' : ''}`}>
+                <Link to="/employees">
+                    <span className='link-container'>
+                        <span className="material-symbols-outlined">
+                            badge
+                        </span>
+                        <span className='link_title'>
+                            {sizeToggler && t('employees')}
+                        </span>
+                    </span>
+                </Link>
+            </li>
             <li className={`app-sidemenu-bar-item ${activePath.includes('customers') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="3">
@@ -113,18 +125,7 @@ const Sidebar = (props) => {
             </li>
 
 
-            {/* <li className={`app-sidemenu-bar-item ${activePath.includes('employees') ? 'active' : ''}`}>
-                <Link to="/employees">
-                    <span className='link-container'>
-                        <span className="material-symbols-outlined">
-                            people
-                        </span>
-                        <span className='link_title'>
-                            {sizeToggler && t('employees')}
-                        </span>
-                    </span>
-                </Link>
-            </li> */}
+
             <li className={`app-sidemenu-bar-item ${activePath.includes('services') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="0">

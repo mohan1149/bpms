@@ -289,6 +289,21 @@ export const getServices = async (activeOnly = 0) => {
         return error;
     }
 }
+export const getServicesByBranch = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.get_branch_services,
+            data: {
+                'branches':data,
+            },
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
 export const addService = async (data) => {
     try {
         let response = await axios({
@@ -348,7 +363,7 @@ export const updateCustomerGroup = async (data) => {
 
 
 
-// API CALLS FOR CUSTOMERs
+// API CALLS FOR CUSTOMERS
 export const getCustomers = async (activeOnly = 0) => {
     try {
         let response = await axios({
@@ -397,3 +412,20 @@ export const getCustomerDetails = async (id) => {
 }
 //END
 
+// API CALLS FOR EMPLOYEES
+export const addEmployee = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_employee,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+//END

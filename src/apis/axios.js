@@ -32,10 +32,10 @@ axiosInstance.interceptors.response.use(
                 content: error.message,
             }));
         }
-       
+
         if (error.response.status === 401) {
             localStorage.removeItem('access_token');
-            window.location.assign('/');
+            // window.location.assign('/');
         }
         return Promise.reject(error);
     },
