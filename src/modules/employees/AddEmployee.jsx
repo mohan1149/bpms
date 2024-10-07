@@ -61,7 +61,7 @@ const AddEmployee = () => {
             formData.append('updated_at', getTimeStamp(new Date()));
             formData.append('empImage', empImage);
             const res = await addEmployee(formData);
-            if (res.data.staus) {
+            if (res.data.status) {
                 toast.current.show({ severity: 'success', summary: t('success'), detail: t(res.data.message), life: 3000 });
             } else {
                 toast.current.show({ severity: 'error', summary: t('error'), detail: t(res.data.message), life: 3000 });

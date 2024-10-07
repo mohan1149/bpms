@@ -412,6 +412,44 @@ export const getCustomerDetails = async (id) => {
 }
 //END
 
+// API CALLS FOR ROLES
+export const addRole = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.store_role,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const updateRole = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_role,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const getRoles = async (activeOnly = 0) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_roles + activeOnly,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+//END
+
 // API CALLS FOR EMPLOYEES
 export const addEmployee = async (data) => {
     try {

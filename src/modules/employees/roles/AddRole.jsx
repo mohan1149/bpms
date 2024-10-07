@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import Select from 'react-select';
 import { Button } from 'primereact/button';
-import { getPaymentTypes, addBranch } from '../../../apis/services';
-import { Avatar } from 'primereact/avatar';
-import { Calendar } from 'primereact/calendar';
+import { addRole } from '../../../apis/services';
 import { getTimeStamp } from '../../../helpers/helpers';
 import { Toast } from 'primereact/toast';
 import { Checkbox } from 'primereact/checkbox';
 
 const AddRole = () => {
     const { t } = useTranslation();
+    const toast = useRef();
     const [roleName, setRoleName] = useState();
     const [roleDesc, setRoleDesc] = useState();
     const [rolePerms, setRolePerms] = useState([]);
@@ -34,6 +32,29 @@ const AddRole = () => {
             perms.splice(perms.indexOf(e.value), 1);
         setPermGroup(perms);
 
+    }
+    const handleAddRole = async () => {
+        try {
+            let data = {
+                roleTitle:roleName,
+                roleDesc:roleDesc,
+                rolePerms:JSON.stringify(rolePerms),
+                created_at: getTimeStamp(new Date()),
+                updated_at: getTimeStamp(new Date()),
+                status:status,
+            };
+            const res = await addRole(data);
+            
+            if (res.data.status) {
+                console.log(toast);
+                
+                toast.current.show({ severity: 'success', summary: t('success'), detail: t(res.data.message), life: 3000 });
+            } else {
+                toast.current.show({ severity: 'error', summary: t('error'), detail: t(res.data.message), life: 3000 });
+            }
+        } catch (error) {
+
+        }
     }
 
 
@@ -97,7 +118,7 @@ const AddRole = () => {
                 }
             ],
         },
-       
+
         {
             group_name: 'manage_services',
             permissions: [
@@ -225,6 +246,7 @@ const AddRole = () => {
     ];
     return (
         <div className="p-3 glass-card">
+            <Toast ref={toast} />
             <div className="d-flex jcsb">
                 <div className='mt-2 mb-2'>
                     <h4>{t('add_new_role')}</h4>
@@ -236,18 +258,33 @@ const AddRole = () => {
                 </div>
             </div>
             <div className="p-3">
-                <form action="">
+                <form action="" 
+                    onSubmit={(e)=>{
+                        e.preventDefault();
+                        handleAddRole();
+                    }}
+                >
                     <div className="row">
                         <div className="col-md-6 mb-2">
                             <div className="form-group">
                                 <label htmlFor="role_name" className='mb-1 required'>{t('role_name')}</label>
-                                <input type="text" className='form-control' required id="role_name" />
+                                <input type="text" className='form-control' required id="role_name" 
+                                    value={roleName}
+                                    onChange={(e)=>{
+                                        setRoleName(e.target.value);
+                                    }}
+                                />
                             </div>
                         </div>
                         <div className="col-md-6 mb-2">
                             <div className="form-group">
                                 <label htmlFor="role_desc" className='mb-1 required'>{t('role_desc')}</label>
-                                <input type="text" className='form-control' required id="role_desc" />
+                                <input type="text" className='form-control' required id="role_desc" 
+                                  value={roleDesc}
+                                  onChange={(e)=>{
+                                      setRoleDesc(e.target.value);
+                                  }}
+                                />
                             </div>
                         </div>
                         <div className="col-md-12">
@@ -306,6 +343,9 @@ const AddRole = () => {
                                     <label htmlFor="status" className="ml-2">{t('enable_for_use')}</label>
                                 </div>
                             </div>
+                        </div>
+                        <div className="col-md-12 mt-4">
+                            <Button type='submit' className='p-btn' label={t('add_role')} />
                         </div>
                     </div>
                 </form>

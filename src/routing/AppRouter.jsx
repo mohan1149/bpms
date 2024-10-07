@@ -58,7 +58,7 @@ import AddEmployee from '../modules/employees/AddEmployee';
 
 import Roles from '../modules/employees/roles/Roles';
 import AddRole from '../modules/employees/roles/AddRole';
-
+import EditRole from '../modules/employees/roles/EditRole';
 
 import { setErrorToast } from '../redux/reducer';
 
@@ -184,7 +184,8 @@ const AppRouter = () => {
                                    
                                     <Route path='/employees/roles' element={<Roles />}/>
                                     <Route path='/employees/roles/add' element={<AddRole />}/>
-
+                                    <Route path='/employees/roles/edit' element={<EditRole />}/>
+                                    
                                     
 
                                     

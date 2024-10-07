@@ -42,6 +42,12 @@ const urls = {
     update_customer: baseUrl + '/customers/update',
     get_customer_details: baseUrl + '/customers/',
 
+    store_role: baseUrl + '/roles/store',
+    get_roles: baseUrl + '/roles?activeOnly=',
+    update_role: baseUrl + '/roles/update',
+
+
+
     store_employee:baseUrl+'/employees/store'
 }
 

@@ -98,7 +98,7 @@ const Sidebar = (props) => {
                         <Accordion.Body>
                             <ul>
                                 <li>
-                                    <Link to="/employees/roles">{t('roles')}</Link>
+                                    <Link to="/employees/roles">{t('manage_roles')}</Link>
                                 </li>
                                 <li>
                                     <Link to="/employees">{t('all_employees')}</Link>
