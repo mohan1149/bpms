@@ -5,7 +5,6 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { getBranches } from '../../apis/services';
 import { Avatar } from 'primereact/avatar';
-import { getTimeFromString } from '../../helpers/helpers';
 import { Button } from 'primereact/button';
 import DeleteModalContent from '../../commons/DeleteModalContent';
 import { useStore } from 'react-redux';
@@ -56,64 +55,6 @@ const Employees = () => {
                         emptyMessage={t('data_not_available')}
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     >
-                        <Column
-                            header={t('image')}
-                            body={(row) => {
-                                return (
-                                    <Avatar image={row.branch.branch_image} size="large" imageAlt={row.branch.branch_image} />
-                                )
-                            }}
-                        />
-                        <Column
-                            field="branch.branch_name"
-                            header={t('branch_name')}
-                            sortable
-                        />
-
-                        <Column
-                            field="branch.branch_email"
-                            header={t('email')}
-                            sortable
-                        />
-                        <Column
-                            field="branch.branch_phone"
-                            header={t('phone')}
-                            sortable
-                        />
-                        <Column
-                            field="branch.branch_address"
-                            header={t('address')}
-                            sortable
-                        />
-                        <Column
-                            header={t('opening_time')}
-                            body={(i) => getTimeFromString(i.branch.opening_time)}
-                            sortable
-                        />
-                        <Column
-                            body={(i) => getTimeFromString(i.branch.closing_time)}
-                            header={t('closing_time')}
-                            sortable
-                        />
-                        <Column
-                            header={t('payment_types')}
-                            style={{
-                                minWidth:'10rem'
-                            }}
-                            body={(row) => {
-                                return (
-                                    <div className='d-flex-wrap d-flex'>
-                                        {
-                                            row.payment_types.map((i, key) => {
-                                                return (
-                                                    <Avatar image={i.payment_image} className='mx-1 mb-1' imageAlt={i.payment_title} title={i.payment_title} />
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                );
-                            }}
-                        />
                         <Column
                             sortField='status'
                             header={t('status')}

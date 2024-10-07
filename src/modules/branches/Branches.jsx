@@ -89,11 +89,13 @@ const Branches = () => {
                             header={t('opening_time')}
                             body={(i) => getTimeFromString(i.branch.opening_time)}
                             sortable
+                            sortField='branch.opening_time'
                         />
                         <Column
                             body={(i) => getTimeFromString(i.branch.closing_time)}
                             header={t('closing_time')}
                             sortable
+                            sortField='branch.closing_time'
                         />
                         <Column
                             header={t('payment_types')}
