@@ -79,17 +79,37 @@ const Sidebar = (props) => {
                 </Link>
             </li> */}
             <li className={`app-sidemenu-bar-item ${activePath.includes('employees') ? 'active' : ''}`}>
-                <Link to="/employees">
-                    <span className='link-container'>
-                        <span className="material-symbols-outlined">
-                            badge
-                        </span>
-                        <span className='link_title'>
-                            {sizeToggler && t('employees')}
-                        </span>
-                    </span>
-                </Link>
+                <Accordion activeKey={accordionActiveKey} className=''>
+                    <Accordion.Item eventKey="4">
+                        <Accordion.Header onClick={() => handleAccordionToggle('4')}
+                            className={sizeToggler ? 'expaned' : 'collapsed'}
+                        >
+                            <Link to="/employees" className="link">
+                                <div className='link-container'>
+                                    <span className="material-symbols-outlined">
+                                        badge
+                                    </span>
+                                    <span className='link_title'>
+                                        {sizeToggler && t('employees')}
+                                    </span>
+                                </div>
+                            </Link>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ul>
+                                <li>
+                                    <Link to="/employees/roles">{t('roles')}</Link>
+                                </li>
+                                <li>
+                                    <Link to="/employees">{t('all_employees')}</Link>
+                                </li>
+                            </ul>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
             </li>
+
+
             <li className={`app-sidemenu-bar-item ${activePath.includes('customers') ? 'active' : ''}`}>
                 <Accordion activeKey={accordionActiveKey} className=''>
                     <Accordion.Item eventKey="3">

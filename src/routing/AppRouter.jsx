@@ -56,6 +56,10 @@ import ViewCustomer from '../modules/customers/ViewCustomer';
 import Employees from '../modules/employees/Employees';
 import AddEmployee from '../modules/employees/AddEmployee';
 
+import Roles from '../modules/employees/roles/Roles';
+import AddRole from '../modules/employees/roles/AddRole';
+
+
 import { setErrorToast } from '../redux/reducer';
 
 const AppRouter = () => {
@@ -177,6 +181,9 @@ const AppRouter = () => {
 
                                     <Route path='/employees' element={<Employees />}/>
                                     <Route path='/employees/add' element={<AddEmployee />}/>
+                                   
+                                    <Route path='/employees/roles' element={<Roles />}/>
+                                    <Route path='/employees/roles/add' element={<AddRole />}/>
 
                                     
 
