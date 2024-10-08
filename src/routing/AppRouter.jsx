@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '../modules/home/Home';
 import Header from '../modules/header/Header';
 import Sidebar from '../modules/home/Sidemenu';
-import { useStore,useSelector } from 'react-redux';
+import { useStore, useSelector } from 'react-redux';
 import Login from './../modules/auth/Login';
 import Splash from './../modules/splash/Splash';
 import Logout from './../modules/auth/Logout';
@@ -40,6 +40,9 @@ import ServiceVariations from '../modules/services/variations/ServiceVariations'
 import ServiceModifiers from '../modules/services/modifiers/ServiceModifiers';
 import Services from '../modules/services/Services';
 import AddService from '../modules/services/AddService';
+import EditService from '../modules/services/EditService';
+import ViewService from '../modules/services/ViewService';
+
 import AddServiceOrder from '../modules/services/terminal/AddServiceOrder';
 
 //CUSTOMERS
@@ -61,10 +64,14 @@ import AddRole from '../modules/employees/roles/AddRole';
 import EditRole from '../modules/employees/roles/EditRole';
 
 import { setErrorToast } from '../redux/reducer';
-
+import { addLocale } from 'primereact/api';
 const AppRouter = () => {
     const store = useStore();
     const { t } = useTranslation();
+    addLocale('en', {
+        clear: t('clear'),
+        apply: t('apply')
+    });
     const [isUserLogged, setIsUserLogged] = useState(false);
     const [showReqDialog, setShowReqDialog] = useState(false);
     const sideMenuSize = useSelector((state) => state.app.showSidemenu);
@@ -118,7 +125,7 @@ const AppRouter = () => {
                                 width: sideMenuSize ? '' : '4.3%',
                             }}>
                             <div className='side-menu fh glass-card-no-radius'>
-                                <Sidebar/>
+                                <Sidebar />
                             </div>
                         </div>
                         <div className="col-lg-10 col-sm-12 col-md-12 app-content no_mp m-0 p-0"
@@ -163,32 +170,34 @@ const AppRouter = () => {
 
                                     <Route path='/services' element={<Services />} />
                                     <Route path='/services/add' element={<AddService />} />
-
-                                    
-                                    <Route path='/services/terminal' element={<AddServiceOrder />}/>
-
-
-                                    <Route path='/customers/groups' element={<CustomerGroups />}/>
-                                    <Route path='/customers/groups/add' element={<AddCustomerGroup />}/>
-                                    <Route path='/customers/groups/edit' element={<EditCustomerGroup />}/>
-                                    <Route path='/customers' element={<Customers />}/>
-                                    <Route path='/customers/add' element={<AddCustomer />}/>
-                                    <Route path='/customers/edit' element={<EditCustomer />}/>
-                                    <Route path='/customers/view' element={<ViewCustomer />}/>
+                                    <Route path='/services/edit' element={<EditService />} />
+                                    <Route path='/services/view' element={<ViewService />} />
 
 
+                                    <Route path='/services/terminal' element={<AddServiceOrder />} />
 
 
-                                    <Route path='/employees' element={<Employees />}/>
-                                    <Route path='/employees/add' element={<AddEmployee />}/>
-                                   
-                                    <Route path='/employees/roles' element={<Roles />}/>
-                                    <Route path='/employees/roles/add' element={<AddRole />}/>
-                                    <Route path='/employees/roles/edit' element={<EditRole />}/>
-                                    
-                                    
+                                    <Route path='/customers/groups' element={<CustomerGroups />} />
+                                    <Route path='/customers/groups/add' element={<AddCustomerGroup />} />
+                                    <Route path='/customers/groups/edit' element={<EditCustomerGroup />} />
+                                    <Route path='/customers' element={<Customers />} />
+                                    <Route path='/customers/add' element={<AddCustomer />} />
+                                    <Route path='/customers/edit' element={<EditCustomer />} />
+                                    <Route path='/customers/view' element={<ViewCustomer />} />
 
-                                    
+
+
+
+                                    <Route path='/employees' element={<Employees />} />
+                                    <Route path='/employees/add' element={<AddEmployee />} />
+
+                                    <Route path='/employees/roles' element={<Roles />} />
+                                    <Route path='/employees/roles/add' element={<AddRole />} />
+                                    <Route path='/employees/roles/edit' element={<EditRole />} />
+
+
+
+
 
                                     <Route path='/settings/payment-types' element={<PaymentTypes />} />
                                     <Route path='/logout' element={<Logout />} />

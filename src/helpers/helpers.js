@@ -24,3 +24,14 @@ export const getFormattedCurrency = (currency, noCode = 0) => {
     }
 
 }
+
+export const can = (perm)=>{
+    const user = store.getState().app.user;
+    let role = user.user.role;
+    if(role ==='admin'){
+        return true;
+    }else{
+        const userPerms = JSON.parse(user.perms.role_perms);
+        return userPerms.includes(perm);
+    }
+}

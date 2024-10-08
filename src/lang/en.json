@@ -153,7 +153,7 @@
     "all_employees":"All Employees",
     "add_new_employee":"Add New Employee",
     "nid":"NID",
-    "choose_branch":"choose Branch",
+    "choose_branch":"Choose Branch",
     "services":"Services",
     "select_services":"Select Services",
     "add_new_role":"Add New role",
@@ -196,9 +196,16 @@
     "role_added":"New Role Added",
     "edit_role":"Edit Role",
     "update_role":"Update Role",
-    "role_updated":"Role Updated"
-
-
-
-
+    "role_updated":"Role Updated",
+    "role":"Role",
+    "active":"Active",
+    "suspended":"Suspended",
+    "new_employee_added":"New Employee Added.",
+    "service_updated":"Service Updated",
+    "edit_service":"Edit Service",
+    "update_service":"Update Service",
+    "select_variations":"Select Variations",
+    "select_category":"Select Category",
+    "clear":"Clear",
+    "apply":"Apply"
 }

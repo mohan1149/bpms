@@ -409,3 +409,9 @@ ul.p-dropdown-items {
 ul{
   padding-left: 0px !important;
 }
+.p-multiselect-items {
+  direction: initial !important;
+}
+.round-btn{
+  border-radius: 3rem !important;
+}

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { json, Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'primereact/button';
-import { getBranches, getServicesByBranch,addEmployee } from '../../apis/services';
+import { getBranches, getServicesByBranch,addEmployee,getRoles } from '../../apis/services';
 import { Avatar } from 'primereact/avatar';
 import { getTimeStamp } from '../../helpers/helpers';
 import { Toast } from 'primereact/toast';
@@ -24,9 +24,12 @@ const AddEmployee = () => {
     const [branch, setBranch] = useState();
     const [password, setPassword] = useState();
     const [confrimPassword, setConfrimPassword] = useState();
+    const [roles, setRoles] = useState([]);
+    const [role, setRole] = useState();
 
     useEffect(() => {
         loadBranches();
+        loadRoles();
     }, []);
     const loadBranches = async () => {
         try {
@@ -44,6 +47,14 @@ const AddEmployee = () => {
             console.log(error);
         }
     }
+    const loadRoles = async (bid) => {
+        try {
+            const res = await getRoles(1);
+            setRoles(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     const handleAddEmployee = async () => {
         try {
             let formData = new FormData();
@@ -56,6 +67,7 @@ const AddEmployee = () => {
             formData.append('branch', branch.branch.id);
             formData.append('status', status ? 1 : 0);
             formData.append('nid',nid);
+            formData.append('role',role.id);
             formData.append('password',password);
             formData.append('created_at', getTimeStamp(new Date()));
             formData.append('updated_at', getTimeStamp(new Date()));
@@ -143,8 +155,18 @@ const AddEmployee = () => {
                                     />
                                 </div>
                             </div>
-
-
+                            <div className="col-md-4 mb-2">
+                                <div className="form-group">
+                                    <label htmlFor="role" className='mb-1 required'>{t('role')}</label>
+                                    <Select options={roles} value={role} id="role" className='pr-input'
+                                        onChange={(e)=>{
+                                            setRole(e)
+                                        }}
+                                        getOptionLabel={(i)=> i.role_title}
+                                        getOptionValue={(i)=> i.id}
+                                    />
+                                </div>
+                            </div>
                             <div className="col-md-4 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="branch" className='required mb-1' >{t('branch')}</label>
@@ -195,7 +217,7 @@ const AddEmployee = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="col-md-12 mb-2">
+                            <div className="col-md-8 mb-2">
                                 <div className="form-group">
                                     <label htmlFor="services" className='required mb-1' >{t('services')}</label>
                                     <Select options={services} id="services" required

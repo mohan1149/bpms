@@ -319,6 +319,23 @@ export const addService = async (data) => {
         return error;
     }
 }
+export const updateService = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_service,
+            data: data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
 //END
 
 
@@ -451,6 +468,18 @@ export const getRoles = async (activeOnly = 0) => {
 //END
 
 // API CALLS FOR EMPLOYEES
+export const getEmployees = async (activeOnly = 0) => {
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_employees + activeOnly,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
 export const addEmployee = async (data) => {
     try {
         let response = await axios({
