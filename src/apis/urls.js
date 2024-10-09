@@ -30,8 +30,9 @@ const urls = {
 
     store_service: baseUrl + '/services/store',
     get_services: baseUrl + '/services?activeOnly=',
-    get_branch_services:baseUrl+'/services/by-branches',
+    get_branch_services: baseUrl + '/services/by-branches',
     update_service: baseUrl + '/services/update',
+    get_service_locations: baseUrl + '/services/locations',
 
 
     store_customer_subscription_group: baseUrl + '/customers/groups/store',
@@ -50,7 +51,7 @@ const urls = {
 
 
 
-    store_employee:baseUrl+'/employees/store',
+    store_employee: baseUrl + '/employees/store',
     get_employees: baseUrl + '/employees?activeOnly=',
 
 }

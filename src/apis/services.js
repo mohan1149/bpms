@@ -334,6 +334,21 @@ export const updateService = async (data) => {
         return error;
     }
 }
+export const getServiceLocations = async (service) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.get_service_locations,
+            data: {
+                service:service
+            },
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
 
 
 //END

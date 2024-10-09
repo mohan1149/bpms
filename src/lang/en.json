@@ -135,7 +135,7 @@
     "service_duration":"Service Duration",
     "choose_service_category":"Choose Service Category",
     "service_charge_inc_all_taxes":"Service Charge Inclusive of All Taxes",
-    "service_price":"Service Charge",
+    "service_price":"Service Price",
     "service_desc":"Service Description",
     "choose_branches":"Choose Branches",
     "choose_variation":"Choose Variation",
@@ -207,5 +207,10 @@
     "select_variations":"Select Variations",
     "select_category":"Select Category",
     "clear":"Clear",
-    "apply":"Apply"
+    "apply":"Apply",
+    "service_details":"Service Details",
+    "service_location_details":"Service Location Details",
+    "price":"Price",
+    "in_active":"In Active"
+
 }
