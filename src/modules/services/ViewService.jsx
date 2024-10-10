@@ -12,6 +12,7 @@ import { setShowDeleteDialog } from '../../redux/reducer';
 import { InputSwitch } from 'primereact/inputswitch';
 import { Tag } from 'primereact/tag';
 import { Avatar } from 'primereact/avatar';
+import Select from 'react-select';
 
 const ViewService = () => {
     const { t } = useTranslation();
@@ -25,28 +26,15 @@ const ViewService = () => {
         try {
             const res = await getServiceLocations(service.id);
             setServiceLocations(res.data.data);
-
         } catch (error) {
 
         }
     }
     return (
         <div className="row">
-            <div className="col-md-5">
-                <div className="p-3 glass-card">
+            <div className="col-md-5 glass-card">
+                <div className="p-3">
                     <h4 className='mt-2 mb-3'>{t('service_details')}</h4>
-                    <div
-                        style={{
-                            textAlign: 'center',
-                            marginBottom: 15
-                        }}
-                    >
-                        <img src={service.service_image}
-                            style={{
-                                width: '40%',
-                            }}
-                        />
-                    </div>
                     <table className='table'>
                         <tbody>
                             <tr><td>{t('service_name')}</td><td><strong>{service.service_name}</strong></td></tr>
@@ -57,7 +45,7 @@ const ViewService = () => {
                             <tr><td>{t('discount')}</td><td><strong>{service.service_discount}%</strong></td></tr>
                         </tbody>
                     </table>
-                    <div className='mb-3 mt-4'>
+                    <div className='mt-4 pt-2'>
                         <Link className='link-btn' to='/services/edit'
                             state={location.state}
                         >{t('edit_service')}</Link>
@@ -70,6 +58,15 @@ const ViewService = () => {
                     <h4 className='mt-2 mb-3'>{t('service_location_details')}</h4>
                     <DataTable
                         value={serviceLocations}
+                        footer={
+                            <div>
+                                <Select />
+                                <Button
+                                    className='rounded-btn mt-2'
+                                    label={t('add_to_location')}
+                                />
+                            </div>
+                        }
                     >
                         <Column
                             header={t('branch')}
@@ -87,16 +84,35 @@ const ViewService = () => {
                             sortField='status'
                             sortable
                             body={(row) => <Tag
-                                value={row.status === 1 ? t('in_active') : t('in_active')}
+                                value={row.status === 1 ? t('active') : t('in_active')}
                                 severity={row.status === 1 ? 'success' : 'danger'}
                             />
                             }
                         />
                         <Column
                             header={t('actions')}
+                            body={
+                                <div className='d-flex'>
+                                    <Button className='icon-sm-btn mx-1' severity="secondary" 
+                                        onClick={() => {
+                                        }}
+                                    >
+                                        <span className="material-symbols-outlined">
+                                            edit
+                                        </span>
+                                    </Button>
+                                    <Button className='icon-sm-btn mx-1' severity="danger" 
+                                        onClick={() => {
+                                        }}
+                                    >
+                                        <span className="material-symbols-outlined">
+                                            close
+                                        </span>
+                                    </Button>
+                                </div>
+                            }
 
                         />
-
                     </DataTable>
                 </div>
             </div>
