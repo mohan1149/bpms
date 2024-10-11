@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { getServiceLocations } from '../../apis/services';
+import { getServiceLocations, getBranches } from '../../apis/services';
 import { getFormattedCurrency, getTimeStamp } from '../../helpers/helpers';
 import { Button } from 'primereact/button';
 import DeleteModalContent from '../../commons/DeleteModalContent';
@@ -18,7 +18,9 @@ const ViewService = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const service = JSON.parse(location.state);
-    const [serviceLocations, setServiceLocations] = useState();
+    const [serviceLocations, setServiceLocations] = useState([]);
+    const [branches, setBranches] = useState([]);
+
     useEffect(() => {
         loadServiceLocations();
     }, []);
@@ -26,7 +28,19 @@ const ViewService = () => {
         try {
             const res = await getServiceLocations(service.id);
             setServiceLocations(res.data.data);
+            loadBranches(res.data.data);
         } catch (error) {
+
+        }
+    }
+    const loadBranches = async (existingBranches) => {
+        try {
+            const res = await getBranches(1);
+            let existingBranchesId = existingBranches.map((e) => e.location_id);
+            let nonExisting = res.data.data.filter((e) => !existingBranchesId.includes(e.branch.id));
+            setBranches(nonExisting);
+        } catch (error) {
+            console.log(error);
 
         }
     }
@@ -45,7 +59,7 @@ const ViewService = () => {
                             <tr><td>{t('discount')}</td><td><strong>{service.service_discount}%</strong></td></tr>
                         </tbody>
                     </table>
-                    <div className='mt-4 pt-2'>
+                    <div className='mt-4 pt-2 mb-3'>
                         <Link className='link-btn' to='/services/edit'
                             state={location.state}
                         >{t('edit_service')}</Link>
@@ -57,12 +71,28 @@ const ViewService = () => {
                 <div className="p-3 glass-card">
                     <h4 className='mt-2 mb-3'>{t('service_location_details')}</h4>
                     <DataTable
+                        emptyMessage={t('data_not_available')}
                         value={serviceLocations}
                         footer={
                             <div>
-                                <Select />
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <Select
+                                            options={branches}
+                                            getOptionLabel={(e) => e.branch.branch_name}
+                                            getOptionValue={(e) => e.branch.id}
+                                        />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input type="text" className='form-control' />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input type="text" className='form-control' />
+                                    </div>
+                                </div>
+
                                 <Button
-                                    className='rounded-btn mt-2'
+                                    className='rounded-btn mt-4'
                                     label={t('add_to_location')}
                                 />
                             </div>
@@ -79,6 +109,12 @@ const ViewService = () => {
                             body={(row) => getFormattedCurrency(row.price)}
                             sortable
                         />
+
+                        <Column
+                            header={t('discount')}
+                            field='service_location_discount'
+                            sortable
+                        />
                         <Column
                             header={t('status')}
                             sortField='status'
@@ -93,7 +129,7 @@ const ViewService = () => {
                             header={t('actions')}
                             body={
                                 <div className='d-flex'>
-                                    <Button className='icon-sm-btn mx-1' severity="secondary" 
+                                    <Button className='icon-sm-btn mx-1' severity="secondary"
                                         onClick={() => {
                                         }}
                                     >
@@ -101,7 +137,7 @@ const ViewService = () => {
                                             edit
                                         </span>
                                     </Button>
-                                    <Button className='icon-sm-btn mx-1' severity="danger" 
+                                    <Button className='icon-sm-btn mx-1' severity="danger"
                                         onClick={() => {
                                         }}
                                     >

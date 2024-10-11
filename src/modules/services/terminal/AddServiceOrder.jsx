@@ -228,7 +228,7 @@ const AddServiceOrder = () => {
     return (
         <div className="">
             {
-                serviceRegister === null &&
+                serviceRegister !== null &&
                 <div>
                     <div className="p-3 glass-card">
                         <h4>{t('open_service_terminal')}</h4>
@@ -267,7 +267,7 @@ const AddServiceOrder = () => {
                 </div>
             }
             {
-                serviceRegister !== null &&
+                serviceRegister == null &&
                 <div>
                     <div
                         style={{
