@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { getServiceLocations, getBranches } from '../../apis/services';
+import { getServiceLocations, getBranches, addServiceToLocation, deleteServiceFromLocation, updateServiceLocationDetails } from '../../apis/services';
 import { getFormattedCurrency, getTimeStamp } from '../../helpers/helpers';
 import { Button } from 'primereact/button';
 import DeleteModalContent from '../../commons/DeleteModalContent';
@@ -13,6 +13,10 @@ import { InputSwitch } from 'primereact/inputswitch';
 import { Tag } from 'primereact/tag';
 import { Avatar } from 'primereact/avatar';
 import Select from 'react-select';
+import { InputNumber } from 'primereact/inputnumber';
+import { Modal } from 'react-bootstrap';
+import { Checkbox } from 'primereact/checkbox';
+
 
 const ViewService = () => {
     const { t } = useTranslation();
@@ -20,6 +24,11 @@ const ViewService = () => {
     const service = JSON.parse(location.state);
     const [serviceLocations, setServiceLocations] = useState([]);
     const [branches, setBranches] = useState([]);
+    const [branch, setBranch] = useState();
+    const [price, setPrice] = useState(service.service_price);
+    const [status, setStatus] = useState();
+    const [discount, setDiscount] = useState(service.service_discount);
+    const [serviceEditModal, setServiceEditModal] = useState({ show: false, item: '' });
 
     useEffect(() => {
         loadServiceLocations();
@@ -44,10 +53,129 @@ const ViewService = () => {
 
         }
     }
+    const handleAddServiceToLocation = async () => {
+        try {
+            let data = {
+                service: service.id,
+                location: branch.branch.id,
+                price: price,
+                discount: discount
+            }
+            await addServiceToLocation(data);
+            loadServiceLocations();
+            setBranch('');
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+    const handleUpdateServiceToLocation = async () => {
+        try {
+            let data = {
+                service: service.id,
+                location: serviceEditModal.item.location_id,
+                price: price,
+                discount: discount,
+                status: status,
+            }
+            setServiceEditModal({ showL: false, item: '' });
+            await updateServiceLocationDetails(data);
+            loadServiceLocations();
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+
+    const handleDeleteServiceFromLocations = async (loc) => {
+        try {
+            let data = {
+                service: loc.service_id,
+                location: loc.location_id,
+            }
+            await deleteServiceFromLocation(data);
+            loadServiceLocations();
+        } catch (error) {
+
+        }
+    }
     return (
         <div className="row">
-            <div className="col-md-5 glass-card">
+            <Modal
+                show={serviceEditModal.show}
+            >
                 <div className="p-3">
+                    <div className="d-flex jcsb align-items-center">
+                        <h5>{t('edit_location_details')}</h5>
+                        <Button className='icon-btn' severity='secondary'
+                            onClick={() => {
+                                setServiceEditModal({ show: false, item: '' });
+                            }}
+                        >
+                            <span className="material-symbols-outlined">
+                                close
+                            </span>
+                        </Button>
+                    </div>
+                    <form action=""
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleUpdateServiceToLocation();
+                        }}
+                    >
+                        <div className="row p-2">
+                            <div className="col-12 mt-2">
+                                <div className="form-group">
+                                    <label htmlFor="price" className='required'>{t('price')}</label>
+                                    <InputNumber className='pr-input sm'
+                                        placeholder={t('price')}
+                                        value={price}
+                                        useGrouping={false}
+                                        maxFractionDigits={3}
+                                        onChange={(e) => {
+                                            setPrice(e.value);
+                                        }}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-12 mt-2">
+                                <div className="form-group">
+                                    <label htmlFor="discount" className='required'>{t('discount')}</label>
+                                    <InputNumber className='pr-input sm'
+                                        placeholder={t('discount')}
+                                        useGrouping={false}
+                                        maxFractionDigits={3}
+                                        value={discount}
+                                        onChange={(e) => {
+                                            setDiscount(e.value);
+                                        }}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-12 mt-2">
+                                <div className="d-flex">
+                                    <div className="flex align-items-center">
+                                        <Checkbox inputId="status" name="status" checked={status} className='mx-1'
+                                            onChange={() => {
+                                                setStatus(!status);
+                                            }}
+                                        />
+                                        <label htmlFor="status" className="ml-2">{t('enable_for_use')}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12 mt-3 mb-3">
+                                <Button type='submit' label={t('update')} className='p-btn ' />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </Modal>
+            <div className="col-md-5">
+                <div className="p-3 glass-card">
                     <h4 className='mt-2 mb-3'>{t('service_details')}</h4>
                     <table className='table'>
                         <tbody>
@@ -75,26 +203,67 @@ const ViewService = () => {
                         value={serviceLocations}
                         footer={
                             <div>
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        <Select
-                                            options={branches}
-                                            getOptionLabel={(e) => e.branch.branch_name}
-                                            getOptionValue={(e) => e.branch.id}
-                                        />
+                                <form action=""
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        handleAddServiceToLocation();
+                                    }}
+                                >
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <div className="form-group">
+                                                <label htmlFor="" className='required'>{t('branch')}</label>
+                                                <Select
+                                                    options={branches}
+                                                    getOptionLabel={(e) => e.branch.branch_name}
+                                                    getOptionValue={(e) => e.branch.id}
+                                                    required
+                                                    placeholder={t('choose_branch')}
+                                                    onChange={(e) => {
+                                                        setBranch(e);
+                                                    }}
+                                                    value={branch}
+                                                    isClearable
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <div className="form-group">
+                                                <label htmlFor="" className='required'>{t('price')}</label>
+                                                <InputNumber className='pr-input sm'
+                                                    placeholder={t('price')}
+                                                    value={price}
+                                                    useGrouping={false}
+                                                    maxFractionDigits={3}
+                                                    onChange={(e) => {
+                                                        setPrice(e.value);
+                                                    }}
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <div className="form-group">
+                                                <label htmlFor="" className='required'>{t('discount')}</label>
+                                                <InputNumber className='pr-input sm'
+                                                    placeholder={t('discount')}
+                                                    useGrouping={false}
+                                                    maxFractionDigits={3}
+                                                    value={discount}
+                                                    onChange={(e) => {
+                                                        setDiscount(e.value);
+                                                    }}
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="col-md-4">
-                                        <input type="text" className='form-control' />
-                                    </div>
-                                    <div className="col-md-4">
-                                        <input type="text" className='form-control' />
-                                    </div>
-                                </div>
-
-                                <Button
-                                    className='rounded-btn mt-4'
-                                    label={t('add_to_location')}
-                                />
+                                    <Button
+                                        type='submit'
+                                        className='rounded-btn mt-4'
+                                        label={t('add_to_location')}
+                                    />
+                                </form>
                             </div>
                         }
                     >
@@ -127,26 +296,31 @@ const ViewService = () => {
                         />
                         <Column
                             header={t('actions')}
-                            body={
-                                <div className='d-flex'>
-                                    <Button className='icon-sm-btn mx-1' severity="secondary"
-                                        onClick={() => {
-                                        }}
-                                    >
-                                        <span className="material-symbols-outlined">
-                                            edit
-                                        </span>
-                                    </Button>
-                                    <Button className='icon-sm-btn mx-1' severity="danger"
-                                        onClick={() => {
-                                        }}
-                                    >
-                                        <span className="material-symbols-outlined">
-                                            close
-                                        </span>
-                                    </Button>
-                                </div>
-                            }
+                            body={(row) => {
+                                return (
+                                    <div className='d-flex'>
+                                        <Button className='icon-sm-btn mx-1' severity="secondary"
+                                            onClick={() => {
+                                                setServiceEditModal({ show: true, item: row });
+                                                setStatus(row.status === 1 ? true : false);
+                                            }}
+                                        >
+                                            <span className="material-symbols-outlined">
+                                                edit
+                                            </span>
+                                        </Button>
+                                        <Button className='icon-sm-btn mx-1' severity="danger"
+                                            onClick={() => {
+                                                handleDeleteServiceFromLocations(row);
+                                            }}
+                                        >
+                                            <span className="material-symbols-outlined">
+                                                close
+                                            </span>
+                                        </Button>
+                                    </div>
+                                );
+                            }}
 
                         />
                     </DataTable>

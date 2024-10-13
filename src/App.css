@@ -415,3 +415,6 @@ ul{
 .round-btn{
   border-radius: 3rem !important;
 }
+.pr-input.sm input{
+  width: 100%;
+}

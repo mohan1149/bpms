@@ -349,6 +349,45 @@ export const getServiceLocations = async (service) => {
     }
 }
 
+export const addServiceToLocation = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.add_service_to_location,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+export const deleteServiceFromLocation = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.delete_service_from_location,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const updateServiceLocationDetails = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.update_service_location_details,
+            data: data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
 
 
 //END

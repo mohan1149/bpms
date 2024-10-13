@@ -33,6 +33,10 @@ const urls = {
     get_branch_services: baseUrl + '/services/by-branches',
     update_service: baseUrl + '/services/update',
     get_service_locations: baseUrl + '/services/locations',
+    add_service_to_location: baseUrl + '/services/add/location',
+    delete_service_from_location: baseUrl + '/services/location/delete',
+    update_service_location_details:baseUrl+'/services/location/update',
+
 
 
     store_customer_subscription_group: baseUrl + '/customers/groups/store',
