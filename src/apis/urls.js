@@ -39,6 +39,9 @@ const urls = {
 
 
 
+    get_service_register_details:baseUrl+'/service-register/details',
+
+
     store_customer_subscription_group: baseUrl + '/customers/groups/store',
     get_customer_subscription_groups: baseUrl + '/customers/groups?activeOnly=',
     update_customer_subscription_group: baseUrl + '/customers/groups/update',

@@ -550,3 +550,23 @@ export const addEmployee = async (data) => {
     }
 }
 //END
+
+
+//API CALLS FOR SERVICE Regsiter
+
+export const getServiceRegsiterDetails = async (data) => {
+    console.log(data);
+    
+    try {
+        let response = await axios({
+            method: 'GET',
+            url: urls.get_service_register_details,
+            params:data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+//END
