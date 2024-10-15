@@ -552,16 +552,27 @@ export const addEmployee = async (data) => {
 //END
 
 
-//API CALLS FOR SERVICE Regsiter
+//API CALLS FOR SERVICE REGISTER
 
 export const getServiceRegsiterDetails = async (data) => {
-    console.log(data);
-    
     try {
         let response = await axios({
             method: 'GET',
             url: urls.get_service_register_details,
             params:data,
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const openServiceRegsiter = async (data) => {
+    try {
+        let response = await axios({
+            method: 'POST',
+            url: urls.open_service_register,
+            data:data,
         });
         return response;
     } catch (error) {

@@ -40,6 +40,7 @@ const urls = {
 
 
     get_service_register_details:baseUrl+'/service-register/details',
+    open_service_register:baseUrl+'/service-register/open',
 
 
     store_customer_subscription_group: baseUrl + '/customers/groups/store',
