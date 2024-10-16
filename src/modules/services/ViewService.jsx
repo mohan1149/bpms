@@ -28,6 +28,8 @@ const ViewService = () => {
     const [price, setPrice] = useState(service.service_price);
     const [status, setStatus] = useState();
     const [discount, setDiscount] = useState(service.service_discount);
+    const [locationPrice, setLocationPrice] = useState();
+    const [locationDiscount, setLocationDiscount] = useState();
     const [serviceEditModal, setServiceEditModal] = useState({ show: false, item: '' });
 
     useEffect(() => {
@@ -74,8 +76,8 @@ const ViewService = () => {
             let data = {
                 service: service.id,
                 location: serviceEditModal.item.location_id,
-                price: price,
-                discount: discount,
+                price: locationPrice,
+                discount: locationDiscount,
                 status: status,
             }
             setServiceEditModal({ showL: false, item: '' });
@@ -130,11 +132,11 @@ const ViewService = () => {
                                     <label htmlFor="price" className='required'>{t('price')}</label>
                                     <InputNumber className='pr-input sm'
                                         placeholder={t('price')}
-                                        value={price}
+                                        value={locationPrice}
                                         useGrouping={false}
                                         maxFractionDigits={3}
                                         onChange={(e) => {
-                                            setPrice(e.value);
+                                            setLocationPrice(e.value);
                                         }}
                                         required
                                     />
@@ -147,9 +149,9 @@ const ViewService = () => {
                                         placeholder={t('discount')}
                                         useGrouping={false}
                                         maxFractionDigits={3}
-                                        value={discount}
+                                        value={locationDiscount}
                                         onChange={(e) => {
-                                            setDiscount(e.value);
+                                            setLocationDiscount(e.value);
                                         }}
                                         required
                                     />
@@ -301,8 +303,10 @@ const ViewService = () => {
                                     <div className='d-flex'>
                                         <Button className='icon-sm-btn mx-1' severity="secondary"
                                             onClick={() => {
-                                                setServiceEditModal({ show: true, item: row });
+                                                setLocationDiscount(row.service_location_discount);
+                                                setLocationPrice(row.price);
                                                 setStatus(row.status === 1 ? true : false);
+                                                setServiceEditModal({ show: true, item: row });
                                             }}
                                         >
                                             <span className="material-symbols-outlined">

@@ -16,6 +16,7 @@ import { can } from '../../../helpers/helpers';
 import NoPerm from '../../../commons/NoPerm';
 import OpenRegisterForm from './components/OpenRegisterForm';
 import TerminalMeta from './components/TerminalMeta';
+import { Tag } from 'primereact/tag';
 const AddServiceOrder = () => {
     const store = useStore();
     const user = store.getState().app.user;
@@ -25,7 +26,7 @@ const AddServiceOrder = () => {
     const [registerData, setRegisterData] = useState();
     const [openTerminal, setOpenTerminal] = useState(false);
 
-
+    const [services, setServices] = useState([]);
     const [itemsPerRow, setItemsPerRow] = useState({ label: t('items_per_row'), value: 2 });
     const [showSettings, setShowSettings] = useState(false);
     const [render, setRender] = useState(false);
@@ -33,6 +34,13 @@ const AddServiceOrder = () => {
     const [showModifiersModal, setShowModifiersModal] = useState({ show: false, item: '' });
     const [serviceModifiers, setServiceModifiers] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [customers, setCustomers] = useState([]);
+    const [variations, setVariations] = useState([]);
+
+    const [variation, setVariation] = useState();
+    const [searchKey, setSearchKey] = useState();
+
+    const [customer, setCustomer] = useState();
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [branch, setBranch] = useState();
     const [discount, setDiscount] = useState(0);
@@ -41,50 +49,50 @@ const AddServiceOrder = () => {
         value: 'flat',
     });
     const [showDiscountModal, setShowDiscountModal] = useState(false);
-    const services = [
-        {
-            id: 1,
-            service_name: 'Apple Iphone',
-            service_image: 'https://primefaces.org/cdn/primereact/images/product/bamboo-watch.jpg',
-            service_price: 10.456,
-        },
-        {
-            id: 2,
-            service_name: 'a wsw',
-            service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-            service_price: 10,
-        },
-        {
-            id: 3,
-            service_name: 'a dw',
-            service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-            service_price: 10,
-        },
-        {
-            id: 4,
-            service_name: 'a swdwdewd ',
-            service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-            service_price: 10,
-        },
-        {
-            id: 5,
-            service_name: 'a qwert',
-            service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-            service_price: 10,
-        },
-        {
-            id: 6,
-            service_name: 'a oiuyt',
-            service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-            service_price: 10,
-        },
-        {
-            id: 7,
-            service_name: 'a sdwefrgthyju ertyu qwert uytr qwertyuio werty ertyu',
-            service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-            service_price: 10,
-        },
-    ];
+    // const services = [
+    //     {
+    //         id: 1,
+    //         service_name: 'Apple Iphone',
+    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/bamboo-watch.jpg',
+    //         service_price: 10.456,
+    //     },
+    //     {
+    //         id: 2,
+    //         service_name: 'a wsw',
+    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
+    //         service_price: 10,
+    //     },
+    //     {
+    //         id: 3,
+    //         service_name: 'a dw',
+    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
+    //         service_price: 10,
+    //     },
+    //     {
+    //         id: 4,
+    //         service_name: 'a swdwdewd ',
+    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
+    //         service_price: 10,
+    //     },
+    //     {
+    //         id: 5,
+    //         service_name: 'a qwert',
+    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
+    //         service_price: 10,
+    //     },
+    //     {
+    //         id: 6,
+    //         service_name: 'a oiuyt',
+    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
+    //         service_price: 10,
+    //     },
+    //     {
+    //         id: 7,
+    //         service_name: 'a sdwefrgthyju ertyu qwert uytr qwertyuio werty ertyu',
+    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
+    //         service_price: 10,
+    //     },
+    // ];
     const [filteredServices, setFilteredServices] = useState(services);
     const itemsPerRowCount = [
         {
@@ -124,13 +132,21 @@ const AddServiceOrder = () => {
             register: localStorage.getItem('_register'),
         }
         const res = await getServiceRegsiterDetails(data);
-        setBranch(res.data.data.branch)
+        setBranch(res.data.data.branch);
+        setCategories(res.data.data.categories);
+        setServiceModifiers(res.data.data.modifiers);
+        setCustomers(res.data.data.customers);
+        setServices(res.data.data.services);
+        setFilteredServices(res.data.data.services);
+        setVariations(res.data.data.variations);
         setRegisterData(res.data.data);
-        console.log(res.data.data);
 
+        console.log(res.data.data);
     }
 
     const addItemToCart = (item) => {
+        let locDiscount = item.service_location_discount;
+        let discountMoney = (item.location_price * locDiscount) / 100;
         let existingCart = cartItems;
         let index = existingCart.findIndex((i) => i.id === item.id);
         if (index === -1) {
@@ -139,9 +155,9 @@ const AddServiceOrder = () => {
                 service_name: item.service_name,
                 image: item.service_image,
                 quantity: 1,
-                service_price: item.service_price,
-                total_price: item.service_price,
-                altered_price: item.service_price,
+                service_price: item.location_price - discountMoney,
+                total_price: item.location_price - discountMoney,
+                altered_price: item.location_price - discountMoney,
                 modifiers: [],
                 item_service_staff: '',
             };
@@ -156,7 +172,6 @@ const AddServiceOrder = () => {
         existingCart.splice(index, 1);
         setCartItems(existingCart);
         setRender(!render);
-
     }
     const alterItemPrice = (item, newPrice) => {
         let existingCart = cartItems;
@@ -199,9 +214,25 @@ const AddServiceOrder = () => {
         let modifiers_total = modifiers_price.length > 0 ? modifiers_price[0] : 0;
         return withDiscount === 1 ? getFormattedCurrency(((totalPrice - discount) + modifiers_total), 1) : getFormattedCurrency((totalPrice + modifiers_total), 1);
     }
-    const filterServices = (key) => {
+    const searchServices = (key) => {
         let filteredByKey = services.filter((item) => item.service_name.toLowerCase().includes(key.toLowerCase()));
         setFilteredServices(filteredByKey);
+    }
+    const applyVariationFilter = (v) => {
+        if (v !== null) {
+            let filteredByVariation = services.filter((item) => item.service_variation === v.id);
+            setFilteredServices(filteredByVariation);
+        }else{
+            setFilteredServices(services);
+        }
+    }
+    const applyCategoriesFilter = (cats) => {
+        if (cats.length === 0) {
+            setFilteredServices(services);
+        } else {
+            let filteredByCategories = services.filter((item) => cats.includes(item.service_category));
+            setFilteredServices(filteredByCategories);
+        }
     }
     const handlePrint = useReactToPrint({
         contentRef: componentRef,
@@ -362,7 +393,7 @@ const AddServiceOrder = () => {
                                                     <div className="form-group">
                                                         <label htmlFor="" className='mb-1'>{t('item_price')}</label>
                                                         <InputNumber
-                                                            value={showModifiersModal.item.service_price}
+                                                            value={showModifiersModal.item.altered_price}
                                                             useGrouping={false}
                                                             maxFractionDigits={3}
                                                             className='pr-input'
@@ -417,19 +448,27 @@ const AddServiceOrder = () => {
                                                 <div className='mt-3 mb-3'>
                                                     <div className="row">
                                                         <div className="col-md-4">
-                                                            <input type="text" name="" id="" className='form-control search-input' placeholder={t('search_here')}
+                                                            <input type="text" name="" id="" className='form-control' placeholder={t('search_here')}
                                                                 onChange={(e) => {
-                                                                    filterServices(e.target.value);
+                                                                    setSearchKey(e.target.value);
+                                                                    setVariation('');
+                                                                    setSelectedCategories([]);
+                                                                    searchServices(e.target.value);
                                                                 }}
+                                                                value={searchKey}
                                                             />
                                                         </div>
                                                         <div className="col-md-4">
                                                             <Select
                                                                 placeholder={t('customer')}
-                                                                options={[]}
+                                                                options={customers}
+                                                                getOptionLabel={(e) => e.full_name + ' (' + e.phone + ')'}
+                                                                getOptionValue={(e) => e.id}
                                                                 onChange={(e) => {
-                                                                    //setItemsPerRow(e.value);
+                                                                    setCustomer(e);
                                                                 }}
+                                                                value={customer}
+                                                                isClearable
                                                             />
                                                         </div>
 
@@ -442,14 +481,26 @@ const AddServiceOrder = () => {
                                                                 getOptionValue={(e) => e.id}
                                                                 value={selectedCategories}
                                                                 onChange={(e) => {
-                                                                    setSelectedCategories(e)
+                                                                    setSelectedCategories(e);
+                                                                    setSearchKey('');
+                                                                    setVariation('');
+                                                                    applyCategoriesFilter(e.map((e) => e.id))
                                                                 }}
                                                             />
                                                         </div>
                                                         <div className="col-4 mt-2">
-                                                            <Select options={[]}
+                                                            <Select options={variations}
                                                                 isClearable={true}
                                                                 placeholder={t('filter_by_variation')}
+                                                                getOptionLabel={(v) => v.variation_title}
+                                                                getOptionValue={(v) => v.id}
+                                                                onChange={(e) => {
+                                                                    setSelectedCategories([]);
+                                                                    setSearchKey('');
+                                                                    setVariation(e);
+                                                                    applyVariationFilter(e);
+                                                                }}
+                                                                value={variation}
                                                             />
                                                         </div>
                                                     </div>
@@ -467,6 +518,15 @@ const AddServiceOrder = () => {
                                                                                 }}
                                                                             >
                                                                                 <div>
+                                                                                    {service.service_location_discount !== 0 &&
+                                                                                        <Tag
+                                                                                            style={{
+                                                                                                position: 'absolute',
+                                                                                                right: 0
+                                                                                            }}
+                                                                                            value={service.service_location_discount + '%'}
+                                                                                        />
+                                                                                    }
                                                                                     <div>
                                                                                         <img src={service.service_image} alt=""
                                                                                             style={{
@@ -480,7 +540,7 @@ const AddServiceOrder = () => {
                                                                                         <strong className='p-2 opacity'>{service.service_name}</strong>
                                                                                     </div>
                                                                                     <div className='mt-1 mb-1'>
-                                                                                        <strong>{getFormattedCurrency(service.service_price)}</strong>
+                                                                                        <strong>{getFormattedCurrency(service.location_price)}</strong>
                                                                                     </div>
                                                                                 </div>
                                                                             </Button>
