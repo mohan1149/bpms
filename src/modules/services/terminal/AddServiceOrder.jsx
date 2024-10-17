@@ -36,11 +36,10 @@ const AddServiceOrder = () => {
     const [categories, setCategories] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [variations, setVariations] = useState([]);
-
     const [variation, setVariation] = useState();
     const [searchKey, setSearchKey] = useState();
-
     const [customer, setCustomer] = useState();
+    const [employees, setEmployees] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [branch, setBranch] = useState();
     const [discount, setDiscount] = useState(0);
@@ -139,9 +138,8 @@ const AddServiceOrder = () => {
         setServices(res.data.data.services);
         setFilteredServices(res.data.data.services);
         setVariations(res.data.data.variations);
+        setEmployees(res.data.data.employees);
         setRegisterData(res.data.data);
-
-        console.log(res.data.data);
     }
 
     const addItemToCart = (item) => {
@@ -160,6 +158,7 @@ const AddServiceOrder = () => {
                 altered_price: item.location_price - discountMoney,
                 modifiers: [],
                 item_service_staff: '',
+                notes: '',
             };
             existingCart.push(cartItem);
         }
@@ -179,6 +178,24 @@ const AddServiceOrder = () => {
         let clickedItem = existingCart[index];
         clickedItem.altered_price = newPrice;
         clickedItem.total_price = newPrice * clickedItem.quantity;
+        existingCart[index] = clickedItem;
+        setCartItems(existingCart);
+        setRender(!render);
+    }
+    const assignServiceStaff = (item, staff) => {
+        let existingCart = cartItems;
+        let index = existingCart.findIndex((i) => i.id === item.id);
+        let clickedItem = existingCart[index];
+        clickedItem.item_service_staff = staff;
+        existingCart[index] = clickedItem;
+        setCartItems(existingCart);
+        setRender(!render);
+    }
+    const addServiceNotes = (item, notes) => {
+        let existingCart = cartItems;
+        let index = existingCart.findIndex((i) => i.id === item.id);
+        let clickedItem = existingCart[index];
+        clickedItem.notes = notes;
         existingCart[index] = clickedItem;
         setCartItems(existingCart);
         setRender(!render);
@@ -212,7 +229,7 @@ const AddServiceOrder = () => {
             return i.modifiers.reduce((a, b) => a + b.modifier_price, 0);
         });
         let modifiers_total = modifiers_price.length > 0 ? modifiers_price[0] : 0;
-        return withDiscount === 1 ? getFormattedCurrency(((totalPrice - discount) + modifiers_total), 1) : getFormattedCurrency((totalPrice + modifiers_total), 1);
+        return withDiscount === 1 ? getFormattedCurrency(((totalPrice - discount) + modifiers_total)) : getFormattedCurrency((totalPrice + modifiers_total), 1);
     }
     const searchServices = (key) => {
         let filteredByKey = services.filter((item) => item.service_name.toLowerCase().includes(key.toLowerCase()));
@@ -222,7 +239,7 @@ const AddServiceOrder = () => {
         if (v !== null) {
             let filteredByVariation = services.filter((item) => item.service_variation === v.id);
             setFilteredServices(filteredByVariation);
-        }else{
+        } else {
             setFilteredServices(services);
         }
     }
@@ -420,9 +437,25 @@ const AddServiceOrder = () => {
                                                 <div className="col-12">
                                                     <div className="form-group">
                                                         <label htmlFor="" className='mb-1 mt-2'>{t('service_staff')}</label>
-                                                        <Select options={serviceModifiers}
+                                                        <Select options={employees}
                                                             getOptionValue={(i) => i.id}
-                                                            getOptionLabel={(i) => i.modifier_title}
+                                                            getOptionLabel={(i) => i.full_name + ' (' + i.phone + ')'}
+                                                            onChange={(e) => {
+                                                                assignServiceStaff(showModifiersModal.item, e)
+                                                            }}
+                                                            value={showModifiersModal.item.item_service_staff}
+                                                            isClearable
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-12">
+                                                    <div className="form-group">
+                                                        <label htmlFor="serviceNotes" className='mb-1 mt-2'>{t('notes')}</label>
+                                                        <input type="text" name="serviceNotes" id="serviceNotes" className='form-control'
+                                                            onChange={(e) => {
+                                                                addServiceNotes(showModifiersModal.item, e.target.value);
+                                                            }}
+                                                            value={showModifiersModal.item.notes}
                                                         />
                                                     </div>
                                                 </div>
@@ -540,7 +573,20 @@ const AddServiceOrder = () => {
                                                                                         <strong className='p-2 opacity'>{service.service_name}</strong>
                                                                                     </div>
                                                                                     <div className='mt-1 mb-1'>
-                                                                                        <strong>{getFormattedCurrency(service.location_price)}</strong>
+                                                                                        {
+                                                                                            service.service_location_discount !== 0 &&
+                                                                                            <span><strong>{getFormattedCurrency(((service.location_price) - service.location_price * service.service_location_discount / 100), 1)}</strong>/
+                                                                                                <span
+                                                                                                    style={{
+                                                                                                        textDecorationLine: "line-through"
+                                                                                                    }}
+                                                                                                >{getFormattedCurrency(service.location_price, 1)}</span>
+                                                                                            </span>
+                                                                                        }
+                                                                                        {
+                                                                                            service.service_location_discount === 0 &&
+                                                                                            <span> <strong>{getFormattedCurrency(service.location_price)} </strong></span>
+                                                                                        }
                                                                                     </div>
                                                                                 </div>
                                                                             </Button>
@@ -576,7 +622,7 @@ const AddServiceOrder = () => {
                                                 <div
                                                     style={{
                                                         maxHeight: '85vh',
-                                                        height: '46vh',
+                                                        height: '53vh',
                                                         overflowY: 'scroll'
                                                     }}
                                                 >
@@ -674,25 +720,6 @@ const AddServiceOrder = () => {
                                                     </table>
 
                                                 </div>
-                                                <div className="m-2">
-                                                    <div>
-                                                        {/* {
-                                                            paymentTypes.map((i, index) => {
-                                                                return (
-                                                                    <Avatar
-                                                                        onClick={() => {
-                                                                        }}
-                                                                        image={i.payment_image}
-                                                                        className='mx-1'
-                                                                        key={index}
-                                                                        size="large"
-                                                                        shape="circle"
-                                                                    />
-                                                                );
-                                                            })
-                                                        } */}
-                                                    </div>
-                                                </div>
                                                 <div
                                                     style={{
                                                         backgroundColor: '#141B4D',
@@ -713,7 +740,6 @@ const AddServiceOrder = () => {
                                                                     setShowDiscountModal(true);
                                                                 }}
                                                             >{t('discount')} : {getFormattedCurrency(discount, 1)}</h5>
-                                                            {/* <Button label={t('discount') +' - '+ getFormattedCurrency(0, 1)} className='mb-1' severity='info' /> */}
                                                         </div>
                                                         <h5>{t('grand_total')} : {getTotalPrice(1)}</h5>
                                                     </div>
@@ -740,7 +766,16 @@ const AddServiceOrder = () => {
                                                             }}
 
                                                         />
-                                                        <Button label={t('paid')} className='mx-1 mb-1' severity='success' />
+                                                        <Button label={t('paid')} className='mx-1 mb-1' severity='success' 
+                                                            onClick={()=>{
+                                                                console.log(cartItems);
+                                                                console.log(discount);
+                                                                console.log(discountType);
+                                                                
+                                                                
+                                                                
+                                                            }}
+                                                        />
                                                         <Button label={t('booking')} className='mb-1' severity='info' />
                                                         {/* <Button label={t('hold')} className='mx-1 mb-1' severity='warning' /> */}
                                                     </div>

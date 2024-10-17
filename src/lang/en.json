@@ -218,7 +218,10 @@
     "attach":"Attach",
     "terminal_settings":"Terminal Settings",
     "save_settings":"Save Settings",
-    "add_to_location":"Add to Location"
+    "add_to_location":"Add to Location",
+    "item":"Item",
+    "qun":"Quantity",
+    "edit":"Edit"
 
 
 
