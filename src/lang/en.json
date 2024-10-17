@@ -211,6 +211,15 @@
     "service_details":"Service Details",
     "service_location_details":"Service Location Details",
     "price":"Price",
-    "in_active":"In Active"
+    "in_active":"In Active",
+    "item_modifiers":"Item Modifiers",
+    "item_price":"Item Price",
+    "service_staff":"Service Staff",
+    "attach":"Attach",
+    "terminal_settings":"Terminal Settings",
+    "save_settings":"Save Settings",
+    "add_to_location":"Add to Location"
+
+
 
 }
