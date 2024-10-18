@@ -9,9 +9,8 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputNumber } from 'primereact/inputnumber';
 import { Modal } from 'react-bootstrap';
-import { getServiceModifiers, getBranches, getServiceCategories, getServiceVariations, getPaymentTypes, getServiceRegsiterDetails } from '../../../apis/services';
+import { getServiceRegsiterDetails } from '../../../apis/services';
 import { useReactToPrint } from "react-to-print";
-import { Avatar } from 'primereact/avatar';
 import { can } from '../../../helpers/helpers';
 import NoPerm from '../../../commons/NoPerm';
 import OpenRegisterForm from './components/OpenRegisterForm';
@@ -20,7 +19,6 @@ import { Tag } from 'primereact/tag';
 const AddServiceOrder = () => {
     const store = useStore();
     const user = store.getState().app.user;
-
     const { t } = useTranslation();
     const componentRef = useRef();
     const [registerData, setRegisterData] = useState();
@@ -43,55 +41,13 @@ const AddServiceOrder = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [branch, setBranch] = useState();
     const [discount, setDiscount] = useState(0);
+    const [showSaveOrder, setShowSaveOrder] = useState(true);
+
     const [discountType, setDiscountType] = useState({
         label: t('flat'),
         value: 'flat',
     });
     const [showDiscountModal, setShowDiscountModal] = useState(false);
-    // const services = [
-    //     {
-    //         id: 1,
-    //         service_name: 'Apple Iphone',
-    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/bamboo-watch.jpg',
-    //         service_price: 10.456,
-    //     },
-    //     {
-    //         id: 2,
-    //         service_name: 'a wsw',
-    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-    //         service_price: 10,
-    //     },
-    //     {
-    //         id: 3,
-    //         service_name: 'a dw',
-    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-    //         service_price: 10,
-    //     },
-    //     {
-    //         id: 4,
-    //         service_name: 'a swdwdewd ',
-    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-    //         service_price: 10,
-    //     },
-    //     {
-    //         id: 5,
-    //         service_name: 'a qwert',
-    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-    //         service_price: 10,
-    //     },
-    //     {
-    //         id: 6,
-    //         service_name: 'a oiuyt',
-    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-    //         service_price: 10,
-    //     },
-    //     {
-    //         id: 7,
-    //         service_name: 'a sdwefrgthyju ertyu qwert uytr qwertyuio werty ertyu',
-    //         service_image: 'https://primefaces.org/cdn/primereact/images/product/black-watch.jpg',
-    //         service_price: 10,
-    //     },
-    // ];
     const [filteredServices, setFilteredServices] = useState(services);
     const itemsPerRowCount = [
         {
@@ -469,6 +425,71 @@ const AddServiceOrder = () => {
                                             </div>
                                         </div>
                                     </Modal>
+                                    <Modal
+                                        show={showSaveOrder}
+                                        size="lg"
+                                    >
+                                        <div className="p-3">
+                                            <h5>{t('save_order')}</h5>
+                                            <table className='table'>
+                                                <thead>
+                                                    <tr>
+                                                        <th>{t('item')}</th>
+                                                        <th className='text-center'>{t('qun')}</th>
+                                                        <th className='text-center'>{t('price')}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        cartItems.map((i, index) => {
+                                                            return (
+                                                                <tr key={index}>
+                                                                    <td
+                                                                        style={{
+                                                                            maxWidth: '7rem',
+                                                                            padding: 0,
+                                                                            paddingTop: 3,
+                                                                            paddingBottom: 3,
+                                                                        }}
+                                                                    >
+                                                                        {i.service_name}
+                                                                    </td>
+                                                                    <td
+                                                                        style={{
+                                                                            maxWidth: '5rem',
+                                                                            paddingTop: 3,
+                                                                            paddingBottom: 3,
+                                                                        }}
+                                                                    >
+                                                                        <div className="d-flex align-items-center jcc">
+                                                                           
+                                                                            <span className='mx-1'>{i.quantity}</span>
+                                                                           
+                                                                        </div>
+                                                                    </td>
+                                                                    <td
+                                                                        className='text-center'
+                                                                        style={{
+                                                                            paddingTop: 3,
+                                                                            paddingBottom: 3,
+                                                                            cursor: 'pointer'
+                                                                        }}
+                                                                    >
+                                                                        <strong>{getFormattedCurrency(i.total_price, 1)}</strong>
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        })
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <Button label={t('cancel')} severity='danger' className='rounded-btn'
+                                                onClick={()=>{
+                                                    setShowSaveOrder(false);
+                                                }}
+                                            />
+                                        </div>
+                                    </Modal>
                                     <div className="row">
                                         <div className="col-md-8 m-0 p-0">
                                             <div className="p-2 card m-1"
@@ -766,14 +787,9 @@ const AddServiceOrder = () => {
                                                             }}
 
                                                         />
-                                                        <Button label={t('paid')} className='mx-1 mb-1' severity='success' 
-                                                            onClick={()=>{
-                                                                console.log(cartItems);
-                                                                console.log(discount);
-                                                                console.log(discountType);
-                                                                
-                                                                
-                                                                
+                                                        <Button label={t('save_order')} className='mx-1 mb-1' severity='success'
+                                                            onClick={() => {
+                                                                setShowSaveOrder(true);
                                                             }}
                                                         />
                                                         <Button label={t('booking')} className='mb-1' severity='info' />
