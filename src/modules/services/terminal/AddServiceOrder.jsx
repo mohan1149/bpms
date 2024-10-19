@@ -442,6 +442,8 @@ const AddServiceOrder = () => {
                                                 <tbody>
                                                     {
                                                         cartItems.map((i, index) => {
+                                                            console.log(i);
+
                                                             return (
                                                                 <tr key={index}>
                                                                     <td
@@ -452,7 +454,16 @@ const AddServiceOrder = () => {
                                                                             paddingBottom: 3,
                                                                         }}
                                                                     >
-                                                                        {i.service_name}
+                                                                        <div>
+                                                                            <span className='mx-1'> {i.service_name}</span>
+                                                                            {
+                                                                                i.modifiers.map((m, k) => {
+                                                                                    return (
+                                                                                        <Tag value={m.modifier_title + '(' + getFormattedCurrency(m.modifier_price, 1) + ')'} />
+                                                                                    );
+                                                                                })
+                                                                            }
+                                                                        </div>
                                                                     </td>
                                                                     <td
                                                                         style={{
@@ -462,9 +473,9 @@ const AddServiceOrder = () => {
                                                                         }}
                                                                     >
                                                                         <div className="d-flex align-items-center jcc">
-                                                                           
+
                                                                             <span className='mx-1'>{i.quantity}</span>
-                                                                           
+
                                                                         </div>
                                                                     </td>
                                                                     <td
@@ -475,7 +486,7 @@ const AddServiceOrder = () => {
                                                                             cursor: 'pointer'
                                                                         }}
                                                                     >
-                                                                        <strong>{getFormattedCurrency(i.total_price, 1)}</strong>
+                                                                        <strong>{getFormattedCurrency(((i.total_price) + i.modifiers.reduce((a, b) => a + b.modifier_price, 0)), 1)}</strong>
                                                                     </td>
                                                                 </tr>
                                                             );
@@ -484,7 +495,7 @@ const AddServiceOrder = () => {
                                                 </tbody>
                                             </table>
                                             <Button label={t('cancel')} severity='danger' className='rounded-btn'
-                                                onClick={()=>{
+                                                onClick={() => {
                                                     setShowSaveOrder(false);
                                                 }}
                                             />
