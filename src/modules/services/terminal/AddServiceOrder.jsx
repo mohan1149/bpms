@@ -442,8 +442,6 @@ const AddServiceOrder = () => {
                                                 <tbody>
                                                     {
                                                         cartItems.map((i, index) => {
-                                                            console.log(i);
-
                                                             return (
                                                                 <tr key={index}>
                                                                     <td
