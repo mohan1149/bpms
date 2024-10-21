@@ -221,7 +221,9 @@
     "add_to_location":"Add to Location",
     "item":"Item",
     "qun":"Quantity",
-    "edit":"Edit"
+    "edit":"Edit",
+    "save_order":"Save Order",
+    "cancel":"Cancel"
 
 
 

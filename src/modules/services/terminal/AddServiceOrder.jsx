@@ -457,7 +457,7 @@ const AddServiceOrder = () => {
                                                                             {
                                                                                 i.modifiers.map((m, k) => {
                                                                                     return (
-                                                                                        <Tag value={m.modifier_title + '(' + getFormattedCurrency(m.modifier_price, 1) + ')'} />
+                                                                                        <Tag className='mx-1' value={m.modifier_title + '(' + getFormattedCurrency(m.modifier_price, 1) + ')'} />
                                                                                     );
                                                                                 })
                                                                             }
@@ -471,9 +471,7 @@ const AddServiceOrder = () => {
                                                                         }}
                                                                     >
                                                                         <div className="d-flex align-items-center jcc">
-
                                                                             <span className='mx-1'>{i.quantity}</span>
-
                                                                         </div>
                                                                     </td>
                                                                     <td
@@ -492,6 +490,8 @@ const AddServiceOrder = () => {
                                                     }
                                                 </tbody>
                                             </table>
+                                            <h3>{t('total')} : {getTotalPrice()}</h3>
+                                            <h3>{t('grand_total')} : {getTotalPrice(1)}</h3>
                                             <Button label={t('cancel')} severity='danger' className='rounded-btn'
                                                 onClick={() => {
                                                     setShowSaveOrder(false);
