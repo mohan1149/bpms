@@ -490,6 +490,13 @@ const AddServiceOrder = () => {
                                                     }
                                                 </tbody>
                                             </table>
+                                            <div className="row mb-3">
+                                                <div className="col-md-6">
+                                                    <Select options={[]}
+                                                        placeholder={t('select_payment_type')}
+                                                    />
+                                                </div>
+                                            </div>
                                             <h3>{t('total')} : {getTotalPrice()}</h3>
                                             <h3>{t('grand_total')} : {getTotalPrice(1)}</h3>
                                             <Button label={t('cancel')} severity='danger' className='rounded-btn'
