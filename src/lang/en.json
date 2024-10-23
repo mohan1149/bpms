@@ -223,7 +223,10 @@
     "qun":"Quantity",
     "edit":"Edit",
     "save_order":"Save Order",
-    "cancel":"Cancel"
+    "cancel":"Cancel",
+    "request_failed":"Request Failed",
+    "bad_credentials":"Invalid Username or Password. Please try again.",
+    "login":"Login"
 
 
 
