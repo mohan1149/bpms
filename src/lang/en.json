@@ -226,7 +226,8 @@
     "cancel":"Cancel",
     "request_failed":"Request Failed",
     "bad_credentials":"Invalid Username or Password. Please try again.",
-    "login":"Login"
+    "login":"Login",
+    "select_payment_type":"Select Payment Type"
 
 
 

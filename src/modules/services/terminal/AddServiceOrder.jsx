@@ -23,7 +23,6 @@ const AddServiceOrder = () => {
     const componentRef = useRef();
     const [registerData, setRegisterData] = useState();
     const [openTerminal, setOpenTerminal] = useState(false);
-
     const [services, setServices] = useState([]);
     const [itemsPerRow, setItemsPerRow] = useState({ label: t('items_per_row'), value: 2 });
     const [showSettings, setShowSettings] = useState(false);
@@ -42,6 +41,7 @@ const AddServiceOrder = () => {
     const [branch, setBranch] = useState();
     const [discount, setDiscount] = useState(0);
     const [showSaveOrder, setShowSaveOrder] = useState(true);
+    const [paymentTypes, setPaymentTypes] = useState([]);
 
     const [discountType, setDiscountType] = useState({
         label: t('flat'),
@@ -95,6 +95,7 @@ const AddServiceOrder = () => {
         setFilteredServices(res.data.data.services);
         setVariations(res.data.data.variations);
         setEmployees(res.data.data.employees);
+        setPaymentTypes(res.data.data.paymentTypes);
         setRegisterData(res.data.data);
     }
 
@@ -491,14 +492,20 @@ const AddServiceOrder = () => {
                                                 </tbody>
                                             </table>
                                             <div className="row mb-3">
-                                                <div className="col-md-6">
-                                                    <Select options={[]}
+                                                <div className="col-md-4">
+                                                    <Select options={paymentTypes}
+                                                        getOptionLabel={(e) => e.payment_title}
+                                                        getOptionValue={(e) => e.id}
                                                         placeholder={t('select_payment_type')}
                                                     />
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <Button label={t('split_pay')} className='rounded-btn' />
                                                 </div>
                                             </div>
                                             <h3>{t('total')} : {getTotalPrice()}</h3>
                                             <h3>{t('grand_total')} : {getTotalPrice(1)}</h3>
+                                            <Button label={t('confirm_order')} />
                                             <Button label={t('cancel')} severity='danger' className='rounded-btn'
                                                 onClick={() => {
                                                     setShowSaveOrder(false);
