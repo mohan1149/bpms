@@ -227,7 +227,9 @@
     "request_failed":"Request Failed",
     "bad_credentials":"Invalid Username or Password. Please try again.",
     "login":"Login",
-    "select_payment_type":"Select Payment Type"
+    "select_payment_type":"Select Payment Type",
+    "confirm_order":"Confirm Order",
+    "split_pay":"Split Pay"
 
 
 
