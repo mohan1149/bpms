@@ -505,7 +505,7 @@ const AddServiceOrder = () => {
                                             </div>
                                             <h3>{t('total')} : {getTotalPrice()}</h3>
                                             <h3>{t('grand_total')} : {getTotalPrice(1)}</h3>
-                                            <Button label={t('confirm_order')} />
+                                            <Button label={t('confirm_order')} className='p-btn mx-2' />
                                             <Button label={t('cancel')} severity='danger' className='rounded-btn'
                                                 onClick={() => {
                                                     setShowSaveOrder(false);
